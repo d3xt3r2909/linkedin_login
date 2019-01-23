@@ -1,7 +1,5 @@
 # linkedin_login
 
-[![Build Status](https://travis-ci.org/d3xt3r2909/linkedin_login.svg?branch=master)](https://travis-ci.org/d3xt3r2909/linkedin_login)
-
 - A Flutter library for  [LinkedIn](https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin?context=linkedin/consumer/context) OAuth 2.0 APIs .
 
 - This library is using new way of authorization on [LinkedIn](https://engineering.linkedin.com/blog/2018/12/developer-program-updates)
