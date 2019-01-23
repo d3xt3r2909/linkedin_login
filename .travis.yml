@@ -4,7 +4,6 @@ dart:
 - dev
 
 dart_task:
-- test
 - dartanalyzer
 
 matrix:
