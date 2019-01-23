@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="43e4a147-a5e7-4e77-8118-2843b2dca34c" name="Default Changelist" comment="Travis file">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="43e4a147-a5e7-4e77-8118-2843b2dca34c" name="Default Changelist" comment="Travis file" />
     <ignored path="$PROJECT_DIR$/.dart_tool/" />
     <ignored path="$PROJECT_DIR$/.idea/" />
     <ignored path="$PROJECT_DIR$/.pub/" />
@@ -29,7 +26,7 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="arb" value="1" />
-          <entry key="dart" value="26" />
+          <entry key="dart" value="28" />
           <entry key="lock" value="2" />
           <entry key="md" value="5" />
           <entry key="packages" value="1" />
@@ -42,7 +39,7 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="Application Resource Bundle" value="1" />
-          <entry key="Dart" value="26" />
+          <entry key="Dart" value="28" />
           <entry key="Image" value="3" />
           <entry key="Markdown" value="4" />
           <entry key="PLAIN_TEXT" value="4" />
@@ -52,7 +49,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="dart" value="1213" />
+          <entry key="dart" value="1220" />
           <entry key="md" value="1163" />
           <entry key="txt" value="50" />
           <entry key="yaml" value="225" />
@@ -61,7 +58,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Dart" value="1214" />
+          <entry key="Dart" value="1221" />
           <entry key="Markdown" value="1162" />
           <entry key="PLAIN_TEXT" value="50" />
           <entry key="YAML" value="230" />
@@ -98,11 +95,29 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/CHANGELOG.md">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="136">
               <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/test/linkedin_login_test.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" column="5" lean-forward="true" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/example/test/widget_test.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
             </state>
           </provider>
         </entry>
@@ -153,7 +168,6 @@
         <option value="$PROJECT_DIR$/lib/service/linked_in_authorization_webview.dart" />
         <option value="$PROJECT_DIR$/CHANGELOG.md" />
         <option value="$PROJECT_DIR$/lib/service/linked_in_buttons.dart" />
-        <option value="$PROJECT_DIR$/test/linkedin_login_test.dart" />
         <option value="$PROJECT_DIR$/lib/service/linked_in_profile.dart" />
         <option value="$PROJECT_DIR$/lib/model/linked_in_user_model.dart" />
         <option value="$PROJECT_DIR$/lib/linkedin_login.dart" />
@@ -166,6 +180,8 @@
         <option value="$PROJECT_DIR$/.travis.yml" />
         <option value="$PROJECT_DIR$/pubspec.yaml" />
         <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/example/test/widget_test.dart" />
+        <option value="$PROJECT_DIR$/test/linkedin_login_test.dart" />
       </list>
     </option>
   </component>
@@ -191,6 +207,17 @@
             <path>
               <item name="linkedin_login" type="b2602c69:ProjectViewProjectNode" />
               <item name="linkedin_login" type="462c0819:PsiDirectoryNode" />
+              <item name="example" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="linkedin_login" type="b2602c69:ProjectViewProjectNode" />
+              <item name="linkedin_login" type="462c0819:PsiDirectoryNode" />
+              <item name="example" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="linkedin_login" type="b2602c69:ProjectViewProjectNode" />
+              <item name="linkedin_login" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -198,6 +225,11 @@
               <item name="linkedin_login" type="462c0819:PsiDirectoryNode" />
               <item name="lib" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="linkedin_login" type="b2602c69:ProjectViewProjectNode" />
+              <item name="linkedin_login" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -301,16 +333,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.packages">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/linkedin_login_test.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="5" lean-forward="true" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#48#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/assets/linked_in_logo.png">
       <provider selected="true" editor-type-id="images" />
@@ -420,6 +442,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" lean-forward="true" selection-start-line="8" selection-end-line="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/example/test/widget_test.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/linkedin_login_test.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="5" lean-forward="true" selection-start-line="4" selection-start-column="5" selection-end-line="4" selection-end-column="5" />
         </state>
       </provider>
     </entry>

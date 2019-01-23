@@ -17,8 +17,7 @@ dependencies:
   uuid: ^1.0.3
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
+  test: '>=0.12.42 <2.0.0'
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
