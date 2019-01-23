@@ -6,7 +6,7 @@
 
 ## Installation
 
-- See the [installation instructions on pub]()
+- See the [installation instructions on pub](https://pub.dartlang.org/packages/linkedin_login#-installing-tab-)
 
 ## Important 
 
