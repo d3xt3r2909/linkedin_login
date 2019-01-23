@@ -8,13 +8,12 @@ import 'package:http/http.dart';
 import 'package:linkedin_login/src/linked_in_auth_response_wrapper.dart';
 import 'package:uuid/uuid.dart';
 
-// ignore: must_be_immutable
 /// Class will fetch code and access token from the user
 /// It will show web view so that we can access to linked in auth page
 class LinkedInAuthorization extends StatefulWidget {
-  Function onCallBack;
-  String redirectUrl;
-  String clientId, clientSecret;
+  final Function onCallBack;
+  final String redirectUrl;
+  final String clientId, clientSecret;
 
   LinkedInAuthorization({
     @required this.onCallBack,

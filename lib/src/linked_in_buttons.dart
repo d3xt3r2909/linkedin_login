@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 /// modify look of the button
 /// Also, you don't need to use this widget, you can use standard button widget
 class LinkedInButtonStandardWidget extends StatelessWidget {
-  Function onTap;
-  double iconHeight, iconWeight;
-  String iconAssetPath;
-  String buttonText;
-  Color buttonColor;
-  EdgeInsets textPadding;
+  final Function onTap;
+  final double iconHeight, iconWeight;
+  final String iconAssetPath;
+  final String buttonText;
+  final Color buttonColor;
+  final EdgeInsets textPadding;
 
   LinkedInButtonStandardWidget({
     @required this.onTap,

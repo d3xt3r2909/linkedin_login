@@ -9,10 +9,10 @@ import 'package:http/http.dart';
 /// This class is responsible to fetch all information for user after we get
 /// token and code from LinkedIn
 class LinkedInUserWidget extends StatefulWidget {
-  Function onGetUserProfile;
-  Function catchError;
-  String redirectUrl;
-  String clientId, clientSecret;
+  final Function onGetUserProfile;
+  final Function catchError;
+  final String redirectUrl;
+  final String clientId, clientSecret;
 
   /// Client state parameter needs to be unique range of characters - random one
   LinkedInUserWidget({
