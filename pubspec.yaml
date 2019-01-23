@@ -2,8 +2,8 @@ name: linkedin_login
 description: Library for login with Linkedin OAuth v2 service.
 version: 0.1.0
 author: Nihad Delic <nihad.delic.g@gmail.com>
-homepage: https://github.com/tuantvu/flutter_linkedin_login
-repository: https://github.com/tuantvu/flutter_linkedin_login
+homepage: https://github.com/d3xt3r2909/linkedin_login
+repository: https://github.com/d3xt3r2909/linkedin_login
 documentation:
   
 environment:

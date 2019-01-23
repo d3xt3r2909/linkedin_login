@@ -1,6 +1,6 @@
 # linkedin_login
 
-[![Build Status]()]()
+[![Build Status](https://travis-ci.org/d3xt3r2909/linkedin_login.svg?branch=master)](https://travis-ci.org/d3xt3r2909/linkedin_login)
 
 - A Flutter library for  [LinkedIn](https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin?context=linkedin/consumer/context) OAuth 2.0 APIs .
 
@@ -22,7 +22,7 @@ To get these values you need to create App on the [LinkedIn](https://www.linkedi
 
 ## Samples
 
-You can see full example under this [project]().
+You can see full example under this [project](https://github.com/d3xt3r2909/linkedin_login/tree/master/example).
 
 Call LinkedIn authorization and get user object:
 
