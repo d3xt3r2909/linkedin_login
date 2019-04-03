@@ -10,3 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Login with LinkedIn support to Android and IOS using pure dart
  - LinkedIn default button
  - Retrieve basic user information from linked login with email and token
+
+## v0.1.1 - 2019-04-03
+### Version upgrade
+
+ - Upgrade version of libraries that this package is using
