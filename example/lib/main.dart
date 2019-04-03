@@ -9,7 +9,7 @@ void main() => runApp(MyApp());
 // Please read step 1 from this link https://developer.linkedin.com/docs/oauth2
 final String redirectUrl = 'YOUR-REDIRECT-URL';
 final String clientId = 'YOUR-CLIENT-ID';
-final String clientSecret = 'YOUR-CLIENT-SECRE';
+final String clientSecret = 'YOUR-CLIENT-SECRET';
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
