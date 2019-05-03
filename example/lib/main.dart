@@ -56,6 +56,8 @@ class _LinkedInExamplePageState extends State<LinkedInExamplePage> {
                                       (LinkedInUserModel linkedInUser) {
                                     print(
                                         'Access token ${linkedInUser.token.accessToken}');
+                                    
+                                    print('User id: ${linkedInUser.userId}');
 
                                     user = UserObject(
                                       firstName: linkedInUser
@@ -65,10 +67,10 @@ class _LinkedInExamplePageState extends State<LinkedInExamplePage> {
                                       email: linkedInUser.email.elements[0]
                                           .handleDeep.emailAddress,
                                     );
+                                    setState(() {});
 
                                     Navigator.pop(context);
 
-                                    setState(() {});
                                   },
                                   catchError: (LinkedInErrorObject error) {
                                     print(

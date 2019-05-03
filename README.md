@@ -56,6 +56,7 @@ Call LinkedIn authorization and get user object:
   int expiresIn;
   String profilePicture;
   String email;
+  String userId; (from version 0.1.
 ```
 
 ## Widgets

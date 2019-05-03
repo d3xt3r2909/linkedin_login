@@ -15,3 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Version upgrade
 
  - Upgrade version of libraries that this package is using
+
+## v0.1.3 - 2019-05-03
+### Added new field into user model
+
+ - UserId in LinkedInUserModel class
+ - Fix bugs if there is not existing images

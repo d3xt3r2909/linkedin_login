@@ -5,6 +5,7 @@ import 'package:linkedin_login/src/linked_in_auth_response_wrapper.dart';
 class LinkedInUserModel {
   final _LinkedInPersonalInfo firstName, lastName;
   final _LinkedInProfilePicture profilePicture;
+  final String userId;
   LinkedInProfileEmail email; // need to be implemented
   LinkedInTokenObject token;
 
@@ -12,15 +13,26 @@ class LinkedInUserModel {
     this.firstName,
     this.lastName,
     this.profilePicture,
+    this.userId,
   });
 
-  factory LinkedInUserModel.fromJson(Map<String, dynamic> json) =>
-      LinkedInUserModel(
-        firstName: _LinkedInPersonalInfo.fromJson(json['firstName']),
-        lastName: _LinkedInPersonalInfo.fromJson(json['lastName']),
-        profilePicture:
-            _LinkedInProfilePicture.fromJson(json['profilePicture']),
-      );
+  factory LinkedInUserModel.fromJson(Map<String, dynamic> json) {
+    Map<String, dynamic> firstName = json['firstName'];
+    Map<String, dynamic> lastName = json['lastName'];
+    Map<String, dynamic> profilePicture = json['profilePicture'];
+    String userId = json['id'];
+
+    return LinkedInUserModel(
+      firstName:
+          firstName != null ? _LinkedInPersonalInfo.fromJson(firstName) : null,
+      lastName:
+          lastName != null ? _LinkedInPersonalInfo.fromJson(lastName) : null,
+      profilePicture: profilePicture != null
+          ? _LinkedInProfilePicture.fromJson(profilePicture)
+          : null,
+      userId: userId ?? null,
+    );
+  }
 
   static LinkedInUserModel parseUser(String responseBody) {
     final parsed = json.decode(responseBody).cast<String, dynamic>();
