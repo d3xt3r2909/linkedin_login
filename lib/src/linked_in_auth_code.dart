@@ -24,20 +24,19 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
 }
 
 class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
-
   @override
   Widget build(BuildContext context) => LinkedInAuthCode(
-    redirectUrl: widget.redirectUrl,
-    clientId: widget.clientId,
-    onCallBack: (AuthorizationCodeResponse result) {
-      if (result != null && result.code != null) {
-        widget.onGetAuthCode(result);
-      } else {
-        // If inner class catch the error, then forward it to parent class
-        if (result.error != null && result.error.description.isNotEmpty) {
-          widget.catchError(result.error);
-        }
-      }
-    },
-  );
+        redirectUrl: widget.redirectUrl,
+        clientId: widget.clientId,
+        onCallBack: (AuthorizationCodeResponse result) {
+          if (result != null && result.code != null) {
+            widget.onGetAuthCode(result);
+          } else {
+            // If inner class catch the error, then forward it to parent class
+            if (result.error != null && result.error.description.isNotEmpty) {
+              widget.catchError(result.error);
+            }
+          }
+        },
+      );
 }
