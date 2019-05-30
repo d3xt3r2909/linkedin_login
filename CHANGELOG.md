@@ -21,3 +21,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
  - UserId in LinkedInUserModel class
  - Fix bugs if there is not existing images
+
+## v0.1.4 - 2019-05-30
+### Added new widget
+
+ - Fetch just authorization code
+ - Use widget without sending client secret code

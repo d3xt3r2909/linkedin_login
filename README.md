@@ -16,6 +16,8 @@ You should replace this values
     final String clientId = 'YOUR-CLIENT-ID';
     final String clientSecret = 'YOUR-CLIENT-SECRET';
 
+`Note: clientSecret field is required just for LinkedInUserWidget`
+
 To get these values you need to create App on the [LinkedIn](https://www.linkedin.com/developers/apps/new).
 
 ## Samples
@@ -23,31 +25,38 @@ To get these values you need to create App on the [LinkedIn](https://www.linkedi
 You can see full example under this [project](https://github.com/d3xt3r2909/linkedin_login/tree/master/example).
 
 Call LinkedIn authorization and get user object:
-
+```dart
     LinkedInUserWidget(
        redirectUrl: redirectUrl,
        clientId: clientId,
        clientSecret: clientSecret,
        onGetUserProfile:
            (LinkedInUserModel linkedInUser) {
-         
-         print(
-             'Access token ${linkedInUser.token.accessToken}');
-         
-         print('First name: ${linkedInUser
-             .firstName.localized.label}');
-         print('Last name: ${linkedInUser
-             .lastName.localized.label}');
-    
+                print('Access token ${linkedInUser.token.accessToken}');
+                print('First name: ${linkedInUser.firstName.localized.label}');
+                print('Last name: ${linkedInUser.lastName.localized.label}');
        },
        catchError: (LinkedInErrorObject error) {
          print(
              'Error description: ${error.description},'
              ' Error code: ${error.statusCode.toString()}');
-                                      },
+        },
     )
-    
-## Properties that are available after call
+```
+
+Or you can just fetch authorization code (clientSecret is not required in this widget):
+```dart
+    LinkedInAuthCodeWidget(
+        redirectUrl: redirectUrl,
+        clientId: clientId,
+        onGetAuthCode:
+            (AuthorizationCodeResponse response) {
+                print('Auth code ${response.code}');
+                print('State: ${response.state}');
+            },
+    ),
+```
+## Properties that are available after call for LinkedInUserWidget
 
 ```dart
   String firstName;
@@ -56,7 +65,14 @@ Call LinkedIn authorization and get user object:
   int expiresIn;
   String profilePicture;
   String email;
-  String userId; (from version 0.1.
+  String userId; (from version 0.1.)
+```
+
+## Properties that are available after call for LinkedInAuthCodeWidget
+
+```dart
+  String code; // authorization code
+  String state;
 ```
 
 ## Widgets

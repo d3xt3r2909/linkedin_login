@@ -20,83 +20,167 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LinkedInExamplePage(),
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: TabBar(
+              tabs: [
+                Tab(
+                  icon: Icon(Icons.person),
+                  text: 'Profile',
+                ),
+                Tab(icon: Icon(Icons.text_fields), text: 'Auth code')
+              ],
+            ),
+            title: Text('LinkedIn Authorization'),
+          ),
+          body: TabBarView(
+            children: [
+              LinkedInProfileExamplePage(),
+              LinkedInAuthCodeExamplePage(),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
 
-class LinkedInExamplePage extends StatefulWidget {
+class LinkedInProfileExamplePage extends StatefulWidget {
   @override
-  State createState() => _LinkedInExamplePageState();
+  State createState() => _LinkedInProfileExamplePageState();
 }
 
-class _LinkedInExamplePageState extends State<LinkedInExamplePage> {
+class _LinkedInProfileExamplePageState
+    extends State<LinkedInProfileExamplePage> {
   UserObject user;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text('LinkedIn login'),
-        ),
-        body: Center(
-          child: Container(
-              child: user == null
-                  ? LinkedInButtonStandardWidget(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                LinkedInUserWidget(
-                                  redirectUrl: redirectUrl,
-                                  clientId: clientId,
-                                  clientSecret: clientSecret,
-                                  onGetUserProfile:
-                                      (LinkedInUserModel linkedInUser) {
-                                    print(
-                                        'Access token ${linkedInUser.token.accessToken}');
-                                    
-                                    print('User id: ${linkedInUser.userId}');
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+          child: user == null
+              ? LinkedInButtonStandardWidget(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => LinkedInUserWidget(
+                    redirectUrl: redirectUrl,
+                    clientId: clientId,
+                    clientSecret: clientSecret,
+                    onGetUserProfile:
+                        (LinkedInUserModel linkedInUser) {
+                      print(
+                          'Access token ${linkedInUser.token.accessToken}');
 
-                                    user = UserObject(
-                                      firstName: linkedInUser
-                                          .firstName.localized.label,
-                                      lastName:
-                                          linkedInUser.lastName.localized.label,
-                                      email: linkedInUser.email.elements[0]
-                                          .handleDeep.emailAddress,
-                                    );
-                                    setState(() {});
+                      print('User id: ${linkedInUser.userId}');
 
-                                    Navigator.pop(context);
+                      user = UserObject(
+                        firstName:
+                        linkedInUser.firstName.localized.label,
+                        lastName:
+                        linkedInUser.lastName.localized.label,
+                        email: linkedInUser.email.elements[0]
+                            .handleDeep.emailAddress,
+                      );
+                      setState(() {});
 
-                                  },
-                                  catchError: (LinkedInErrorObject error) {
-                                    print(
-                                        'Error description: ${error.description},'
-                                        ' Error code: ${error.statusCode.toString()}');
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                            fullscreenDialog: true,
-                          ),
-                        );
-                      },
-                    )
-                  : Container(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('First: ${user.firstName} '),
-                          Text('Last: ${user.lastName} '),
-                          Text('Email: ${user.email}'),
-                        ],
+                      Navigator.pop(context);
+                    },
+                    catchError: (LinkedInErrorObject error) {
+                      print('Error description: ${error.description},'
+                          ' Error code: ${error.statusCode.toString()}');
+                      Navigator.pop(context);
+                    },
+                  ),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
+          )
+              : Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('First: ${user.firstName} '),
+                Text('Last: ${user.lastName} '),
+                Text('Email: ${user.email}'),
+              ],
+            ),
+          )),
+    );
+  }
+}
+
+class LinkedInAuthCodeExamplePage extends StatefulWidget {
+  @override
+  State createState() => _LinkedInAuthCodeExamplePageState();
+}
+
+class _LinkedInAuthCodeExamplePageState
+    extends State<LinkedInAuthCodeExamplePage> {
+  AuthCodeObject authorizationCode;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+          child: authorizationCode == null
+              ? LinkedInButtonStandardWidget(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      LinkedInAuthCodeWidget(
+                        redirectUrl: redirectUrl,
+                        clientId: clientId,
+                        onGetAuthCode:
+                            (AuthorizationCodeResponse response) {
+                          print('Auth code ${response.code}');
+
+                          print('State: ${response.state}');
+
+                          authorizationCode = AuthCodeObject(
+                            code: response.code,
+                            state: response.state,
+                          );
+                          setState(() {});
+
+                          Navigator.pop(context);
+                        },
+                        catchError: (LinkedInErrorObject error) {
+                          print('Error description: ${error.description},'
+                              ' Error code: ${error.statusCode.toString()}');
+                          Navigator.pop(context);
+                        },
                       ),
-                    )),
-        ),
-      );
+                  fullscreenDialog: true,
+                ),
+              );
+            },
+          )
+              : Container(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text('Auth code: ${authorizationCode.code} '),
+                Text('State: ${authorizationCode.state} '),
+              ],
+            ),
+          )),
+    );
+  }
+}
+
+class AuthCodeObject {
+  String code, state;
+
+  AuthCodeObject({this.code, this.state});
 }
 
 class UserObject {
