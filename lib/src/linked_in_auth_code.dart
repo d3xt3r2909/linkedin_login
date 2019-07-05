@@ -10,6 +10,7 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
   final Function catchError;
   final String redirectUrl;
   final String clientId;
+  final AppBar appBar;
 
   /// Client state parameter needs to be unique range of characters - random one
   LinkedInAuthCodeWidget({
@@ -17,6 +18,7 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
     @required this.redirectUrl,
     @required this.clientId,
     this.catchError,
+    this.appBar,
   });
 
   @override
@@ -28,6 +30,7 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
   Widget build(BuildContext context) => LinkedInAuthCode(
         redirectUrl: widget.redirectUrl,
         clientId: widget.clientId,
+        appBar: widget.appBar,
         onCallBack: (AuthorizationCodeResponse result) {
           if (result != null && result.code != null) {
             widget.onGetAuthCode(result);

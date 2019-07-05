@@ -13,11 +13,13 @@ class LinkedInAuthCode extends StatefulWidget {
   final Function onCallBack;
   final String redirectUrl;
   final String clientId;
+  final AppBar appBar;
 
   LinkedInAuthCode({
     @required this.onCallBack,
     @required this.redirectUrl,
     @required this.clientId,
+    this.appBar,
   });
 
   @override
@@ -68,6 +70,8 @@ class _LinkedInAuthCodeState extends State<LinkedInAuthCode> {
 
   @override
   Widget build(BuildContext context) => WebviewScaffold(
+        appBar: widget.appBar,
         url: loginUrl,
+        hidden: true,
       );
 }

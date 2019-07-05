@@ -67,6 +67,9 @@ class _LinkedInProfileExamplePageState
                 context,
                 MaterialPageRoute(
                   builder: (BuildContext context) => LinkedInUserWidget(
+                    appBar: AppBar(
+                      title: Text('OAuth User'),
+                    ),
                     redirectUrl: redirectUrl,
                     clientId: clientId,
                     clientSecret: clientSecret,

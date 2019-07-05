@@ -13,6 +13,7 @@ class LinkedInUserWidget extends StatefulWidget {
   final Function catchError;
   final String redirectUrl;
   final String clientId, clientSecret;
+  final AppBar appBar;
 
   /// Client state parameter needs to be unique range of characters - random one
   LinkedInUserWidget({
@@ -21,6 +22,7 @@ class LinkedInUserWidget extends StatefulWidget {
     @required this.clientId,
     @required this.clientSecret,
     this.catchError,
+    this.appBar,
   });
 
   @override
@@ -37,6 +39,7 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
         redirectUrl: widget.redirectUrl,
         clientSecret: widget.clientSecret,
         clientId: widget.clientId,
+        appBar: widget.appBar,
         onCallBack: (AuthorizationCodeResponse result) {
           if (result != null && result.accessToken != null) {
             get(

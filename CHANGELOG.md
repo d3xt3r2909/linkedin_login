@@ -27,3 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
  - Fetch just authorization code
  - Use widget without sending client secret code
+
+## v0.1.6 - 2019-07-5
+### Added new widget
+
+ - Add possibility to add app bar into webview as parameter
+

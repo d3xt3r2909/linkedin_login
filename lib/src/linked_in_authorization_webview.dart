@@ -16,12 +16,14 @@ class LinkedInAuthorization extends StatefulWidget {
   final Function onCallBack;
   final String redirectUrl;
   final String clientId, clientSecret;
+  final AppBar appBar;
 
   LinkedInAuthorization({
     @required this.onCallBack,
     @required this.redirectUrl,
     @required this.clientId,
     @required this.clientSecret,
+    this.appBar,
   });
 
   @override
@@ -134,6 +136,8 @@ class _LinkedInAuthorizationState extends State<LinkedInAuthorization> {
 
   @override
   Widget build(BuildContext context) => WebviewScaffold(
-        url: loginUrl,
-      );
+    appBar: widget.appBar,
+    url: loginUrl,
+    hidden: true,
+  );
 }
