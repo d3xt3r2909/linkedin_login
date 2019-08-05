@@ -40,4 +40,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - in that case you can use property "frontendRedirectUrl" so that you still can use redirect URL
  - of LinkedIn, but also handle if frontend redirect that link to some other site
 
+## v0.1.8 - 2019-08-5
+### Added new widget
+
+ - Expose frontendRedirectUrl field
+
 

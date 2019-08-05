@@ -12,11 +12,15 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
   final String clientId;
   final AppBar appBar;
 
+  // just in case that frontend in your team has changed redirect url
+  final String frontendRedirectUrl;
+
   /// Client state parameter needs to be unique range of characters - random one
   LinkedInAuthCodeWidget({
     @required this.onGetAuthCode,
     @required this.redirectUrl,
     @required this.clientId,
+    this.frontendRedirectUrl,
     this.catchError,
     this.appBar,
   });
@@ -28,6 +32,7 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
 class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
   @override
   Widget build(BuildContext context) => LinkedInAuthCode(
+        frontendRedirectUrl: widget.frontendRedirectUrl,
         redirectUrl: widget.redirectUrl,
         clientId: widget.clientId,
         appBar: widget.appBar,
