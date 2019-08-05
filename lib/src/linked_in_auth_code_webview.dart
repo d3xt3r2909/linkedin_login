@@ -15,10 +15,14 @@ class LinkedInAuthCode extends StatefulWidget {
   final String clientId;
   final AppBar appBar;
 
+  // just in case that frontend in your team has changed redirect url
+  final String frontendRedirectUrl;
+
   LinkedInAuthCode({
     @required this.onCallBack,
     @required this.redirectUrl,
     @required this.clientId,
+    this.frontendRedirectUrl,
     this.appBar,
   });
 
@@ -58,7 +62,10 @@ class _LinkedInAuthCodeState extends State<LinkedInAuthCode> {
 
     // Add a listener to on url changed
     _onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((String url) {
-      if (mounted && url.startsWith(widget.redirectUrl)) {
+      if (mounted &&
+          (url.startsWith(widget.redirectUrl) ||
+              (widget.frontendRedirectUrl != null &&
+                  url.startsWith(widget.frontendRedirectUrl)))) {
         flutterWebViewPlugin.stopLoading();
 
         AuthorizationCodeResponse authCode =

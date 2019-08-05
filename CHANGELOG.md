@@ -33,3 +33,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
  - Add possibility to add app bar into webview as parameter
 
+## v0.1.7 - 2019-08-5
+### Added new widget
+
+ - It can be case that URL route from redirect is redirecting to some other field
+ - in that case you can use property "frontendRedirectUrl" so that you still can use redirect URL
+ - of LinkedIn, but also handle if frontend redirect that link to some other site
+
+

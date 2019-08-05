@@ -136,8 +136,8 @@ class _LinkedInAuthorizationState extends State<LinkedInAuthorization> {
 
   @override
   Widget build(BuildContext context) => WebviewScaffold(
-    appBar: widget.appBar,
-    url: loginUrl,
-    hidden: true,
-  );
+        appBar: widget.appBar,
+        url: loginUrl,
+        hidden: true,
+      );
 }
