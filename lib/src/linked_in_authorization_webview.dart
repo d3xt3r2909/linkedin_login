@@ -17,6 +17,7 @@ class LinkedInAuthorization extends StatefulWidget {
   final String redirectUrl;
   final String clientId, clientSecret;
   final AppBar appBar;
+  final bool destroySession;
 
   // just in case that frontend in your team has changed redirect url
   final String frontendRedirectUrl;
@@ -27,6 +28,7 @@ class LinkedInAuthorization extends StatefulWidget {
     @required this.clientId,
     @required this.clientSecret,
     this.appBar,
+    this.destroySession,
     this.frontendRedirectUrl,
   });
 
@@ -143,6 +145,7 @@ class _LinkedInAuthorizationState extends State<LinkedInAuthorization> {
 
   @override
   Widget build(BuildContext context) => WebviewScaffold(
+        clearCookies: widget.destroySession,
         appBar: widget.appBar,
         url: loginUrl,
         hidden: true,

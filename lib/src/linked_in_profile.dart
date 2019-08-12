@@ -14,6 +14,7 @@ class LinkedInUserWidget extends StatefulWidget {
   final String redirectUrl;
   final String clientId, clientSecret;
   final AppBar appBar;
+  final bool destroySession;
 
   /// Client state parameter needs to be unique range of characters - random one
   LinkedInUserWidget({
@@ -22,6 +23,7 @@ class LinkedInUserWidget extends StatefulWidget {
     @required this.clientId,
     @required this.clientSecret,
     this.catchError,
+    this.destroySession = false,
     this.appBar,
   });
 
@@ -36,6 +38,7 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
 
   @override
   Widget build(BuildContext context) => LinkedInAuthorization(
+        destroySession: widget.destroySession,
         redirectUrl: widget.redirectUrl,
         clientSecret: widget.clientSecret,
         clientId: widget.clientId,

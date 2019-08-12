@@ -56,6 +56,10 @@ Or you can just fetch authorization code (clientSecret is not required in this w
             },
     ),
 ```
+
+If you want to logout user (to clear session from webview) all you need is to forward ```true``` value
+to property ```destroySession```  in ```LinkedInUserWidget``` or ```LinkedInAuthCodeWidget```. Please don't forget to destroy your data in your local storage for this user. Currently, LinkedIn doesn't have API point on OAuth 2 which will destroy access token.
+
 ## Properties that are available after call for LinkedInUserWidget
 
 ```dart

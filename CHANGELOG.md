@@ -45,4 +45,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
  - Expose frontendRedirectUrl field
 
+## v0.2.0 - 2019-08-12
+### Added new widget
+
+ - Possibility to log out user from linkedIn - from now you can change account as should
+
 

@@ -14,6 +14,7 @@ class LinkedInAuthCode extends StatefulWidget {
   final String redirectUrl;
   final String clientId;
   final AppBar appBar;
+  final bool destroySession;
 
   // just in case that frontend in your team has changed redirect url
   final String frontendRedirectUrl;
@@ -23,6 +24,7 @@ class LinkedInAuthCode extends StatefulWidget {
     @required this.redirectUrl,
     @required this.clientId,
     this.frontendRedirectUrl,
+    this.destroySession,
     this.appBar,
   });
 
@@ -80,5 +82,6 @@ class _LinkedInAuthCodeState extends State<LinkedInAuthCode> {
         appBar: widget.appBar,
         url: loginUrl,
         hidden: true,
+        clearCookies: widget.destroySession,
       );
 }
