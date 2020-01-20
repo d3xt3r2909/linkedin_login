@@ -49,5 +49,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added new widget
 
  - Possibility to log out user from linkedIn - from now you can change account as should
+ 
+## v1.0.0 - 2020-01-20
+### Support for web
 
+ - Added support for web
+ - Update dependency versions
 
