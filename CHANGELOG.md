@@ -60,5 +60,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Change error parsing issue
 
  - [500 <=> 401 issue](https://github.com/d3xt3r2909/linkedin_login/issues/12)
- - 
 
+## v1.1.1 - 2020-01-22
+### Version update
+
+ - Version updated
