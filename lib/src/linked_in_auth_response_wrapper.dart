@@ -16,6 +16,13 @@ class AuthorizationCodeResponse {
     this.error,
     this.state,
   });
+
+  set errorObject(LinkedInErrorObject error) {
+    this.error = error;
+    this.accessToken = null;
+    this.code = null;
+    this.state = null;
+  }
 }
 
 /// When you get authorization code, you need to exchange to get access token
@@ -30,6 +37,8 @@ class LinkedInTokenObject {
     this.expiresIn,
     this.error,
   });
+
+  get isSuccess => error == null || error.description.isEmpty;
 }
 
 /// This class contains error information

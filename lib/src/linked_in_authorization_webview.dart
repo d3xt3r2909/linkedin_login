@@ -84,6 +84,7 @@ class _LinkedInAuthorizationState extends State<LinkedInAuthorization> {
   /// Method that will retrieve authorization code
   /// After auth code is received you can call API service to get access token
   /// from linkedIn
+  /// If error happens it will be saved into [error] property of result object
   Future<AuthorizationCodeResponse> _getAccessToken(
       {AuthorizationCodeResponse authorizationCode}) async {
     // get access token based on code
@@ -91,16 +92,10 @@ class _LinkedInAuthorizationState extends State<LinkedInAuthorization> {
       final LinkedInTokenObject tokenObject =
           await _getUserProfile(authorizationCode);
 
-      if (tokenObject.error == null || tokenObject.error.description.isEmpty) {
+      if (tokenObject.isSuccess) {
         authorizationCode.accessToken = tokenObject;
       } else {
-        authorizationCode.error = LinkedInErrorObject(
-          statusCode: HttpStatus.unauthorized,
-          description: 'Failed to get user token',
-        );
-        authorizationCode.accessToken = null;
-        authorizationCode.code = null;
-        authorizationCode.state = null;
+        authorizationCode.errorObject = tokenObject.error;
       }
     }
 
