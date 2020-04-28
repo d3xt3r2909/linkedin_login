@@ -65,3 +65,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Version update
 
  - Version updated
+ 
+## v1.1.2 - 2020-04-28
+### Version update
+
+ - Fix issue with fetching locals [#12](https://github.com/d3xt3r2909/linkedin_login/issues/12). Thanks to [@JavierDuarteC](https://github.com/JavierDuarteC)

@@ -1,6 +1,6 @@
 name: linkedin_login
 description: Library for login with LinkedIn OAuth V2 service. This library helps you to implement authorization with LinkedIn OAuth API's.
-version: 1.1.1
+version: 1.1.2
 homepage: https://github.com/d3xt3r2909/linkedin_login
 repository: https://github.com/d3xt3r2909/linkedin_login
 documentation:
