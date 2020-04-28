@@ -2,13 +2,12 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/76c714e1e1194d0e9d8652f332d3fd5d)](https://app.codacy.com/manual/d3xt3r2909/linkedin_login?utm_source=github.com&utm_medium=referral&utm_content=d3xt3r2909/linkedin_login&utm_campaign=Badge_Grade_Dashboard)
 
-- A Flutter library for  [LinkedIn](https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin?context=linkedin/consumer/context) OAuth 2.0 APIs .
-
-- This library is using new way of authorization on [LinkedIn](https://engineering.linkedin.com/blog/2018/12/developer-program-updates)
+-   A Flutter library for  [LinkedIn](https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin?context=linkedin/consumer/context) OAuth 2.0 APIs .
+-   This library is using new way of authorization on [LinkedIn](https://engineering.linkedin.com/blog/2018/12/developer-program-updates)
 
 ## Installation
 
-- See the [installation instructions on pub](https://pub.dartlang.org/packages/linkedin_login#-installing-tab-)
+-   See the [installation instructions on pub](https://pub.dartlang.org/packages/linkedin_login#-installing-tab-)
 
 ## Important 
 
@@ -27,7 +26,7 @@ To get these values you need to create App on the [LinkedIn](https://www.linkedi
 You can see full example under this [project](https://github.com/d3xt3r2909/linkedin_login/tree/master/example).
 
 Call LinkedIn authorization and get user object:
-```dart
+    ```dart
     LinkedInUserWidget(
        redirectUrl: redirectUrl,
        clientId: clientId,
@@ -44,7 +43,7 @@ Call LinkedIn authorization and get user object:
              ' Error code: ${error.statusCode.toString()}');
         },
     )
-```
+    ```
 
 Or you can just fetch authorization code (clientSecret is not required in this widget):
 ```dart
