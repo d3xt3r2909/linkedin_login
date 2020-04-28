@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:linkedin_login/src/linked_in_auth_response_wrapper.dart';
 
 class LinkedInUserModel {
@@ -68,7 +69,7 @@ class _LinkedInLocalInfo {
 
   factory _LinkedInLocalInfo.fromJson(Map<String, dynamic> json) =>
       _LinkedInLocalInfo(
-        label: json.values.toList()[0], // possible error
+        label: getFirstInListFromJson(json),
       );
 
   static _LinkedInLocalInfo parseUser(String responseBody) {
@@ -76,6 +77,22 @@ class _LinkedInLocalInfo {
 
     return _LinkedInLocalInfo.fromJson(parsed);
   }
+}
+
+/// Helper function to parse first element from json
+/// If there is no element, or element is not string it will return you null
+@visibleForTesting
+String getFirstInListFromJson(Map<String, dynamic> json) {
+  final jsonValue = json?.values;
+
+  if (jsonValue != null && jsonValue.isNotEmpty) {
+    final jsonLocalization = jsonValue.toList().first;
+    if (jsonLocalization is String) {
+      return jsonLocalization;
+    }
+  }
+
+  return null;
 }
 
 class _LinkedInPreferredLocal {
