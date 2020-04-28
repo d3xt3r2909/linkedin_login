@@ -68,7 +68,7 @@ class _LinkedInLocalInfo {
 
   factory _LinkedInLocalInfo.fromJson(Map<String, dynamic> json) =>
       _LinkedInLocalInfo(
-        label: json['en_US'], // possible error
+        label: json.values.toList()[0], // possible error
       );
 
   static _LinkedInLocalInfo parseUser(String responseBody) {
