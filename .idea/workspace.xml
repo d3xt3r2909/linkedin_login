@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="43e4a147-a5e7-4e77-8118-2843b2dca34c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -21,54 +20,6 @@
         <option value="Dart File" />
       </list>
     </option>
-  </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>urlLinkedInAccessToken</find>
-      <find>web</find>
-      <find>linked_in_auth_respon</find>
-      <find>token</find>
-      <find>aut</find>
-      <find>linkedin_login</find>
-      <find>AuthCodeObject</find>
-      <find>redirectUrl</find>
-      <find>https://app.carde.de</find>
-      <find>pop</find>
-      <find>LinkedInAuthCodeWidget</find>
-      <find>webview</find>
-      <find>hidden</find>
-      <find>WebviewScaffold</find>
-      <find>fullscreenDialog</find>
-      <find>clients</find>
-      <find>SECRET</find>
-      <find>serverRedirectUrl</find>
-      <find>LinkedInAuthCode(</find>
-      <find>package:</find>
-      <find>package</find>
-      <find>_getUserProfile</find>
-      <find>_getAccessToken</find>
-      <find>_LinkedInAuthCodeState</find>
-      <find>result.err</find>
-      <find>LinkedInUserWidget(</find>
-      <find>LinkedInUserWidget</find>
-      <find>.descr</find>
-      <find>LinkedInAuthorization</find>
-      <find>LinkedInAuthCode</find>
-    </findStrings>
-    <dirStrings>
-      <dir>C:\Users\ndelic\StudioProjects\flutterLib\linkedin_login</dir>
-      <dir>C:\Users\nihad\AndroidStudioProjects\flutter\LinkedInLogin\linkedin_login</dir>
-      <dir>C:\Users\Nadir\AndroidStudioProjects\flutter\linkedin_login\lib</dir>
-      <dir>C:\Users\Nadir\AndroidStudioProjects\flutter\linkedin_login</dir>
-      <dir>C:\Users\nihad\AndroidStudioProjects\flutter\linkedin_login</dir>
-      <dir>C:\Users\nihad\AndroidStudioProjects\flutter\linkedin_login\example</dir>
-      <dir>C:\Users\nihad\AndroidStudioProjects\flutter\linkedin_login\lib</dir>
-      <dir>C:\Users\nihad\AndroidStudioProjects\flutter\linkedin_login\lib\src</dir>
-      <dir>$PROJECT_DIR$</dir>
-      <dir>$PROJECT_DIR$/lib/src</dir>
-      <dir>$PROJECT_DIR$/lib</dir>
-      <dir>$PROJECT_DIR$/example</dir>
-    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
