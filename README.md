@@ -1,6 +1,6 @@
 # linkedin_login
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/76c714e1e1194d0e9d8652f332d3fd5d)](https://app.codacy.com/manual/d3xt3r2909/linkedin_login?utm_source=github.com&utm_medium=referral&utm_content=d3xt3r2909/linkedin_login&utm_campaign=Badge_Grade_Dashboard)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/76c714e1e1194d0e9d8652f332d3fd5d)](https://app.codacy.com/manual/d3xt3r2909/linkedin_login?utm_source=github.com&utm_medium=referral&utm_content=d3xt3r2909/linkedin_login&utm_campaign=Badge_Grade_Dashboard) [![Codemagic build status](https://api.codemagic.io/apps/5ea80ba7ab38b51337344705/5ea80ba7ab38b51337344704/status_badge.svg)](https://codemagic.io/apps/5ea80ba7ab38b51337344705/5ea80ba7ab38b51337344704/latest_build)
 
 -   A Flutter library for  [LinkedIn](https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin?context=linkedin/consumer/context) OAuth 2.0 APIs .
 -   This library is using new way of authorization on [LinkedIn](https://engineering.linkedin.com/blog/2018/12/developer-program-updates)
@@ -46,7 +46,7 @@ Call LinkedIn authorization and get user object:
     ```
 
 Or you can just fetch authorization code (clientSecret is not required in this widget):
-```dart
+    ```dart
     LinkedInAuthCodeWidget(
         redirectUrl: redirectUrl,
         clientId: clientId,
@@ -56,29 +56,29 @@ Or you can just fetch authorization code (clientSecret is not required in this w
                 print('State: ${response.state}');
             },
     ),
-```
+    ```
 
 If you want to logout user (to clear session from webview) all you need is to forward ```true``` value
 to property ```destroySession```  in ```LinkedInUserWidget``` or ```LinkedInAuthCodeWidget```. Please don't forget to destroy your data in your local storage for this user. Currently, LinkedIn doesn't have API point on OAuth 2 which will destroy access token.
 
 ## Properties that are available after call for LinkedInUserWidget
 
-```dart
-  String firstName;
-  String lastName;
-  String accessToken;
-  int expiresIn;
-  String profilePicture;
-  String email;
-  String userId; (from version 0.1.)
-```
+    ```dart
+    String firstName;
+    String lastName;
+    String accessToken;
+    int expiresIn;
+    String profilePicture;
+    String email;
+    String userId; (from version 0.1.)
+    ```
 
 ## Properties that are available after call for LinkedInAuthCodeWidget
 
-```dart
-  String code; // authorization code
-  String state;
-```
+    ```dart
+    String code; // authorization code
+    String state;
+    ```
 
 ## Widgets
 
