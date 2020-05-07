@@ -13,7 +13,7 @@ class LinkedInUserWidget extends StatefulWidget {
   final Function catchError;
   final String redirectUrl;
   final String clientId, clientSecret;
-  final AppBar appBar;
+  final PreferredSizeWidget appBar;
   final bool destroySession;
 
   /// Client state parameter needs to be unique range of characters - random one
