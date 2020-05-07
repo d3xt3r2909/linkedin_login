@@ -16,7 +16,7 @@ class LinkedInAuthorization extends StatefulWidget {
   final Function onCallBack;
   final String redirectUrl;
   final String clientId, clientSecret;
-  final AppBar appBar;
+  final PreferredSizeWidget appBar;
   final bool destroySession;
 
   // just in case that frontend in your team has changed redirect url
