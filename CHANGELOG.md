@@ -70,3 +70,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fix [#12](https://github.com/d3xt3r2909/linkedin_login/issues/12)
 
 -   Fix issue with fetching locals [#12](https://github.com/d3xt3r2909/linkedin_login/issues/12). Thanks to [@JavierDuarteC](https://github.com/JavierDuarteC)
+
+## v1.1.3 - 2020-05-09
+### Resolve [#23](https://github.com/d3xt3r2909/linkedin_login/issues/23)
+
+-   Replace AppBar with PreferredSizeWidget. Thanks for contribution [@ricardonior29](https://github.com/ricardonior29)
