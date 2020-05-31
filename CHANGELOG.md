@@ -75,3 +75,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Resolve [#23](https://github.com/d3xt3r2909/linkedin_login/issues/23)
 
 -   Replace AppBar with PreferredSizeWidget. Thanks for contribution [@ricardonior29](https://github.com/ricardonior29)
+
+## v1.1.5 - 2020-05-31
+### Version updated to v1.1.5
+
+-   Replace AppBar with PreferredSizeWidget. Thanks for contribution [@ricardonior29](https://github.com/ricardonior29)
+-   Fix lint messages
+-   Increase Dart SDK version
