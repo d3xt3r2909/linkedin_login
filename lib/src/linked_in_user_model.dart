@@ -7,7 +7,7 @@ class LinkedInUserModel {
   final _LinkedInPersonalInfo firstName, lastName;
   final _LinkedInProfilePicture profilePicture;
   final String userId;
-  LinkedInProfileEmail email; // need to be implemented
+  LinkedInProfileEmail email;
   LinkedInTokenObject token;
 
   LinkedInUserModel({
@@ -53,12 +53,6 @@ class _LinkedInPersonalInfo {
             _LinkedInPreferredLocal.fromJson(json['preferredLocale']),
       );
 
-  static _LinkedInPersonalInfo parseUser(String responseBody) {
-    final parsed = json.decode(responseBody).cast<String, dynamic>();
-
-    return _LinkedInPersonalInfo.fromJson(parsed);
-  }
-
   _LinkedInPersonalInfo({this.localized, this.preferredLocal});
 }
 
@@ -71,12 +65,6 @@ class _LinkedInLocalInfo {
       _LinkedInLocalInfo(
         label: getFirstInListFromJson(json),
       );
-
-  static _LinkedInLocalInfo parseUser(String responseBody) {
-    final parsed = json.decode(responseBody).cast<String, dynamic>();
-
-    return _LinkedInLocalInfo.fromJson(parsed);
-  }
 }
 
 /// Helper function to parse first element from json
@@ -106,12 +94,6 @@ class _LinkedInPreferredLocal {
         country: json['country'],
         language: json['language'],
       );
-
-  static _LinkedInPreferredLocal parseUser(String responseBody) {
-    final parsed = json.decode(responseBody).cast<String, dynamic>();
-
-    return _LinkedInPreferredLocal.fromJson(parsed);
-  }
 }
 
 class _LinkedInProfilePicture {
@@ -123,12 +105,6 @@ class _LinkedInProfilePicture {
       _LinkedInProfilePicture(
         displayImage: json['displayImage'],
       );
-
-  static _LinkedInProfilePicture parseUser(String responseBody) {
-    final parsed = json.decode(responseBody).cast<String, dynamic>();
-
-    return _LinkedInProfilePicture.fromJson(parsed);
-  }
 }
 
 class LinkedInProfileEmail {
@@ -163,12 +139,6 @@ class _LinkedInDeepEmail {
         handle: json['handle'],
         handleDeep: _LinkedInDeepEmailHandle.fromJson(json['handle~']),
       );
-
-  static _LinkedInDeepEmail parseUser(String responseBody) {
-    final parsed = json.decode(responseBody).cast<String, dynamic>();
-
-    return _LinkedInDeepEmail.fromJson(parsed);
-  }
 }
 
 class _LinkedInDeepEmailHandle {
@@ -180,10 +150,4 @@ class _LinkedInDeepEmailHandle {
       _LinkedInDeepEmailHandle(
         emailAddress: json['emailAddress'],
       );
-
-  static _LinkedInDeepEmailHandle parseUser(String responseBody) {
-    final parsed = json.decode(responseBody).cast<String, dynamic>();
-
-    return _LinkedInDeepEmailHandle.fromJson(parsed);
-  }
 }
