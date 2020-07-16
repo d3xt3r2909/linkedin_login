@@ -117,13 +117,99 @@ class _LinkedInPreferredLocal {
 /// Helper children subclass
 class _LinkedInProfilePicture {
   final String displayImage;
+  final _DisplayImage displayImageContent;
 
-  _LinkedInProfilePicture({this.displayImage});
+  _LinkedInProfilePicture({this.displayImage, this.displayImageContent});
 
   /// Convert response from API to [_LinkedInProfilePicture] object
   factory _LinkedInProfilePicture.fromJson(Map<String, dynamic> json) =>
       _LinkedInProfilePicture(
         displayImage: json['displayImage'],
+        displayImageContent: _DisplayImage.fromJson(json['displayImage~']),
+      );
+}
+
+/// Will contain info about image if it's included into response
+class _DisplayImage {
+  final _ImagePagination paging;
+  final List<_ImageItem> elements;
+
+  _DisplayImage({this.paging, this.elements});
+
+  /// Convert response from API to [_LinkedInProfilePicture] object
+  factory _DisplayImage.fromJson(Map<String, dynamic> json) => _DisplayImage(
+        paging: _ImagePagination.fromJson(json['paging']),
+        elements: (json['elements'] != null && '${json['elements']}' != '[]')
+            ? (json['elements'] as List)
+                .map((i) => _ImageItem.fromJson(i))
+                .toList()
+            : [],
+      );
+}
+
+/// Contain URL and other information about one user image
+class _ImageItem {
+  final String artifact;
+  final String authorizationMethod;
+  final List<_ImageIdentifierItem> identifiers;
+
+  _ImageItem({this.artifact, this.authorizationMethod, this.identifiers});
+
+  /// Convert response from API to [_LinkedInProfilePicture] object
+  factory _ImageItem.fromJson(Map<String, dynamic> json) => _ImageItem(
+        artifact: json['artifact'],
+        authorizationMethod: json['authorizationMethod'],
+        identifiers:
+            (json['identifiers'] != null && '${json['identifiers']}' != '[]')
+                ? (json['identifiers'] as List)
+                    .map((i) => _ImageIdentifierItem.fromJson(i))
+                    .toList()
+                : [],
+      );
+}
+
+/// Main type of image, will contain URL for image related to user
+class _ImageIdentifierItem {
+  final String identifier;
+  final int index;
+  final String mediaType;
+  final String file;
+  final String identifierType;
+  final int identifierExpiresInSeconds;
+
+  _ImageIdentifierItem({
+    this.identifier,
+    this.index,
+    this.mediaType,
+    this.file,
+    this.identifierType,
+    this.identifierExpiresInSeconds,
+  });
+
+  /// Convert response from API to [_ImageIdentifierItem] object
+  factory _ImageIdentifierItem.fromJson(Map<String, dynamic> json) =>
+      _ImageIdentifierItem(
+        identifier: json['identifier'],
+        index: json['index'],
+        mediaType: json['mediaType'],
+        file: json['file'],
+        identifierType: json['identifierType'],
+        identifierExpiresInSeconds: json['identifierExpiresInSeconds'],
+      );
+}
+
+/// Class which is containing info about pagination for images
+class _ImagePagination {
+  final int count;
+  final int start;
+
+  _ImagePagination({this.count, this.start});
+
+  /// Convert response from API to [_ImagePagination] object
+  factory _ImagePagination.fromJson(Map<String, dynamic> json) =>
+      _ImagePagination(
+        count: json['count'],
+        start: json['start'],
       );
 }
 

@@ -74,6 +74,23 @@ to property ```destroySession```  in ```LinkedInUserWidget``` or ```LinkedInAuth
   String email;
   String userId; (from version 0.1.)
 ```
+## Projection - which properties of user account will be accessible via LinkedIn API
+### Available from version 1.2.x
+
+You can control projection, by providing array of strings to projection property of widget 
+`LinkedInUserWidget`. By default these properties are included: 
+
+```dart
+  static const String id = "id";
+  static const String localizedLastName = "localizedLastName";
+  static const String firstName = "firstName";
+  static const String lastName = "lastName";
+  static const String localizedFirstName = "localizedFirstName";
+```
+
+You can include also `profilePicture` to get URL of user profile image. If you change this property
+to some custom value you will override default values, and you need to add every of these manually
+to array. For more info see example project.
 
 ## Properties that are available after call for LinkedInAuthCodeWidget
 
