@@ -78,17 +78,27 @@ class _LinkedInProfileExamplePageState
                       redirectUrl: redirectUrl,
                       clientId: clientId,
                       clientSecret: clientSecret,
+                      projection:  [
+                        ProjectionParameters.id,
+                        ProjectionParameters.localizedFirstName,
+                        ProjectionParameters.localizedLastName,
+                        ProjectionParameters.firstName,
+                        ProjectionParameters.lastName,
+                        ProjectionParameters.profilePicture,
+                      ],
                       onGetUserProfile: (LinkedInUserModel linkedInUser) {
                         print('Access token ${linkedInUser.token.accessToken}');
 
                         print('User id: ${linkedInUser.userId}');
 
                         user = UserObject(
-                          firstName: linkedInUser.firstName.localized.label,
-                          lastName: linkedInUser.lastName.localized.label,
+                          firstName: linkedInUser?.firstName?.localized?.label,
+                          lastName: linkedInUser?.lastName?.localized?.label,
                           email: linkedInUser
-                              .email.elements[0].handleDeep.emailAddress,
+                              ?.email?.elements[0]?.handleDeep?.emailAddress,
+                          profileImageUrl: linkedInUser?.profilePicture?.displayImageContent?.elements[0]?.identifiers[0]?.identifier,
                         );
+
                         setState(() {
                           logoutUser = false;
                         });
@@ -123,6 +133,7 @@ class _LinkedInProfileExamplePageState
                   Text('First: ${user?.firstName} '),
                   Text('Last: ${user?.lastName} '),
                   Text('Email: ${user?.email}'),
+                  Text('Profile image: ${user?.profileImageUrl}'),
                 ],
               ),
             ),
@@ -213,7 +224,7 @@ class AuthCodeObject {
 }
 
 class UserObject {
-  String firstName, lastName, email;
+  String firstName, lastName, email, profileImageUrl;
 
-  UserObject({this.firstName, this.lastName, this.email});
+  UserObject({this.firstName, this.lastName, this.email, this.profileImageUrl});
 }

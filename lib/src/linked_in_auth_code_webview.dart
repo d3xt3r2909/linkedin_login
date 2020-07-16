@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:linkedin_login/helper/global_variables.dart';
-import 'package:linkedin_login/helper/helper_methods.dart';
+import 'package:linkedin_login/helper/helper.dart';
 import 'package:linkedin_login/src/linked_in_auth_response_wrapper.dart';
 import 'package:uuid/uuid.dart';
 

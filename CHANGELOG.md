@@ -87,3 +87,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Version updated to v1.1.6
 
 - Update API documentation
+
+## 1.2.0 - 2020-07-16
+### Add possibility to control projection of LinkedIn API
+
+- Add property `projection` to a LinkedInUserWidget widget 

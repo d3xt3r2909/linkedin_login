@@ -10,15 +10,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43e4a147-a5e7-4e77-8118-2843b2dca34c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/constants.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/helper/global_variables.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/helper/global_variables.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/helper/helper_methods.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/helper/helper_methods.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner.xcodeproj/project.pbxproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/ios/Runner.xcworkspace/contents.xcworkspacedata" beforeDir="false" afterPath="$PROJECT_DIR$/example/ios/Runner.xcworkspace/contents.xcworkspacedata" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/example/lib/main.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/helper/helper_methods.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/helper/helper.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/linkedin_login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/linkedin_login.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/linked_in_auth_code_webview.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/linked_in_auth_code_webview.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/linked_in_auth_response_wrapper.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/linked_in_auth_response_wrapper.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/src/linked_in_buttons.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/linked_in_buttons.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/linked_in_authorization_webview.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/linked_in_authorization_webview.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/linked_in_profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/linked_in_profile.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/src/linked_in_user_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/linked_in_user_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.lock" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -29,7 +34,7 @@
   <component name="DefaultGradleProjectSettings">
     <option name="isMigrated" value="true" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="Fake_SE_API_R" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="R38MA099L6V" />
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -179,14 +184,39 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="Dart">
-          <url>file://$PROJECT_DIR$/lib/src/linked_in_authorization_webview.dart</url>
-          <line>76</line>
-          <option name="timeStamp" value="6" />
+          <url>file://$PROJECT_DIR$/example/lib/main.dart</url>
+          <line>105</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="Dart">
-          <url>file://$PROJECT_DIR$/lib/src/linked_in_authorization_webview.dart</url>
-          <line>78</line>
-          <option name="timeStamp" value="7" />
+          <url>file://$PROJECT_DIR$/lib/src/linked_in_user_model.dart</url>
+          <line>124</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/src/linked_in_profile.dart</url>
+          <line>98</line>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/example/lib/main.dart</url>
+          <line>94</line>
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/src/linked_in_profile.dart</url>
+          <line>62</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/src/linked_in_profile.dart</url>
+          <line>61</line>
+          <option name="timeStamp" value="36" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="Dart">
+          <url>file://$PROJECT_DIR$/lib/src/linked_in_profile.dart</url>
+          <line>83</line>
+          <option name="timeStamp" value="37" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
