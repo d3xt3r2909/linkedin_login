@@ -17,6 +17,8 @@ class AuthorizationCodeResponse {
     this.state,
   });
 
+  /// Setter for error object, store error object information inside [error]
+  /// property
   set errorObject(LinkedInErrorObject error) {
     this.error = error;
     this.accessToken = null;
@@ -38,6 +40,8 @@ class LinkedInTokenObject {
     this.error,
   });
 
+  /// If there is not error at all, [isSuccess] getter will return a true value
+  /// This means, that you should get correct response
   get isSuccess => error == null || error.description.isEmpty;
 }
 

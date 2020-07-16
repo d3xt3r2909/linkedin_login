@@ -11,6 +11,8 @@ class LinkedInButtonStandardWidget extends StatelessWidget {
   final Color buttonColor;
   final EdgeInsets textPadding;
 
+  /// Create button with some default values, which you can of course change
+  /// whenever you want
   LinkedInButtonStandardWidget({
     @required this.onTap,
     this.iconHeight = 30.0,

@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:linkedin_login/src/linked_in_auth_response_wrapper.dart';
 
+/// Method will parse redirection URL to get authorization code from
+/// query parameters. If there is an error property inside
+/// [AuthorizationCodeResponse] object will be populate
 AuthorizationCodeResponse getAuthorizationCode(
     {String redirectUrl, String clientState}) {
   AuthorizationCodeResponse response;

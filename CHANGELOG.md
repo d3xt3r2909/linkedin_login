@@ -82,3 +82,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Replace AppBar with PreferredSizeWidget. Thanks for contribution [@ricardonior29](https://github.com/ricardonior29)
 -   Fix lint messages
 -   Increase Dart SDK version
+
+## 1.1.6 - 2020-07-16
+### Version updated to v1.1.6
+
+- Update API documentation

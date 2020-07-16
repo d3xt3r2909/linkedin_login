@@ -19,6 +19,12 @@ class LinkedInAuthCode extends StatefulWidget {
   // just in case that frontend in your team has changed redirect url
   final String frontendRedirectUrl;
 
+  /// [onCallBack] what to do when you receive response from LinkedIn API
+  /// [redirectUrl] that you setup it on LinkedIn developer portal
+  /// [clientId] value from LinkedIn developer portal
+  /// [frontendRedirectUrl] if you want frontend redirection
+  /// [destroySession] if you want to destroy a session
+  /// [appBar] custom app bar widget
   LinkedInAuthCode({
     @required this.onCallBack,
     @required this.redirectUrl,
@@ -32,6 +38,7 @@ class LinkedInAuthCode extends StatefulWidget {
   State createState() => _LinkedInAuthCodeState();
 }
 
+/// Handle redirection with help of a FlutterWebviewPlugin
 class _LinkedInAuthCodeState extends State<LinkedInAuthCode> {
   final flutterWebViewPlugin = FlutterWebviewPlugin();
 

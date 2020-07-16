@@ -31,6 +31,8 @@ class LinkedInUserWidget extends StatefulWidget {
   State createState() => _LinkedInUserWidgetState();
 }
 
+/// Class [_LinkedInUserWidgetState] is handling changes after user is singed in
+/// which will have as result user profile on the end
 class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
   final urlLinkedInUserProfile = 'https://api.linkedin.com/v2/me';
   final urlLinkedInEmailAddress =
