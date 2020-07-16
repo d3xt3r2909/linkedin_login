@@ -91,4 +91,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 1.2.0 - 2020-07-16
 ### Add possibility to control projection of LinkedIn API
 
-- Add property `projection` to a LinkedInUserWidget widget 
+- Add property `projection` to a LinkedInUserWidget widget
+
+## 1.2.1 - 2020-07-16
+### formatted according to dartfmt
+
+- formatted according to dartfmt

@@ -34,8 +34,7 @@ class LinkedInUserWidget extends StatefulWidget {
       ProjectionParameters.firstName,
       ProjectionParameters.lastName,
     ],
-  })
-      : assert(onGetUserProfile != null),
+  })  : assert(onGetUserProfile != null),
         assert(redirectUrl != null),
         assert(clientId != null),
         assert(clientSecret != null),
@@ -50,8 +49,7 @@ class LinkedInUserWidget extends StatefulWidget {
 /// Class [_LinkedInUserWidgetState] is handling changes after user is singed in
 /// which will have as result user profile on the end
 class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
-  String urlLinkedInUserProfile =
-      'https://api.linkedin.com/v2/me';
+  String urlLinkedInUserProfile = 'https://api.linkedin.com/v2/me';
   final urlLinkedInEmailAddress =
       'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))';
 
@@ -59,13 +57,12 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
   void initState() {
     super.initState();
 
-    String projection  = 'projection=(${widget.projection.join(",")})';
+    String projection = 'projection=(${widget.projection.join(",")})';
     urlLinkedInUserProfile = '$urlLinkedInUserProfile?$projection';
   }
 
   @override
-  Widget build(BuildContext context) =>
-      LinkedInAuthorization(
+  Widget build(BuildContext context) => LinkedInAuthorization(
         destroySession: widget.destroySession,
         redirectUrl: widget.redirectUrl,
         clientSecret: widget.clientSecret,
@@ -78,7 +75,7 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
               headers: {
                 HttpHeaders.acceptHeader: 'application/json',
                 HttpHeaders.authorizationHeader:
-                'Bearer ${result.accessToken.accessToken}'
+                    'Bearer ${result.accessToken.accessToken}'
               },
             ).then((basicProfile) {
               get(
@@ -86,12 +83,12 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
                 headers: {
                   HttpHeaders.acceptHeader: 'application/json',
                   HttpHeaders.authorizationHeader:
-                  'Bearer ${result.accessToken.accessToken}'
+                      'Bearer ${result.accessToken.accessToken}'
                 },
               ).then((emailProfile) {
                 // Get basic user profile
                 final LinkedInUserModel linkedInUser =
-                LinkedInUserModel.fromJson(json.decode(basicProfile.body));
+                    LinkedInUserModel.fromJson(json.decode(basicProfile.body));
                 // Get email for current user profile
                 linkedInUser.email = LinkedInProfileEmail.fromJson(
                   json.decode(emailProfile.body),

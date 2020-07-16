@@ -5,5 +5,6 @@ class ProjectionParameters {
   static const String firstName = "firstName";
   static const String lastName = "lastName";
   static const String localizedFirstName = "localizedFirstName";
-  static const String profilePicture = "profilePicture(displayImage~:playableStreams)";
+  static const String profilePicture =
+      "profilePicture(displayImage~:playableStreams)";
 }
