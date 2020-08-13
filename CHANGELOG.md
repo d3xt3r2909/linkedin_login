@@ -97,3 +97,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### formatted according to dartfmt
 
 - formatted according to dartfmt
+
+## 1.2.2 - 2020-08-13
+### remove assert check for appBar widget
+
+- remove assert check for appBar widget, you can send null value

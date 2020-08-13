@@ -39,7 +39,6 @@ class LinkedInUserWidget extends StatefulWidget {
         assert(clientId != null),
         assert(clientSecret != null),
         assert(destroySession != null),
-        assert(appBar != null),
         assert(projection != null);
 
   @override
