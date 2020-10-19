@@ -20,6 +20,12 @@
       <excludeFolder url="file://$MODULE_DIR$/example/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/example/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/example/ios/.symlinks/plugins/flutter_webview_plugin/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/example/ios/.symlinks/plugins/flutter_webview_plugin/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/example/ios/.symlinks/plugins/flutter_webview_plugin/build" />
+      <excludeFolder url="file://$MODULE_DIR$/example/ios/.symlinks/plugins/flutter_webview_plugin/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/example/ios/.symlinks/plugins/flutter_webview_plugin/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/example/ios/.symlinks/plugins/flutter_webview_plugin/example/build" />
       <excludeFolder url="file://$MODULE_DIR$/example/ios/Flutter/App.framework/flutter_assets/packages" />
     </content>
     <orderEntry type="jdk" jdkName="Android API 28 Platform" jdkType="Android SDK" />
