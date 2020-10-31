@@ -10,7 +10,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="43e4a147-a5e7-4e77-8118-2843b2dca34c" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/example/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/example/pubspec.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/wrappers/authorization_code_response.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/wrappers/linked_in_error_object.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/src/wrappers/linked_in_token_object.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/helper/global_variables.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/utils/global_variables.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/helper/helper.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/utils/helper.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/linkedin_login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/linkedin_login.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/constants.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/utils/constants.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/linked_in_auth_code.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/server/linked_in_auth_code_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/linked_in_auth_code_webview.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/server/linked_in_auth_code_webview.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/linked_in_auth_response_wrapper.dart" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/linked_in_authorization_webview.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/client/linked_in_authorization_webview.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/linked_in_buttons.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/utils/widgets/linked_in_buttons.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/linked_in_profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/client/linked_in_user_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/src/linked_in_user_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/src/model/linked_in_user_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/unit/src/linked_in_user_model_test.dart" beforeDir="false" afterPath="$PROJECT_DIR$/test/unit/src/linked_in_user_model_test.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,9 +63,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\ndelic\StudioProjects\flutterLib\linkedin_login\lib\src" />
-      <recent name="C:\Users\ndelic\StudioProjects\flutterLib\linkedin_login\images" />
-      <recent name="C:\Users\ndelic\StudioProjects\flutterLib\linkedin_login\assets" />
+      <recent name="$PROJECT_DIR$/lib/src/client" />
+      <recent name="$PROJECT_DIR$/lib/src" />
+      <recent name="$PROJECT_DIR$/lib/src/model" />
+      <recent name="$PROJECT_DIR$/lib/src/utils/widgets" />
+      <recent name="$PROJECT_DIR$/lib/src/utils" />
     </key>
   </component>
   <component name="RunManager">
@@ -160,33 +177,38 @@
     <option name="LAST_COMMIT_MESSAGE" value="Fix issues for v3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="100" y="123" width="1198" height="829" key="DiffContextDialog" timestamp="1604133394976">
+    <state x="312" y="447" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog" timestamp="1604134419409">
       <screen x="0" y="23" width="1792" height="1029" />
     </state>
-    <state x="100" y="123" width="1198" height="829" key="DiffContextDialog/0.23.1792.1029@0.23.1792.1029" timestamp="1604133394976" />
-    <state width="1336" height="330" key="GridCell.Tab.0.bottom" timestamp="1604131475525">
+    <state x="312" y="447" key="#com.intellij.refactoring.move.MoveHandler.SelectRefactoringDialog/0.23.1792.1029@0.23.1792.1029" timestamp="1604134419409" />
+    <state x="6" y="29" width="1754" height="1017" maximized="true" key="DiffContextDialog" timestamp="1604135284071">
       <screen x="0" y="23" width="1792" height="1029" />
     </state>
-    <state width="1336" height="330" key="GridCell.Tab.0.bottom/0.23.1792.1029@0.23.1792.1029" timestamp="1604131475525" />
+    <state x="6" y="29" width="1754" height="1017" maximized="true" key="DiffContextDialog/0.23.1792.1029@0.23.1792.1029" timestamp="1604135284071" />
+    <state width="673" height="330" key="GridCell.Tab.0.bottom" timestamp="1604136004578">
+      <screen x="0" y="23" width="1792" height="1029" />
+    </state>
+    <state width="673" height="330" key="GridCell.Tab.0.bottom/0.23.1792.1029@0.23.1792.1029" timestamp="1604136004578" />
     <state width="1730" height="469" key="GridCell.Tab.0.bottom/0.23.1792.1033@0.23.1792.1033" timestamp="1603117703886" />
-    <state width="1336" height="330" key="GridCell.Tab.0.center" timestamp="1604131475524">
+    <state width="673" height="330" key="GridCell.Tab.0.center" timestamp="1604136004578">
       <screen x="0" y="23" width="1792" height="1029" />
     </state>
-    <state width="1336" height="330" key="GridCell.Tab.0.center/0.23.1792.1029@0.23.1792.1029" timestamp="1604131475524" />
+    <state width="673" height="330" key="GridCell.Tab.0.center/0.23.1792.1029@0.23.1792.1029" timestamp="1604136004578" />
     <state width="1730" height="469" key="GridCell.Tab.0.center/0.23.1792.1033@0.23.1792.1033" timestamp="1603117703885" />
-    <state width="1336" height="330" key="GridCell.Tab.0.left" timestamp="1604131475524">
+    <state width="673" height="330" key="GridCell.Tab.0.left" timestamp="1604136004578">
       <screen x="0" y="23" width="1792" height="1029" />
     </state>
-    <state width="1336" height="330" key="GridCell.Tab.0.left/0.23.1792.1029@0.23.1792.1029" timestamp="1604131475524" />
+    <state width="673" height="330" key="GridCell.Tab.0.left/0.23.1792.1029@0.23.1792.1029" timestamp="1604136004578" />
     <state width="1730" height="469" key="GridCell.Tab.0.left/0.23.1792.1033@0.23.1792.1033" timestamp="1603117703885" />
-    <state width="1336" height="330" key="GridCell.Tab.0.right" timestamp="1604131475525">
+    <state width="673" height="330" key="GridCell.Tab.0.right" timestamp="1604136004578">
       <screen x="0" y="23" width="1792" height="1029" />
     </state>
-    <state width="1336" height="330" key="GridCell.Tab.0.right/0.23.1792.1029@0.23.1792.1029" timestamp="1604131475525" />
+    <state width="673" height="330" key="GridCell.Tab.0.right/0.23.1792.1029@0.23.1792.1029" timestamp="1604136004578" />
     <state width="1730" height="469" key="GridCell.Tab.0.right/0.23.1792.1033@0.23.1792.1033" timestamp="1603117703885" />
-    <state x="420" y="174" width="1359" height="730" key="find.popup" timestamp="1603117973966">
-      <screen x="0" y="23" width="1792" height="1033" />
+    <state x="420" y="173" width="1359" height="730" key="find.popup" timestamp="1604134133134">
+      <screen x="0" y="23" width="1792" height="1029" />
     </state>
+    <state x="420" y="173" width="1359" height="730" key="find.popup/0.23.1792.1029@0.23.1792.1029" timestamp="1604134133134" />
     <state x="420" y="174" width="1359" height="730" key="find.popup/0.23.1792.1033@0.23.1792.1033" timestamp="1603117973966" />
     <state x="393" y="23" width="1005" height="1033" key="search.everywhere.popup" timestamp="1603118106965">
       <screen x="0" y="23" width="1792" height="1033" />
@@ -202,12 +224,12 @@
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="Dart">
-          <url>file://$PROJECT_DIR$/lib/src/linked_in_user_model.dart</url>
+          <url>file://$PROJECT_DIR$/lib/src/model/linked_in_user_model.dart</url>
           <line>124</line>
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="Dart">
-          <url>file://$PROJECT_DIR$/lib/src/linked_in_profile.dart</url>
+          <url>file://$PROJECT_DIR$/lib/src/client/linked_in_user_widget.dart</url>
           <line>95</line>
           <option name="timeStamp" value="30" />
         </line-breakpoint>

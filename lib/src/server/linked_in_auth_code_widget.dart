@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:linkedin_login/src/linked_in_auth_response_wrapper.dart';
+import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 
 import 'linked_in_auth_code_webview.dart';
 
