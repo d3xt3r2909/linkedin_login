@@ -23,6 +23,8 @@ You should replace this values
 
 To get these values you need to create App on the [LinkedIn](https://www.linkedin.com/developers/apps/new).
 
+- `SurfaceAndroidWebView() requires API level 19.`
+
 ## Samples
 
 You can see full example under this [project](https://github.com/d3xt3r2909/linkedin_login/tree/master/example).
