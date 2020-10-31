@@ -108,3 +108,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - from Flutter version > v1.23.* embedding v1 is deprecated
 - introduce null safety based on flutter version v1.23
+
+## 2.0.0 - 2020-10-31
+### due deprecation of flutter_webview_plugin we need a new plugin for webview
+
+- because flutter_webview_plugin is merged to webview_flutter this plugin is switching to official package
+- please note that if you want to use SurfaceAndroidWebView, it requires 
