@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:linkedin_login/helper/global_variables.dart';
-import 'package:linkedin_login/helper/helper.dart';
-import 'package:linkedin_login/src/linked_in_auth_response_wrapper.dart';
+import 'package:linkedin_login/src/utils/global_variables.dart';
+import 'package:linkedin_login/src/utils/helper.dart';
+import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 import 'package:uuid/uuid.dart';
 
 /// Class will fetch code and access token from the user

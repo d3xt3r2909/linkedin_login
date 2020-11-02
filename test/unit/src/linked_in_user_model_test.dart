@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-
-import '../../../lib/src/linked_in_user_model.dart';
+import 'package:linkedin_login/linkedin_login.dart';
 
 void main() {
   group('Tests for _getFirstInListFromJson method', () {

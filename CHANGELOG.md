@@ -108,3 +108,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - from Flutter version > v1.23.* embedding v1 is deprecated
 - introduce null safety based on flutter version v1.23
+
+## 1.3.1 - 2020-11-02
+### Files restructure 
+
+- restructure code and prepare it for updating to new webview plugin
+

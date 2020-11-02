@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:linkedin_login/src/constants.dart';
-import 'package:linkedin_login/src/linked_in_auth_response_wrapper.dart';
-import 'package:linkedin_login/src/linked_in_user_model.dart';
-import 'package:linkedin_login/src/linked_in_authorization_webview.dart';
+import 'package:linkedin_login/src/utils/constants.dart';
+import 'package:linkedin_login/src/model/linked_in_user_model.dart';
+import 'package:linkedin_login/src/client/linked_in_authorization_webview.dart';
 import 'package:http/http.dart';
+import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 
 /// This class is responsible to fetch all information for user after we get
 /// token and code from LinkedIn
