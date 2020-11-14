@@ -4,35 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:linkedin_login/src/utils/global_variables.dart';
 import 'package:linkedin_login/src/utils/helper.dart';
+import 'package:linkedin_login/src/utils/web_view_widget_parameters.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 import 'package:uuid/uuid.dart';
 
 /// Class will fetch code and access token from the user
 /// It will show web view so that we can access to linked in auth page
 class LinkedInAuthCode extends StatefulWidget {
-  final Function onCallBack;
-  final String redirectUrl;
-  final String clientId;
-  final AppBar appBar;
-  final bool destroySession;
+  LinkedInAuthCode(this.configuration) : assert(configuration != null);
 
-  // just in case that frontend in your team has changed redirect url
-  final String frontendRedirectUrl;
-
-  /// [onCallBack] what to do when you receive response from LinkedIn API
-  /// [redirectUrl] that you setup it on LinkedIn developer portal
-  /// [clientId] value from LinkedIn developer portal
-  /// [frontendRedirectUrl] if you want frontend redirection
-  /// [destroySession] if you want to destroy a session
-  /// [appBar] custom app bar widget
-  LinkedInAuthCode({
-    @required this.onCallBack,
-    @required this.redirectUrl,
-    @required this.clientId,
-    this.frontendRedirectUrl,
-    this.destroySession,
-    this.appBar,
-  });
+  final AuthCodeWebViewConfig configuration;
 
   @override
   State createState() => _LinkedInAuthCodeState();
@@ -64,31 +45,31 @@ class _LinkedInAuthCodeState extends State<LinkedInAuthCode> {
 
     loginUrl = '${GlobalVariables.URL_LINKED_IN_GET_AUTH_TOKEN}?'
         'response_type=code'
-        '&client_id=${widget.clientId}'
+        '&client_id=${widget.configuration.clientId}'
         '&state=$clientState'
-        '&redirect_uri=${widget.redirectUrl}'
+        '&redirect_uri=${widget.configuration.redirectUrl}'
         '&scope=r_liteprofile%20r_emailaddress';
 
     // Add a listener to on url changed
     _onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((String url) {
       if (mounted &&
-          (url.startsWith(widget.redirectUrl) ||
-              (widget.frontendRedirectUrl != null &&
-                  url.startsWith(widget.frontendRedirectUrl)))) {
+          (url.startsWith(widget.configuration.redirectUrl) ||
+              (widget.configuration.frontendRedirectUrl != null &&
+                  url.startsWith(widget.configuration.frontendRedirectUrl)))) {
         flutterWebViewPlugin.stopLoading();
 
         AuthorizationCodeResponse authCode =
             getAuthorizationCode(redirectUrl: url, clientState: clientState);
-        widget.onCallBack(authCode);
+        widget.configuration.onCallBack(authCode);
       }
     });
   }
 
   @override
   Widget build(BuildContext context) => WebviewScaffold(
-        appBar: widget.appBar,
+        appBar: widget.configuration.appBar,
         url: loginUrl,
         hidden: true,
-        clearCookies: widget.destroySession,
+        clearCookies: widget.configuration.destroySession,
       );
 }

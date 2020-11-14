@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:linkedin_login/src/utils/web_view_widget_parameters.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 
 import 'linked_in_auth_code_webview.dart';
@@ -34,20 +35,22 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
 class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
   @override
   Widget build(BuildContext context) => LinkedInAuthCode(
-        destroySession: widget.destroySession,
-        frontendRedirectUrl: widget.frontendRedirectUrl,
-        redirectUrl: widget.redirectUrl,
-        clientId: widget.clientId,
-        appBar: widget.appBar,
-        onCallBack: (AuthorizationCodeResponse result) {
-          if (result != null && result.code != null) {
-            widget.onGetAuthCode(result);
-          } else {
-            // If inner class catch the error, then forward it to parent class
-            if (result.error != null && result.error.description.isNotEmpty) {
-              widget.catchError(result.error);
+        AuthCodeWebViewConfig(
+          destroySession: widget.destroySession,
+          frontendRedirectUrl: widget.frontendRedirectUrl,
+          redirectUrl: widget.redirectUrl,
+          clientId: widget.clientId,
+          appBar: widget.appBar,
+          onCallBack: (AuthorizationCodeResponse result) {
+            if (result != null && result.code != null) {
+              widget.onGetAuthCode(result);
+            } else {
+              // If inner class catch the error, then forward it to parent class
+              if (result.error != null && result.error.description.isNotEmpty) {
+                widget.catchError(result.error);
+              }
             }
-          }
-        },
+          },
+        ),
       );
 }

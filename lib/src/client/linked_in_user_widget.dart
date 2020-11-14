@@ -5,6 +5,7 @@ import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/model/linked_in_user_model.dart';
 import 'package:linkedin_login/src/client/linked_in_authorization_webview.dart';
 import 'package:http/http.dart';
+import 'package:linkedin_login/src/utils/web_view_widget_parameters.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 
 /// This class is responsible to fetch all information for user after we get
@@ -62,48 +63,51 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
 
   @override
   Widget build(BuildContext context) => LinkedInAuthorization(
-        destroySession: widget.destroySession,
-        redirectUrl: widget.redirectUrl,
-        clientSecret: widget.clientSecret,
-        clientId: widget.clientId,
-        appBar: widget.appBar,
-        onCallBack: (AuthorizationCodeResponse result) {
-          if (result != null && result.accessToken != null) {
-            get(
-              urlLinkedInUserProfile,
-              headers: {
-                HttpHeaders.acceptHeader: 'application/json',
-                HttpHeaders.authorizationHeader:
-                    'Bearer ${result.accessToken.accessToken}'
-              },
-            ).then((basicProfile) {
+        AuthorizationWebViewConfig(
+          destroySession: widget.destroySession,
+          redirectUrl: widget.redirectUrl,
+          clientSecret: widget.clientSecret,
+          clientId: widget.clientId,
+          appBar: widget.appBar,
+          onCallBack: (AuthorizationCodeResponse result) {
+            if (result != null && result.accessToken != null) {
               get(
-                urlLinkedInEmailAddress,
+                urlLinkedInUserProfile,
                 headers: {
                   HttpHeaders.acceptHeader: 'application/json',
                   HttpHeaders.authorizationHeader:
                       'Bearer ${result.accessToken.accessToken}'
                 },
-              ).then((emailProfile) {
-                // Get basic user profile
-                final LinkedInUserModel linkedInUser =
-                    LinkedInUserModel.fromJson(json.decode(basicProfile.body));
-                // Get email for current user profile
-                linkedInUser.email = LinkedInProfileEmail.fromJson(
-                  json.decode(emailProfile.body),
-                );
-                linkedInUser.token = result.accessToken;
+              ).then((basicProfile) {
+                get(
+                  urlLinkedInEmailAddress,
+                  headers: {
+                    HttpHeaders.acceptHeader: 'application/json',
+                    HttpHeaders.authorizationHeader:
+                        'Bearer ${result.accessToken.accessToken}'
+                  },
+                ).then((emailProfile) {
+                  // Get basic user profile
+                  final LinkedInUserModel linkedInUser =
+                      LinkedInUserModel.fromJson(
+                          json.decode(basicProfile.body));
+                  // Get email for current user profile
+                  linkedInUser.email = LinkedInProfileEmail.fromJson(
+                    json.decode(emailProfile.body),
+                  );
+                  linkedInUser.token = result.accessToken;
 
-                // Notify parent class / widget that we have user
-                widget.onGetUserProfile(linkedInUser);
+                  // Notify parent class / widget that we have user
+                  widget.onGetUserProfile(linkedInUser);
+                });
               });
-            });
-          } else {
-            // If inner class catch the error, then forward it to parent class
-            if (result.error != null && result.error.description.isNotEmpty) {
-              widget.catchError(result.error);
+            } else {
+              // If inner class catch the error, then forward it to parent class
+              if (result.error != null && result.error.description.isNotEmpty) {
+                widget.catchError(result.error);
+              }
             }
-          }
-        },
+          },
+        ),
       );
 }
