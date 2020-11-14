@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
+import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
-
-import 'linked_in_auth_code_webview.dart';
 
 /// This class is responsible to fetch all information for user after we get
 /// token and code from LinkedIn
@@ -33,21 +33,23 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
 
 class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
   @override
-  Widget build(BuildContext context) => LinkedInAuthCode(
-        destroySession: widget.destroySession,
-        frontendRedirectUrl: widget.frontendRedirectUrl,
-        redirectUrl: widget.redirectUrl,
-        clientId: widget.clientId,
-        appBar: widget.appBar,
-        onCallBack: (AuthorizationCodeResponse result) {
-          if (result != null && result.code != null) {
-            widget.onGetAuthCode(result);
-          } else {
-            // If inner class catch the error, then forward it to parent class
-            if (result.error != null && result.error.description.isNotEmpty) {
-              widget.catchError(result.error);
+  Widget build(BuildContext context) => LinkedInWebViewHandler(
+        AuthCodeWebViewConfig(
+          destroySession: widget.destroySession,
+          frontendRedirectUrl: widget.frontendRedirectUrl,
+          redirectUrl: widget.redirectUrl,
+          clientId: widget.clientId,
+          appBar: widget.appBar,
+          onCallBack: (AuthorizationCodeResponse result) {
+            if (result != null && result.code != null) {
+              widget.onGetAuthCode(result);
+            } else {
+              // If inner class catch the error, then forward it to parent class
+              if (result.error != null && result.error.description.isNotEmpty) {
+                widget.catchError(result.error);
+              }
             }
-          }
-        },
+          },
+        ),
       );
 }
