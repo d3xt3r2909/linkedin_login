@@ -22,11 +22,9 @@ class LinkedInAuthCode extends StatefulWidget {
 /// Handle redirection with help of a FlutterWebviewPlugin
 class _LinkedInAuthCodeState extends State<LinkedInAuthCode> {
   final flutterWebViewPlugin = FlutterWebviewPlugin();
-
   StreamSubscription<String> _onUrlChanged;
-  AuthorizationCodeResponse authorizationCodeResponse;
 
-  String clientState, loginUrl;
+  ViewModel viewModel;
 
   @override
   void dispose() {
@@ -39,37 +37,70 @@ class _LinkedInAuthCodeState extends State<LinkedInAuthCode> {
   void initState() {
     super.initState();
 
-    clientState = Uuid().v4();
+    viewModel = ViewModel.from(configuration: widget.configuration);
 
     flutterWebViewPlugin.close();
 
-    loginUrl = '${GlobalVariables.URL_LINKED_IN_GET_AUTH_TOKEN}?'
-        'response_type=code'
-        '&client_id=${widget.configuration.clientId}'
-        '&state=$clientState'
-        '&redirect_uri=${widget.configuration.redirectUrl}'
-        '&scope=r_liteprofile%20r_emailaddress';
-
     // Add a listener to on url changed
     _onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((String url) {
-      if (mounted &&
-          (url.startsWith(widget.configuration.redirectUrl) ||
-              (widget.configuration.frontendRedirectUrl != null &&
-                  url.startsWith(widget.configuration.frontendRedirectUrl)))) {
+      if (mounted && viewModel.isCurrentUrlMatchToRedirection(url)) {
         flutterWebViewPlugin.stopLoading();
 
-        AuthorizationCodeResponse authCode =
-            getAuthorizationCode(redirectUrl: url, clientState: clientState);
-        widget.configuration.onCallBack(authCode);
+        viewModel._fetchAuthorizationCodeResponse(url).then((value) {
+          widget.configuration.onCallBack(value);
+          flutterWebViewPlugin.close();
+        });
       }
     });
   }
 
   @override
   Widget build(BuildContext context) => WebviewScaffold(
-        appBar: widget.configuration.appBar,
-        url: loginUrl,
-        hidden: true,
         clearCookies: widget.configuration.destroySession,
+        appBar: widget.configuration.appBar,
+        url: viewModel.loginUrl,
+        hidden: true,
       );
+}
+
+@immutable
+class ViewModel {
+  const ViewModel._({this.configuration, this.clientState})
+      : assert(configuration != null);
+
+  factory ViewModel.from({
+    @required AuthCodeWebViewConfig configuration,
+  }) =>
+      ViewModel._(
+        configuration: configuration,
+        clientState: Uuid().v4(),
+      );
+
+  final AuthCodeWebViewConfig configuration;
+  final String clientState;
+
+  String get loginUrl => '${GlobalVariables.URL_LINKED_IN_GET_AUTH_TOKEN}?'
+      'response_type=code'
+      '&client_id=${configuration.clientId}'
+      '&state=$clientState'
+      '&redirect_uri=${configuration.redirectUrl}'
+      '&scope=r_liteprofile%20r_emailaddress';
+
+  bool isCurrentUrlMatchToRedirection(String url) =>
+      _isRedirectionUrl(url) || _isFrontendRedirectionUrl(url);
+
+  bool _isRedirectionUrl(String url) {
+    return url.startsWith(configuration.redirectUrl);
+  }
+
+  bool _isFrontendRedirectionUrl(String url) {
+    return (configuration?.frontendRedirectUrl != null &&
+        url.startsWith(configuration.frontendRedirectUrl));
+  }
+
+  Future<AuthorizationCodeResponse> _fetchAuthorizationCodeResponse(
+    String url,
+  ) async {
+    return getAuthorizationCode(redirectUrl: url, clientState: clientState);
+  }
 }

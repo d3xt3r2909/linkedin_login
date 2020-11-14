@@ -51,7 +51,7 @@ class _LinkedInAuthorizationState extends State<LinkedInAuthorization> {
       if (mounted && viewModel.isCurrentUrlMatchToRedirection(url)) {
         flutterWebViewPlugin.stopLoading();
 
-        viewModel._fetchAccessToken(url).then((value) {
+        viewModel._fetchAuthorizationCodeResponse(url).then((value) {
           widget.configuration.onCallBack(value);
           flutterWebViewPlugin.close();
         });
@@ -103,7 +103,7 @@ class ViewModel {
         url.startsWith(configuration.frontendRedirectUrl));
   }
 
-  Future<AuthorizationCodeResponse> _fetchAccessToken(String url) async {
+  Future<AuthorizationCodeResponse> _fetchAuthorizationCodeResponse(String url) async {
     AuthorizationCodeResponse authCode =
         getAuthorizationCode(redirectUrl: url, clientState: clientState);
     final accessToken = await _getAccessToken(authorizationCode: authCode);
