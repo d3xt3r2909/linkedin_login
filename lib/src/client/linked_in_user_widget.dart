@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/model/linked_in_user_model.dart';
-import 'package:linkedin_login/src/client/linked_in_authorization_webview.dart';
 import 'package:http/http.dart';
 import 'package:linkedin_login/src/utils/web_view_widget_parameters.dart';
+import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 
 /// This class is responsible to fetch all information for user after we get
@@ -62,7 +62,7 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => LinkedInAuthorization(
+  Widget build(BuildContext context) => LinkedInWebViewHandler(
         AuthorizationWebViewConfig(
           destroySession: widget.destroySession,
           redirectUrl: widget.redirectUrl,

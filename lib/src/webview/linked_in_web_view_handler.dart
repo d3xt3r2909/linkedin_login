@@ -3,25 +3,24 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:linkedin_login/src/utils/global_variables.dart';
-import 'package:linkedin_login/src/utils/helper.dart';
 import 'package:linkedin_login/src/utils/web_view_widget_parameters.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 import 'package:uuid/uuid.dart';
 
 /// Class will fetch code and access token from the user
 /// It will show web view so that we can access to linked in auth page
-class LinkedInAuthCode extends StatefulWidget {
-  LinkedInAuthCode(this.configuration) : assert(configuration != null);
+class LinkedInWebViewHandler extends StatefulWidget {
+  LinkedInWebViewHandler(this.configuration) : assert(configuration != null);
 
-  final AuthCodeWebViewConfig configuration;
+  final WebViewWidgetConfig configuration;
 
   @override
-  State createState() => _LinkedInAuthCodeState();
+  State createState() => _LinkedInWebViewHandlerState();
 }
 
-/// Handle redirection with help of a FlutterWebviewPlugin
-class _LinkedInAuthCodeState extends State<LinkedInAuthCode> {
+class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
   final flutterWebViewPlugin = FlutterWebviewPlugin();
+
   StreamSubscription<String> _onUrlChanged;
 
   ViewModel viewModel;
@@ -65,18 +64,20 @@ class _LinkedInAuthCodeState extends State<LinkedInAuthCode> {
 
 @immutable
 class ViewModel {
-  const ViewModel._({this.configuration, this.clientState})
-      : assert(configuration != null);
+  const ViewModel._({
+    this.configuration,
+    this.clientState,
+  }) : assert(configuration != null);
 
   factory ViewModel.from({
-    @required AuthCodeWebViewConfig configuration,
+    @required WebViewWidgetConfig configuration,
   }) =>
       ViewModel._(
         configuration: configuration,
         clientState: Uuid().v4(),
       );
 
-  final AuthCodeWebViewConfig configuration;
+  final WebViewWidgetConfig configuration;
   final String clientState;
 
   String get loginUrl => '${GlobalVariables.URL_LINKED_IN_GET_AUTH_TOKEN}?'
@@ -100,7 +101,9 @@ class ViewModel {
 
   Future<AuthorizationCodeResponse> _fetchAuthorizationCodeResponse(
     String url,
-  ) async {
-    return getAuthorizationCode(redirectUrl: url, clientState: clientState);
-  }
+  ) =>
+      configuration.fetchAuthorizationCodeResponse(
+        url,
+        clientState,
+      );
 }

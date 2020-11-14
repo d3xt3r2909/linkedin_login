@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:linkedin_login/src/utils/web_view_widget_parameters.dart';
+import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
-
-import 'linked_in_auth_code_webview.dart';
 
 /// This class is responsible to fetch all information for user after we get
 /// token and code from LinkedIn
@@ -34,7 +33,7 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
 
 class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
   @override
-  Widget build(BuildContext context) => LinkedInAuthCode(
+  Widget build(BuildContext context) => LinkedInWebViewHandler(
         AuthCodeWebViewConfig(
           destroySession: widget.destroySession,
           frontendRedirectUrl: widget.frontendRedirectUrl,
