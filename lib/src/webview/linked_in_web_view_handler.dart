@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:linkedin_login/src/utils/global_variables.dart';
-import 'package:linkedin_login/src/utils/web_view_widget_parameters.dart';
+import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 import 'package:uuid/uuid.dart';
 
@@ -12,7 +12,7 @@ import 'package:uuid/uuid.dart';
 class LinkedInWebViewHandler extends StatefulWidget {
   LinkedInWebViewHandler(this.configuration) : assert(configuration != null);
 
-  final WebViewWidgetConfig configuration;
+  final WebViewHandlerConfig configuration;
 
   @override
   State createState() => _LinkedInWebViewHandlerState();
@@ -42,7 +42,7 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
 
     // Add a listener to on url changed
     _onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((String url) {
-      if (mounted && viewModel.isCurrentUrlMatchToRedirection(url)) {
+      if (mounted && viewModel.isUrlMatchingToRedirection(url)) {
         flutterWebViewPlugin.stopLoading();
 
         viewModel._fetchAuthorizationCodeResponse(url).then((value) {
@@ -70,14 +70,14 @@ class ViewModel {
   }) : assert(configuration != null);
 
   factory ViewModel.from({
-    @required WebViewWidgetConfig configuration,
+    @required WebViewHandlerConfig configuration,
   }) =>
       ViewModel._(
         configuration: configuration,
         clientState: Uuid().v4(),
       );
 
-  final WebViewWidgetConfig configuration;
+  final WebViewHandlerConfig configuration;
   final String clientState;
 
   String get loginUrl => '${GlobalVariables.URL_LINKED_IN_GET_AUTH_TOKEN}?'
@@ -87,23 +87,11 @@ class ViewModel {
       '&redirect_uri=${configuration.redirectUrl}'
       '&scope=r_liteprofile%20r_emailaddress';
 
-  bool isCurrentUrlMatchToRedirection(String url) =>
-      _isRedirectionUrl(url) || _isFrontendRedirectionUrl(url);
-
-  bool _isRedirectionUrl(String url) {
-    return url.startsWith(configuration.redirectUrl);
-  }
-
-  bool _isFrontendRedirectionUrl(String url) {
-    return (configuration?.frontendRedirectUrl != null &&
-        url.startsWith(configuration.frontendRedirectUrl));
-  }
+  bool isUrlMatchingToRedirection(String url) =>
+      configuration.isCurrentUrlMatchToRedirection(url);
 
   Future<AuthorizationCodeResponse> _fetchAuthorizationCodeResponse(
     String url,
   ) =>
-      configuration.fetchAuthorizationCodeResponse(
-        url,
-        clientState,
-      );
+      configuration.fetchAuthorizationCodeResponse(url, clientState);
 }

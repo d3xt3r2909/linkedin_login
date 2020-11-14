@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:linkedin_login/src/utils/web_view_widget_parameters.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
+import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 
 /// This class is responsible to fetch all information for user after we get

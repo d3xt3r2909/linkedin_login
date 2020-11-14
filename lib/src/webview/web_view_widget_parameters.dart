@@ -9,14 +9,14 @@ import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 import 'package:linkedin_login/src/wrappers/linked_in_error_object.dart';
 import 'package:linkedin_login/src/wrappers/linked_in_token_object.dart';
 
-abstract class WebViewWidgetConfig {
+abstract class WebViewHandlerConfig {
   /// [onCallBack] what to do when you receive response from LinkedIn API
   /// [redirectUrl] that you setup it on LinkedIn developer portal
   /// [clientId] value from LinkedIn developer portal
   /// [frontendRedirectUrl] if you want frontend redirection
   /// [destroySession] if you want to destroy a session
   /// [appBar] custom app bar widget
-  WebViewWidgetConfig({
+  WebViewHandlerConfig({
     @required this.onCallBack,
     @required this.redirectUrl,
     @required this.clientId,
@@ -38,9 +38,20 @@ abstract class WebViewWidgetConfig {
     String url,
     String clientState,
   );
+
+  bool isCurrentUrlMatchToRedirection(String url) =>
+      _isRedirectionUrl(url) || _isFrontendRedirectionUrl(url);
+
+  bool _isRedirectionUrl(String url) {
+    return url.startsWith(redirectUrl);
+  }
+
+  bool _isFrontendRedirectionUrl(String url) {
+    return (frontendRedirectUrl != null && url.startsWith(frontendRedirectUrl));
+  }
 }
 
-class AuthorizationWebViewConfig extends WebViewWidgetConfig {
+class AuthorizationWebViewConfig extends WebViewHandlerConfig {
   AuthorizationWebViewConfig({
     @required this.clientSecret,
     @required Function(AuthorizationCodeResponse) onCallBack,
@@ -136,7 +147,7 @@ class AuthorizationWebViewConfig extends WebViewWidgetConfig {
   }
 }
 
-class AuthCodeWebViewConfig extends WebViewWidgetConfig {
+class AuthCodeWebViewConfig extends WebViewHandlerConfig {
   AuthCodeWebViewConfig({
     @required Function(AuthorizationCodeResponse) onCallBack,
     @required String redirectUrl,
