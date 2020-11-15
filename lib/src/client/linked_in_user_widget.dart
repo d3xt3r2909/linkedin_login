@@ -52,6 +52,7 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
   String urlLinkedInUserProfile = 'https://api.linkedin.com/v2/me';
   final urlLinkedInEmailAddress =
       'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))';
+  bool showProgress = false;
 
   @override
   void initState() {
@@ -62,52 +63,67 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
   }
 
   @override
-  Widget build(BuildContext context) => LinkedInWebViewHandler(
-        AuthorizationWebViewConfig(
-          destroySession: widget.destroySession,
-          redirectUrl: widget.redirectUrl,
-          clientSecret: widget.clientSecret,
-          clientId: widget.clientId,
-          appBar: widget.appBar,
-          onCallBack: (AuthorizationCodeResponse result) {
-            if (result != null && result.accessToken != null) {
-              get(
-                urlLinkedInUserProfile,
-                headers: {
-                  HttpHeaders.acceptHeader: 'application/json',
-                  HttpHeaders.authorizationHeader:
-                      'Bearer ${result.accessToken.accessToken}'
-                },
-              ).then((basicProfile) {
-                get(
-                  urlLinkedInEmailAddress,
-                  headers: {
-                    HttpHeaders.acceptHeader: 'application/json',
-                    HttpHeaders.authorizationHeader:
-                        'Bearer ${result.accessToken.accessToken}'
-                  },
-                ).then((emailProfile) {
-                  // Get basic user profile
-                  final LinkedInUserModel linkedInUser =
-                      LinkedInUserModel.fromJson(
-                          json.decode(basicProfile.body));
-                  // Get email for current user profile
-                  linkedInUser.email = LinkedInProfileEmail.fromJson(
-                    json.decode(emailProfile.body),
-                  );
-                  linkedInUser.token = result.accessToken;
+  Widget build(BuildContext context) => Stack(
+        alignment: Alignment.center,
+        children: [
+          LinkedInWebViewHandler(
+            AuthorizationWebViewConfig(
+              destroySession: widget.destroySession,
+              redirectUrl: widget.redirectUrl,
+              clientSecret: widget.clientSecret,
+              clientId: widget.clientId,
+              appBar: widget.appBar,
+              onCallBack: (AuthorizationCodeResponse result) {
+                print("::> START INSIDE CALLBACK");
 
-                  // Notify parent class / widget that we have user
-                  widget.onGetUserProfile(linkedInUser);
-                });
-              });
-            } else {
-              // If inner class catch the error, then forward it to parent class
-              if (result.error != null && result.error.description.isNotEmpty) {
-                widget.catchError(result.error);
-              }
-            }
-          },
-        ),
+                if (result != null && result.accessToken != null) {
+                  get(
+                    urlLinkedInUserProfile,
+                    headers: {
+                      HttpHeaders.acceptHeader: 'application/json',
+                      HttpHeaders.authorizationHeader:
+                          'Bearer ${result.accessToken.accessToken}'
+                    },
+                  ).then((basicProfile) {
+                    get(
+                      urlLinkedInEmailAddress,
+                      headers: {
+                        HttpHeaders.acceptHeader: 'application/json',
+                        HttpHeaders.authorizationHeader:
+                            'Bearer ${result.accessToken.accessToken}'
+                      },
+                    ).then((emailProfile) {
+                      // Get basic user profile
+                      final LinkedInUserModel linkedInUser =
+                          LinkedInUserModel.fromJson(
+                              json.decode(basicProfile.body));
+                      // Get email for current user profile
+                      linkedInUser.email = LinkedInProfileEmail.fromJson(
+                        json.decode(emailProfile.body),
+                      );
+                      linkedInUser.token = result.accessToken;
+
+                      // Notify parent class / widget that we have user
+                      widget.onGetUserProfile(linkedInUser);
+                    });
+                  });
+                } else {
+                  // If inner class catch the error, then forward it to parent class
+                  if (result.error != null &&
+                      result.error.description.isNotEmpty) {
+                    widget.catchError(result.error);
+                  }
+                }
+                print("::> ENDDDDDD");
+              },
+            ),
+          ),
+          Container(
+            height: 100,
+            width: 100,
+            color: Colors.red,
+            child: showProgress ? CircularProgressIndicator() : Container(),
+          ),
+        ],
       );
 }

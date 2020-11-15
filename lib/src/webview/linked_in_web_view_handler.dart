@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:linkedin_login/src/utils/global_variables.dart';
 import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 import 'package:uuid/uuid.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 /// Class will fetch code and access token from the user
 /// It will show web view so that we can access to linked in auth page
@@ -19,16 +19,10 @@ class LinkedInWebViewHandler extends StatefulWidget {
 }
 
 class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
-  final flutterWebViewPlugin = FlutterWebviewPlugin();
-
-  StreamSubscription<String> _onUrlChanged;
-
   ViewModel viewModel;
 
   @override
   void dispose() {
-    _onUrlChanged.cancel();
-    flutterWebViewPlugin.dispose();
     super.dispose();
   }
 
@@ -38,27 +32,67 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
 
     viewModel = ViewModel.from(configuration: widget.configuration);
 
-    flutterWebViewPlugin.close();
+    // flutterWebViewPlugin.close();
 
     // Add a listener to on url changed
-    _onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((String url) {
-      if (mounted && viewModel.isUrlMatchingToRedirection(url)) {
-        flutterWebViewPlugin.stopLoading();
-
-        viewModel._fetchAuthorizationCodeResponse(url).then((value) {
-          widget.configuration.onCallBack(value);
-          flutterWebViewPlugin.close();
-        });
-      }
-    });
+    // _onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((String url) {
+    //   if (mounted && viewModel.isUrlMatchingToRedirection(url)) {
+    //     flutterWebViewPlugin.stopLoading();
+    //
+    //     viewModel._fetchAuthorizationCodeResponse(url).then((value) {
+    //       widget.configuration.onCallBack(value);
+    //       flutterWebViewPlugin.close();
+    //     });
+    //   }
+    // });
   }
 
+  // @override
+  // Widget build(BuildContext context) => WebviewScaffold(
+  //       clearCookies: widget.configuration.destroySession,
+  //       appBar: widget.configuration.appBar,
+  //       url: viewModel.loginUrl,
+  //       hidden: true,
+  //     );
+
   @override
-  Widget build(BuildContext context) => WebviewScaffold(
-        clearCookies: widget.configuration.destroySession,
+  Widget build(BuildContext context) => Scaffold(
         appBar: widget.configuration.appBar,
-        url: viewModel.loginUrl,
-        hidden: true,
+        // We're using a Builder here so we have a context that is below the Scaffold
+        // to allow calling Scaffold.of(context) so we can show a snackbar.
+        body: Builder(builder: (BuildContext context) {
+          return WebView(
+            initialUrl: viewModel.loginUrl,
+            javascriptMode: JavascriptMode.disabled,
+            onWebViewCreated: (WebViewController webViewController) {
+              // _controller.complete(webViewController);
+              print("onWebViewCreated started loading");
+            },
+            navigationDelegate: (NavigationRequest request) async {
+              print("::> inside navigationDelegate");
+              if (viewModel.isUrlMatchingToRedirection(request.url)) {
+                print("::> inside isUrlMatchingToRedirection ${request.url}");
+                viewModel
+                    .fetchAuthorizationCodeResponse(request.url)
+                    .then((value) {
+                  print("::> CALLBACK STARTED");
+
+                  widget.configuration.onCallBack(value);
+                });
+
+                return NavigationDecision.prevent;
+              }
+              return NavigationDecision.navigate;
+            },
+            onPageStarted: (String url) {
+              print('Page started loading: $url');
+            },
+            onPageFinished: (String url) {
+              print('Page finished loading: $url');
+            },
+            gestureNavigationEnabled: false,
+          );
+        }),
       );
 }
 
@@ -90,7 +124,7 @@ class ViewModel {
   bool isUrlMatchingToRedirection(String url) =>
       configuration.isCurrentUrlMatchToRedirection(url);
 
-  Future<AuthorizationCodeResponse> _fetchAuthorizationCodeResponse(
+  Future<AuthorizationCodeResponse> fetchAuthorizationCodeResponse(
     String url,
   ) =>
       configuration.fetchAuthorizationCodeResponse(url, clientState);
