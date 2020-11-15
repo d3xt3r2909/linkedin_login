@@ -3,18 +3,18 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/redux/core.dart';
 import 'package:linkedin_login/src/client/state.dart';
+import 'package:linkedin_login/src/model/linked_in_user_model.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/utils/session.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
 import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
-import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 import 'package:redux/redux.dart';
 import 'package:uuid/uuid.dart';
 
 /// This class is responsible to fetch all information for user after we get
 /// token and code from LinkedIn
 class LinkedInUserWidget extends StatefulWidget {
-  final Function onGetUserProfile;
+  final Function(LinkedInUserModel) onGetUserProfile;
   final Function catchError;
   final String redirectUrl;
   final String clientId, clientSecret;
@@ -73,10 +73,9 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
       child: StoreConnector<AppState, _ViewModel>(
         distinct: true,
         converter: (store) => _ViewModel.from(store),
-        onDidChange: (viewModel) {
-          print(
-              "::> onDidChange get new updated info: ${viewModel.user.linkedInUser}");
-        },
+        onDidChange: (viewModel) => widget.onGetUserProfile(
+          viewModel.user.linkedInUser,
+        ),
         builder: (context, viewModel) {
           return LinkedInWebViewHandler(
             AuthorizationWebViewConfig(
@@ -85,9 +84,6 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
               clientSecret: widget.clientSecret,
               clientId: widget.clientId,
               appBar: widget.appBar,
-              onCallBack: (AuthorizationCodeResponse result) {
-                print("::> onCallBack inside linked_in_user_widget $result");
-              },
             ),
             clientSecret: widget.clientSecret,
           );

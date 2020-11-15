@@ -129,7 +129,7 @@ class LinkedInRepository extends LinkedInFetcher {
     final Map<String, dynamic> body = {
       'grant_type': 'authorization_code',
       'code': codeDetails.code,
-      'redirect_uri': redirectUrl,
+      'redirect_uri': redirectUrl.split('/?')[0],
       'client_id': clientId,
       'client_secret': clientSecret,
     };

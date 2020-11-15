@@ -125,7 +125,9 @@ class _LinkedInProfilePicture {
   factory _LinkedInProfilePicture.fromJson(Map<String, dynamic> json) =>
       _LinkedInProfilePicture(
         displayImage: json['displayImage'],
-        displayImageContent: _DisplayImage.fromJson(json['displayImage~']),
+        displayImageContent: json['displayImage~'] != null
+            ? _DisplayImage.fromJson(json['displayImage~'])
+            : null,
       );
 }
 

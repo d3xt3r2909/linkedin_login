@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
+
 abstract class WebViewHandlerConfig {
   /// [onCallBack] what to do when you receive response from LinkedIn API
   /// [redirectUrl] that you setup it on LinkedIn developer portal
@@ -8,17 +9,14 @@ abstract class WebViewHandlerConfig {
   /// [destroySession] if you want to destroy a session
   /// [appBar] custom app bar widget
   WebViewHandlerConfig({
-    @required this.onCallBack,
     @required this.redirectUrl,
     @required this.clientId,
     this.appBar,
     this.destroySession,
     this.frontendRedirectUrl,
-  })  : assert(onCallBack != null),
-        assert(redirectUrl != null),
+  })  : assert(redirectUrl != null),
         assert(clientId != null);
 
-  final Function(AuthorizationCodeResponse) onCallBack;
   final String redirectUrl;
   final String frontendRedirectUrl;
   final String clientId;
@@ -40,7 +38,6 @@ abstract class WebViewHandlerConfig {
 class AuthorizationWebViewConfig extends WebViewHandlerConfig {
   AuthorizationWebViewConfig({
     @required this.clientSecret,
-    @required Function(AuthorizationCodeResponse) onCallBack,
     @required String redirectUrl,
     @required String clientId,
     PreferredSizeWidget appBar,
@@ -48,7 +45,6 @@ class AuthorizationWebViewConfig extends WebViewHandlerConfig {
     String frontendRedirectUrl,
   })  : assert(clientSecret != null),
         super(
-          onCallBack: onCallBack,
           redirectUrl: redirectUrl,
           clientId: clientId,
           appBar: appBar,
@@ -68,7 +64,6 @@ class AuthCodeWebViewConfig extends WebViewHandlerConfig {
     bool destroySession,
     String frontendRedirectUrl,
   }) : super(
-          onCallBack: onCallBack,
           redirectUrl: redirectUrl,
           clientId: clientId,
           appBar: appBar,
