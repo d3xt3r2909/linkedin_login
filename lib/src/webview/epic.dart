@@ -18,7 +18,6 @@ Stream<dynamic> _urlMatchToDirection(DirectionUrlMatch action) async* {
   try {
     yield DirectionUrlMatchSucceededAction(
       action.url,
-      action.clientState,
       action.clientId,
       clientSecret: action.clientSecret,
     );

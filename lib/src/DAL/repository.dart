@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:linkedin_login/linkedin_login.dart';
 import 'package:linkedin_login/src/utils/global_variables.dart';
+import 'package:linkedin_login/src/utils/session.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 import 'package:linkedin_login/src/wrappers/linked_in_error_object.dart';
 import 'package:linkedin_login/src/wrappers/linked_in_token_object.dart';
@@ -13,10 +14,8 @@ abstract class LinkedInFetcher {
   LinkedInFetcher({
     @required this.redirectUrl,
     @required this.clientId,
-    @required this.clientState,
   })  : assert(redirectUrl != null),
-        assert(clientId != null),
-        assert(clientState != null);
+        assert(clientId != null);
 
   Future<AuthorizationCodeResponse> fetchWithAccessTokenCode({
     String clientSecret,
@@ -26,18 +25,15 @@ abstract class LinkedInFetcher {
 
   final String redirectUrl;
   final String clientId;
-  final String clientState;
 }
 
 class LinkedInRepository extends LinkedInFetcher {
   LinkedInRepository({
     @required String redirectionUrl,
     @required String clientId,
-    @required String clientState,
   }) : super(
           redirectUrl: redirectionUrl,
           clientId: clientId,
-          clientState: clientState,
         );
 
   @override
@@ -73,14 +69,14 @@ class LinkedInRepository extends LinkedInFetcher {
         final List<String> codePart = queryPart.first.split('=');
         final List<String> statePart = queryPart.last.split('=');
 
-        if (statePart[1] == clientState) {
+        if (statePart[1] == Session.clientState) {
           response = AuthorizationCodeResponse(
             code: codePart[1],
             state: statePart[1],
           );
         } else {
           throw Exception(
-            'State code is not valid: ${statePart[1]}, expected $clientState',
+            'State code is not valid: ${statePart[1]}, expected ${Session.clientState}',
           );
         }
       } else if (queryPart.isNotEmpty && queryPart.first.startsWith('error')) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 
 abstract class WebViewHandlerConfig {
   /// [onCallBack] what to do when you receive response from LinkedIn API
@@ -37,27 +36,6 @@ abstract class WebViewHandlerConfig {
 
 class AuthorizationWebViewConfig extends WebViewHandlerConfig {
   AuthorizationWebViewConfig({
-    @required this.clientSecret,
-    @required String redirectUrl,
-    @required String clientId,
-    PreferredSizeWidget appBar,
-    bool destroySession,
-    String frontendRedirectUrl,
-  })  : assert(clientSecret != null),
-        super(
-          redirectUrl: redirectUrl,
-          clientId: clientId,
-          appBar: appBar,
-          destroySession: destroySession,
-          frontendRedirectUrl: frontendRedirectUrl,
-        );
-
-  final String clientSecret;
-}
-
-class AuthCodeWebViewConfig extends WebViewHandlerConfig {
-  AuthCodeWebViewConfig({
-    @required Function(AuthorizationCodeResponse) onCallBack,
     @required String redirectUrl,
     @required String clientId,
     PreferredSizeWidget appBar,
@@ -71,3 +49,4 @@ class AuthCodeWebViewConfig extends WebViewHandlerConfig {
           frontendRedirectUrl: frontendRedirectUrl,
         );
 }
+

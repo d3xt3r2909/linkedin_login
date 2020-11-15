@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/redux/epics.dart';
 import 'package:linkedin_login/src/client/reducer.dart';
+import 'package:linkedin_login/src/server/reducer.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_epics/redux_epics.dart';
 
 AppState reducer(AppState state, dynamic action) {
   return AppState(
     linkedInUserState: linkedInClientReducer(state.linkedInUserState, action),
+    userAuthCodeState: linkedInServerReducer(state.userAuthCodeState, action),
   );
 }
 
@@ -39,10 +41,3 @@ class LinkedInStore {
 
   Future dispatchInitial() async {}
 }
-
-String _actionFormatter(
-  dynamic state,
-  dynamic action,
-  DateTime timestamp,
-) =>
-    'Action: $action';

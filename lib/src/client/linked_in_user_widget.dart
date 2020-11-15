@@ -43,7 +43,7 @@ class LinkedInUserWidget extends StatefulWidget {
         assert(clientId != null),
         assert(clientSecret != null),
         assert(destroySession != null),
-        assert(projection != null);
+        assert(projection != null && projection.isNotEmpty);
 
   @override
   State createState() => _LinkedInUserWidgetState();
@@ -52,18 +52,17 @@ class LinkedInUserWidget extends StatefulWidget {
 /// Class [_LinkedInUserWidgetState] is handling changes after user is singed in
 /// which will have as result user profile on the end
 class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
-  String urlLinkedInUserProfile = 'https://api.linkedin.com/v2/me';
-  final urlLinkedInEmailAddress =
-      'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))';
-  bool showProgress = false;
+  String profileProjection = '';
 
   @override
   void initState() {
     super.initState();
 
-    Session.clientState = Uuid().v4();
-    String projection = 'projection=(${widget.projection.join(",")})';
-    urlLinkedInUserProfile = '$urlLinkedInUserProfile?$projection';
+    Session.clientState =
+        (Session.clientState == null || Session.clientState.isEmpty)
+            ? Uuid().v4()
+            : Session.clientState;
+    profileProjection = 'projection=(${widget.projection.join(",")})';
   }
 
   @override
@@ -78,10 +77,9 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
         ),
         builder: (context, viewModel) {
           return LinkedInWebViewHandler(
-            AuthorizationWebViewConfig(
+            config: AuthorizationWebViewConfig(
               destroySession: widget.destroySession,
               redirectUrl: widget.redirectUrl,
-              clientSecret: widget.clientSecret,
               clientId: widget.clientId,
               appBar: widget.appBar,
             ),

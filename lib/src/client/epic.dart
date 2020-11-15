@@ -23,7 +23,6 @@ Stream<dynamic> _fetchAccessTokenUser(
     final authorizationCodeResponse = await LinkedInRepository(
       redirectionUrl: action.url,
       clientId: action.clientId,
-      clientState: action.clientState,
     ).fetchWithAccessTokenCode(
       clientSecret: action.clientSecret,
     );
