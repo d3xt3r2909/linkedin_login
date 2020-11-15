@@ -1,97 +1,126 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:linkedin_login/src/utils/global_variables.dart';
-import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
-import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
-import 'package:uuid/uuid.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:linkedin_login/redux/app_state.dart';
+import 'package:linkedin_login/src/utils/configuration.dart';
+import 'package:linkedin_login/src/utils/logger.dart';
+import 'package:linkedin_login/src/utils/startup/graph.dart';
+import 'package:linkedin_login/src/utils/startup/injector.dart';
+import 'package:linkedin_login/src/webview/actions.dart';
+import 'package:webview_flutter/webview_flutter.dart';
+import 'package:redux/redux.dart';
 
 /// Class will fetch code and access token from the user
 /// It will show web view so that we can access to linked in auth page
 class LinkedInWebViewHandler extends StatefulWidget {
-  LinkedInWebViewHandler(this.configuration) : assert(configuration != null);
+  LinkedInWebViewHandler({
+    this.appBar,
+    this.destroySession = false,
+    this.onWebViewCreated, // this is just for testing purpose
+  }) : assert(destroySession != null);
 
-  final WebViewHandlerConfig configuration;
+  final bool destroySession;
+  final PreferredSizeWidget appBar;
+  final Function(WebViewController) onWebViewCreated;
 
   @override
   State createState() => _LinkedInWebViewHandlerState();
 }
 
 class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
-  final flutterWebViewPlugin = FlutterWebviewPlugin();
-
-  StreamSubscription<String> _onUrlChanged;
-
-  ViewModel viewModel;
-
-  @override
-  void dispose() {
-    _onUrlChanged.cancel();
-    flutterWebViewPlugin.dispose();
-    super.dispose();
-  }
+  WebViewController webViewController;
+  final CookieManager cookieManager = CookieManager();
 
   @override
   void initState() {
     super.initState();
 
-    viewModel = ViewModel.from(configuration: widget.configuration);
-
-    flutterWebViewPlugin.close();
-
-    // Add a listener to on url changed
-    _onUrlChanged = flutterWebViewPlugin.onUrlChanged.listen((String url) {
-      if (mounted && viewModel.isUrlMatchingToRedirection(url)) {
-        flutterWebViewPlugin.stopLoading();
-
-        viewModel._fetchAuthorizationCodeResponse(url).then((value) {
-          widget.configuration.onCallBack(value);
-          flutterWebViewPlugin.close();
-        });
-      }
-    });
+    if (widget.destroySession) {
+      log('LinkedInAuth-steps: cache clearing... ');
+      cookieManager.clearCookies().then((value) {
+        log('LinkedInAuth-steps: cache clearing... DONE');
+      });
+    }
   }
 
   @override
-  Widget build(BuildContext context) => WebviewScaffold(
-        clearCookies: widget.configuration.destroySession,
-        appBar: widget.configuration.appBar,
-        url: viewModel.loginUrl,
-        hidden: true,
-      );
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, _ViewModel>(
+      distinct: true,
+      converter: (store) => _ViewModel.from(store, context),
+      builder: (context, viewModel) {
+        return Scaffold(
+          appBar: widget.appBar,
+          body: Builder(
+            builder: (BuildContext context) {
+              return WebView(
+                initialUrl: viewModel.initialUrl(context),
+                javascriptMode: JavascriptMode.unrestricted,
+                onWebViewCreated: (WebViewController webViewController) async {
+                  log('LinkedInAuth-steps: onWebViewCreated ... ');
+
+                  if (widget.onWebViewCreated != null) {
+                    widget.onWebViewCreated(webViewController);
+                  }
+
+                  log('LinkedInAuth-steps: onWebViewCreated ... DONE');
+                },
+                navigationDelegate: (NavigationRequest request) async {
+                  log('LinkedInAuth-steps: navigationDelegate ... ');
+                  final isMatch = viewModel.isUrlMatchingToRedirection(
+                    context,
+                    request.url,
+                  );
+                  log(
+                    'LinkedInAuth-steps: navigationDelegate '
+                    '[currentUrL: ${request.url}, isCurrentMatch: $isMatch]',
+                  );
+
+                  if (isMatch) {
+                    viewModel.onRedirectionUrl(request.url);
+                    log('Navigation delegate prevent... done');
+                    return NavigationDecision.prevent;
+                  }
+
+                  return NavigationDecision.navigate;
+                },
+                gestureNavigationEnabled: false,
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
 }
 
 @immutable
-class ViewModel {
-  const ViewModel._({
-    this.configuration,
-    this.clientState,
-  }) : assert(configuration != null);
+class _ViewModel {
+  const _ViewModel._({
+    @required this.onDispatch,
+    @required this.graph,
+  }) : assert(onDispatch != null);
 
-  factory ViewModel.from({
-    @required WebViewHandlerConfig configuration,
-  }) =>
-      ViewModel._(
-        configuration: configuration,
-        clientState: Uuid().v4(),
+  factory _ViewModel.from(Store<AppState> store, BuildContext context) =>
+      _ViewModel._(
+        onDispatch: store.dispatch,
+        graph: InjectorWidget.of(context),
       );
 
-  final WebViewHandlerConfig configuration;
-  final String clientState;
+  final Function(dynamic) onDispatch;
+  final Graph graph;
 
-  String get loginUrl => '${GlobalVariables.URL_LINKED_IN_GET_AUTH_TOKEN}?'
-      'response_type=code'
-      '&client_id=${configuration.clientId}'
-      '&state=$clientState'
-      '&redirect_uri=${configuration.redirectUrl}'
-      '&scope=r_liteprofile%20r_emailaddress';
+  void onRedirectionUrl(String url) {
+    final type = graph.linkedInConfiguration is AccessCodeConfiguration
+        ? WidgetType.full_profile
+        : WidgetType.auth_code;
+    onDispatch(DirectionUrlMatch(url, type));
+  }
 
-  bool isUrlMatchingToRedirection(String url) =>
-      configuration.isCurrentUrlMatchToRedirection(url);
+  String initialUrl(BuildContext context) {
+    return graph.linkedInConfiguration.initialUrl;
+  }
 
-  Future<AuthorizationCodeResponse> _fetchAuthorizationCodeResponse(
-    String url,
-  ) =>
-      configuration.fetchAuthorizationCodeResponse(url, clientState);
+  bool isUrlMatchingToRedirection(BuildContext context, String url) {
+    return graph.linkedInConfiguration.isCurrentUrlMatchToRedirection(url);
+  }
 }

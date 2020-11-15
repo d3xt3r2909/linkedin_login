@@ -7,7 +7,7 @@ void main() => runApp(MyApp());
 // You need to add your own data from LinkedIn application
 // From: https://www.linkedin.com/developers/
 // Please read step 1 from this link https://developer.linkedin.com/docs/oauth2
-final String redirectUrl = 'https://app.carde.de';
+final String redirectUrl = 'https://www.youtube.com/callback';
 final String clientId = '776rnw4e4izlvg';
 final String clientSecret = 'rQEgboUHMLcQi59v';
 

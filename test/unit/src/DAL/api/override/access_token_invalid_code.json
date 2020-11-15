@@ -1,0 +1,4 @@
+{
+  "error": "invalid_request",
+  "error_description": "Unable to retrieve access token: appid/redirect uri/code verifier does not match authorization code. Or authorization code expired. Or external member binding exists"
+}

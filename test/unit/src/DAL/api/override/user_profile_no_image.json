@@ -1,0 +1,23 @@
+{
+  "localizedLastName": "Doe",
+  "firstName": {
+    "localized": {
+      "en_US": "John"
+    },
+    "preferredLocale": {
+      "country": "US",
+      "language": "en"
+    }
+  },
+  "lastName": {
+    "localized": {
+      "en_US": "Doe"
+    },
+    "preferredLocale": {
+      "country": "US",
+      "language": "en"
+    }
+  },
+  "id": "dwe_Pcc0k3",
+  "localizedFirstName": "John"
+}

@@ -1,11 +1,11 @@
 # linkedin_login
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/76c714e1e1194d0e9d8652f332d3fd5d)](https://app.codacy.com/manual/d3xt3r2909/linkedin_login?utm_source=github.com&utm_medium=referral&utm_content=d3xt3r2909/linkedin_login&utm_campaign=Badge_Grade_Dashboard) [![Codemagic build status](https://api.codemagic.io/apps/5ea80ba7ab38b51337344705/5ea80ba7ab38b51337344704/status_badge.svg)](https://codemagic.io/apps/5ea80ba7ab38b51337344705/5ea80ba7ab38b51337344704/latest_build)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/76c714e1e1194d0e9d8652f332d3fd5d)](https://app.codacy.com/manual/d3xt3r2909/linkedin_login?utm_source=github.com&utm_medium=referral&utm_content=d3xt3r2909/linkedin_login&utm_campaign=Badge_Grade_Dashboard) [![codecov](https://codecov.io/gh/d3xt3r2909/linkedin_login/branch/master/graph/badge.svg?token=AX9dWsdz1H)](https://codecov.io/gh/d3xt3r2909/linkedin_login)
 
 -   A Flutter library for  [LinkedIn](https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin?context=linkedin/consumer/context) OAuth 2.0 APIs .
 -   This library is using new way of authorization on [LinkedIn](https://engineering.linkedin.com/blog/2018/12/developer-program-updates)
 
-### ⭐⭐⭐⭐ Star ⭐⭐⭐⭐ a repo if you like project. Your support matters to us.⭐⭐⭐⭐
+## ⭐⭐⭐⭐ Star ⭐⭐⭐⭐ a repo if you like project. Your support matters to us.⭐⭐⭐⭐
 
 ## Installation
 
@@ -22,8 +22,6 @@ You should replace this values
 `Note: clientSecret field is required just for LinkedInUserWidget`
 
 To get these values you need to create App on the [LinkedIn](https://www.linkedin.com/developers/apps/new).
-
-- `SurfaceAndroidWebView() requires API level 19.`
 
 ## Samples
 
