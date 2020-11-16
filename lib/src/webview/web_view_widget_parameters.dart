@@ -8,7 +8,6 @@ class WebViewConfigStrategy {
   Config configuration;
 }
 
-
 abstract class Config {
   String get clientSecret;
 
@@ -31,7 +30,6 @@ abstract class WebViewConfig {
   /// [onCallBack] what to do when you receive response from LinkedIn API
   /// [redirectUrl] that you setup it on LinkedIn developer portal
   /// [clientId] value from LinkedIn developer portal
-  /// [frontendRedirectUrl] if you want frontend redirection
   /// [destroySession] if you want to destroy a session
   /// [appBar] custom app bar widget
   WebViewConfig({
@@ -39,25 +37,16 @@ abstract class WebViewConfig {
     @required this.clientId,
     this.appBar,
     this.destroySession,
-    this.frontendRedirectUrl,
   })  : assert(redirectUrl != null),
         assert(clientId != null);
 
   final String redirectUrl;
-  final String frontendRedirectUrl;
   final String clientId;
   final PreferredSizeWidget appBar;
   final bool destroySession;
 
-  bool isCurrentUrlMatchToRedirection(String url) =>
-      _isRedirectionUrl(url) || _isFrontendRedirectionUrl(url);
-
-  bool _isRedirectionUrl(String url) {
+  bool isRedirectionUrl(String url) {
     return url.startsWith(redirectUrl);
-  }
-
-  bool _isFrontendRedirectionUrl(String url) {
-    return (frontendRedirectUrl != null && url.startsWith(frontendRedirectUrl));
   }
 }
 
@@ -67,7 +56,6 @@ class AccessCodeConfig extends WebViewConfig implements Config {
     @required String clientId,
     PreferredSizeWidget appBar,
     bool destroySession,
-    String frontendRedirectUrl,
     @required this.clientSecretParam,
     @required this.projectionParam,
   }) : super(
@@ -75,7 +63,6 @@ class AccessCodeConfig extends WebViewConfig implements Config {
           clientId: clientId,
           appBar: appBar,
           destroySession: destroySession,
-          frontendRedirectUrl: frontendRedirectUrl,
         );
 
   final String clientSecretParam;
@@ -86,6 +73,12 @@ class AccessCodeConfig extends WebViewConfig implements Config {
 
   @override
   List<String> get projection => projectionParam;
+
+  @override
+  String get frontendRedirectUrl => null;
+
+  @override
+  bool isCurrentUrlMatchToRedirection(String url) => isRedirectionUrl(url);
 }
 
 class AuthCodeConfig extends WebViewConfig implements Config {
@@ -94,19 +87,30 @@ class AuthCodeConfig extends WebViewConfig implements Config {
     @required String clientId,
     PreferredSizeWidget appBar,
     bool destroySession,
-    String frontendRedirectUrl,
+    this.frontendRedirectUrlParam,
   }) : super(
           redirectUrl: redirectUrl,
           clientId: clientId,
           appBar: appBar,
           destroySession: destroySession,
-          frontendRedirectUrl: frontendRedirectUrl,
         );
 
-  @override
-  String get clientSecret => 'N/A';
+  final String frontendRedirectUrlParam;
 
   @override
-  // TODO: implement projection
-  List<String> get projection => [];
+  String get clientSecret => null;
+
+  @override
+  List<String> get projection => null;
+
+  @override
+  String get frontendRedirectUrl => frontendRedirectUrlParam;
+
+  @override
+  bool isCurrentUrlMatchToRedirection(String url) =>
+      isRedirectionUrl(url) || _isFrontendRedirectionUrl(url);
+
+  bool _isFrontendRedirectionUrl(String url) {
+    return (frontendRedirectUrl != null && url.startsWith(frontendRedirectUrl));
+  }
 }

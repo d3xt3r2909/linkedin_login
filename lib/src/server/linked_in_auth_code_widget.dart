@@ -64,7 +64,7 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
             WebViewConfigStrategy(
               configuration: AuthCodeConfig(
                 destroySession: widget.destroySession,
-                frontendRedirectUrl: widget.frontendRedirectUrl,
+                frontendRedirectUrlParam: widget.frontendRedirectUrl,
                 redirectUrl: widget.redirectUrl,
                 clientId: widget.clientId,
                 appBar: widget.appBar,
