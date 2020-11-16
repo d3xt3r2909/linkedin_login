@@ -11,13 +11,9 @@ import 'package:redux/redux.dart';
 /// Class will fetch code and access token from the user
 /// It will show web view so that we can access to linked in auth page
 class LinkedInWebViewHandler extends StatefulWidget {
-  LinkedInWebViewHandler({
-    @required this.config,
-    this.clientSecret,
-  }) : assert(config != null);
+  LinkedInWebViewHandler(this.config) : assert(config != null);
 
-  final WebViewHandlerConfig config;
-  final String clientSecret;
+  final WebViewConfigStrategy config;
 
   @override
   State createState() => _LinkedInWebViewHandlerState();
@@ -30,12 +26,11 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
         distinct: true,
         converter: (store) => _ViewModel.from(
               store,
-              configuration: widget.config,
-              clientSecret: widget.clientSecret,
+              configuration: widget.config.configuration,
             ),
         builder: (context, viewModel) {
           return Scaffold(
-            appBar: widget.config.appBar,
+            appBar: widget.config.configuration.appBar,
             body: Builder(builder: (BuildContext context) {
               return WebView(
                 initialUrl: viewModel.loginUrl,
@@ -71,32 +66,23 @@ class _ViewModel {
   const _ViewModel._({
     @required this.onDispatch,
     @required this.configuration,
-    @required this.clientSecret,
   })  : assert(onDispatch != null),
         assert(configuration != null);
 
   factory _ViewModel.from(
     Store<AppState> store, {
-    @required WebViewHandlerConfig configuration,
-    @required String clientSecret,
+    @required Config configuration,
   }) =>
       _ViewModel._(
         onDispatch: store.dispatch,
         configuration: configuration,
-        clientSecret: clientSecret,
       );
 
-  final WebViewHandlerConfig configuration;
+  final Config configuration;
   final Function(dynamic) onDispatch;
-  final String clientSecret;
 
-  void onRedirectionUrl(String url) => onDispatch(
-        DirectionUrlMatch(
-          url,
-          configuration.clientId,
-          clientSecret: clientSecret,
-        ),
-      );
+  void onRedirectionUrl(String url) =>
+      onDispatch(DirectionUrlMatch(url, configuration));
 
   String get loginUrl => '${GlobalVariables.URL_LINKED_IN_GET_AUTH_TOKEN}?'
       'response_type=code'

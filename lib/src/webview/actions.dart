@@ -1,38 +1,35 @@
 import 'package:linkedin_login/redux/actions.dart';
+import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
 
 class DirectionUrlMatch extends LinkedInAction {
   const DirectionUrlMatch(
     this.url,
-    this.clientId, {
-    this.clientSecret,
-  })  : assert(url != null),
-        assert(clientId != null);
+    this.configuration,
+  )   : assert(url != null),
+        assert(configuration != null);
 
   final String url;
-  final String clientId;
-  final String clientSecret;
+  final Config configuration;
 
   @override
   String toString() {
-    return 'DirectionUrlMatch{url: $url, clientId: $clientId, clientSecret: $clientSecret}';
+    return 'DirectionUrlMatch{url: $url, configuration: $configuration}';
   }
 }
 
 class DirectionUrlMatchSucceededAction extends LinkedInAction {
   const DirectionUrlMatchSucceededAction(
     this.url,
-    this.clientId, {
-    this.clientSecret,
-  })  : assert(url != null),
-        assert(clientId != null);
+    this.configuration,
+  )   : assert(url != null),
+        assert(configuration != null);
 
   final String url;
-  final String clientId;
-  final String clientSecret;
+  final Config configuration;
 
   @override
   String toString() {
-    return 'DirectionUrlMatchSucceededAction{url: $url, clientId: $clientId, clientSecret: $clientSecret}';
+    return 'DirectionUrlMatchSucceededAction{url: $url, configuration: $configuration}';
   }
 }
 

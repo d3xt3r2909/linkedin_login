@@ -61,12 +61,14 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
         ),
         builder: (context, viewModel) {
           return LinkedInWebViewHandler(
-            config: AuthorizationWebViewConfig(
-              destroySession: widget.destroySession,
-              frontendRedirectUrl: widget.frontendRedirectUrl,
-              redirectUrl: widget.redirectUrl,
-              clientId: widget.clientId,
-              appBar: widget.appBar,
+            WebViewConfigStrategy(
+              configuration: AuthCodeConfig(
+                destroySession: widget.destroySession,
+                frontendRedirectUrl: widget.frontendRedirectUrl,
+                redirectUrl: widget.redirectUrl,
+                clientId: widget.clientId,
+                appBar: widget.appBar,
+              ),
             ),
           );
         },

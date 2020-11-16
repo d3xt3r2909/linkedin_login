@@ -22,7 +22,7 @@ Stream<dynamic> _fetchAuthToken(
   try {
     final authorizationCodeResponse = await LinkedInRepository(
       redirectionUrl: action.url,
-      clientId: action.clientId,
+      clientId: action.configuration.clientId,
     ).fetchWithAuthCode();
 
     yield FetchAuthCodeSucceededAction(authorizationCodeResponse);

@@ -77,13 +77,24 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
         ),
         builder: (context, viewModel) {
           return LinkedInWebViewHandler(
-            config: AuthorizationWebViewConfig(
-              destroySession: widget.destroySession,
-              redirectUrl: widget.redirectUrl,
-              clientId: widget.clientId,
-              appBar: widget.appBar,
+            WebViewConfigStrategy(
+              configuration: AccessCodeConfig(
+                clientId: widget.clientId,
+                redirectUrl: widget.redirectUrl,
+                clientSecretParam: widget.clientSecret,
+                // frontendRedirectUrl: frontend @todo
+                projectionParam: widget.projection,
+                destroySession: widget.destroySession,
+                appBar: widget.appBar,
+              ),
             ),
-            clientSecret: widget.clientSecret,
+            // config: AccessCodeConfig(
+            //   destroySession: widget.destroySession,
+            //   redirectUrl: widget.redirectUrl,
+            //   clientId: widget.clientId,
+            //   appBar: widget.appBar,
+            // ),
+            // clientSecret: widget.clientSecret,
           );
         },
       ),
