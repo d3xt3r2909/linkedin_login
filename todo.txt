@@ -1,0 +1,7 @@
+Todo:
+
+- Rest of tests
+- Clear cache feature
+- ViewModel config move it to properties
+- projection is not working
+- auth code is throwing some error

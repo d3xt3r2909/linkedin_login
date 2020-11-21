@@ -25,6 +25,8 @@ Stream<dynamic> _urlMatchToDirection(DirectionUrlMatch action) async* {
   }
 }
 
-Epic<AppState> webViewEpics() => combineEpics<AppState>([
-      _matchToRedirectionUrlEpic(),
-    ]);
+Epic<AppState> webViewEpics() => combineEpics<AppState>(
+      [
+        _matchToRedirectionUrlEpic(),
+      ],
+    );

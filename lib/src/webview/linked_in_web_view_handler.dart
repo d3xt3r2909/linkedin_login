@@ -33,41 +33,42 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
-        distinct: true,
-        converter: (store) => _ViewModel.from(
-              store,
-              configuration: widget.config.configuration,
-            ),
-        builder: (context, viewModel) {
-          return Scaffold(
-            appBar: widget.config.configuration.appBar,
-            body: Builder(builder: (BuildContext context) {
-              return WebView(
-                initialUrl: viewModel.loginUrl,
-                javascriptMode: JavascriptMode.unrestricted,
-                onWebViewCreated: (WebViewController webViewController) {
-                  if (widget.onWebViewCreated != null) {
-                    widget.onWebViewCreated(webViewController);
-                  }
-                },
-                navigationDelegate: (NavigationRequest request) async {
-                  if (viewModel.isUrlMatchingToRedirection(request.url)) {
-                    viewModel.onRedirectionUrl(request.url);
-                    return NavigationDecision.prevent;
-                  }
-                  return NavigationDecision.navigate;
-                },
-                onPageStarted: (String url) {
-                  print('::> Page started loading: $url');
-                },
-                onPageFinished: (String url) {
-                  print('::> Page finished loading: $url');
-                },
-                gestureNavigationEnabled: false,
-              );
-            }),
-          );
-        });
+      distinct: true,
+      converter: (store) => _ViewModel.from(
+        store,
+        configuration: widget.config.configuration,
+      ),
+      builder: (context, viewModel) {
+        return Scaffold(
+          appBar: widget.config.configuration.appBar,
+          body: Builder(builder: (BuildContext context) {
+            return WebView(
+              initialUrl: viewModel.loginUrl,
+              javascriptMode: JavascriptMode.unrestricted,
+              onWebViewCreated: (WebViewController webViewController) {
+                if (widget.onWebViewCreated != null) {
+                  widget.onWebViewCreated(webViewController);
+                }
+              },
+              navigationDelegate: (NavigationRequest request) async {
+                if (viewModel.isUrlMatchingToRedirection(request.url)) {
+                  viewModel.onRedirectionUrl(request.url);
+                  return NavigationDecision.prevent;
+                }
+                return NavigationDecision.navigate;
+              },
+              onPageStarted: (String url) {
+                print('::> Page started loading: $url');
+              },
+              onPageFinished: (String url) {
+                print('::> Page finished loading: $url');
+              },
+              gestureNavigationEnabled: false,
+            );
+          }),
+        );
+      },
+    );
   }
 }
 
