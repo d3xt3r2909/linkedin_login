@@ -51,7 +51,6 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
                   }
                 },
                 navigationDelegate: (NavigationRequest request) async {
-                  print("::> navigationDelegate HERE");
                   if (viewModel.isUrlMatchingToRedirection(request.url)) {
                     viewModel.onRedirectionUrl(request.url);
                     return NavigationDecision.prevent;

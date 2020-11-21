@@ -7,8 +7,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
+import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
 import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
+import 'package:mockito/mockito.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:redux/redux.dart';
 import '../../../unit/utils/mocks.dart';
@@ -18,6 +20,7 @@ void main() {
   Store<AppState> store;
   List actions;
   WidgetTestbed testbed;
+  _ArrangeBuilder builder;
 
   TestWidgetsFlutterBinding.ensureInitialized();
   final _FakeCookieManager _fakeCookieManager = _FakeCookieManager();
@@ -38,11 +41,19 @@ void main() {
     fakePlatformViewsController.reset();
     _fakeCookieManager.reset();
 
-    testbed = WidgetTestbed();
+    builder = _ArrangeBuilder(store, actions);
+
+    testbed = WidgetTestbed(
+      store: store,
+      onReduction: builder.onReduction,
+    );
   });
 
   final initialUrl =
       'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=12345&state=null&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress';
+
+  final urlAfterSuccessfulLogin =
+      'https://www.app.dexter.com/?code=AQQTwafddqnG27k6XUWiK0ONMAXKXPietjbeNtDeQGZnBVVM8vHlyrWFHysjGVCFfCAtNw0ajFCitY8fGMm53e7Had8ug0MO62quDLefdSZwNgOFzs6B5jdXgqUg_zad998th7ug4nAzXB71kD4EsYmqjhpUuCDjRNxu3FmRlGzMVOVHQhmEQwjitt0pBA&state=null';
 
   AccessCodeConfig configurationAccessCode({
     List<String> projectionParam,
@@ -112,11 +123,7 @@ void main() {
     final testWidget = testbed.reduxWrap(
       child: LinkedInWebViewHandler(
         WebViewConfigStrategy(
-          configuration: configurationAccessCode(
-            appBar: AppBar(
-              title: Text('Title'),
-            ),
-          ),
+          configuration: configurationAccessCode(),
         ),
         onWebViewCreated: (webViewController) {
           controller = webViewController;
@@ -130,33 +137,68 @@ void main() {
     expect(await controller.currentUrl(), initialUrl);
   });
 
-  testWidgets('test changing url if url does not match url', (WidgetTester tester) async {
-    WebViewController controller;
+  testWidgets('test changing url if url does not match url',
+      (WidgetTester tester) async {
     final testWidget = testbed.reduxWrap(
       child: LinkedInWebViewHandler(
         WebViewConfigStrategy(
-          configuration: configurationAccessCode(
-            appBar: AppBar(
-              title: Text('Title'),
-            ),
-          ),
+          configuration: configurationAccessCode(),
         ),
-        onWebViewCreated: (webViewController) {
-          controller = webViewController;
-        },
       ),
     );
 
     await tester.pumpWidget(testWidget);
     await tester.pumpAndSettle();
-
     final FakePlatformWebView platformWebView =
         fakePlatformViewsController.lastCreatedView;
+    platformWebView.fakeNavigate('https://www.google.com');
+    await tester.pump();
 
     expect(platformWebView.hasNavigationDelegate, true);
-// @todo not match se mora implementirati
-    platformWebView.fakeNavigate('https://www.google.com');
+    expect(platformWebView.currentUrl, 'https://www.google.com');
+    expect(actions.whereType<DirectionUrlMatch>(), hasLength(0));
   });
+
+  testWidgets('emit proper action if url is matching if redirection',
+      (WidgetTester tester) async {
+    final testWidget = testbed.reduxWrap(
+      child: LinkedInWebViewHandler(
+        WebViewConfigStrategy(
+          configuration: configurationAccessCode(),
+        ),
+      ),
+    );
+
+    await tester.pumpWidget(testWidget);
+    await tester.pumpAndSettle();
+    final FakePlatformWebView platformWebView =
+        fakePlatformViewsController.lastCreatedView;
+    platformWebView.fakeNavigate(urlAfterSuccessfulLogin);
+    await tester.pumpAndSettle();
+
+    expect(actions.whereType<DirectionUrlMatch>(), hasLength(1));
+  });
+}
+
+class _ArrangeBuilder {
+  _ArrangeBuilder(
+    this.store,
+    this.actions,
+  ) {
+    state = AppState.initialState();
+    when(store.state).thenAnswer((_) => state);
+  }
+
+  final Store<AppState> store;
+  final List<dynamic> actions;
+
+  AppState state;
+
+  AppState onReduction(dynamic event) {
+    actions.add(event);
+
+    return state;
+  }
 }
 
 class _FakePlatformViewsController {
