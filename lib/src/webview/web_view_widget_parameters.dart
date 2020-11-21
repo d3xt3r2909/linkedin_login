@@ -54,11 +54,13 @@ class AccessCodeConfig extends WebViewConfig implements Config {
   AccessCodeConfig({
     @required String redirectUrl,
     @required String clientId,
-    PreferredSizeWidget appBar,
-    bool destroySession,
     @required this.clientSecretParam,
     @required this.projectionParam,
-  }) : super(
+    PreferredSizeWidget appBar,
+    bool destroySession,
+  })  : assert(clientSecretParam != null),
+        assert(projectionParam != null),
+        super(
           redirectUrl: redirectUrl,
           clientId: clientId,
           appBar: appBar,
