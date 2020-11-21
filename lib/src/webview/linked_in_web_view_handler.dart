@@ -40,7 +40,6 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
                   print("onWebViewCreated started loading");
                 },
                 navigationDelegate: (NavigationRequest request) async {
-                  print("::> inside navigationDelegate");
                   if (viewModel.isUrlMatchingToRedirection(request.url)) {
                     viewModel.onRedirectionUrl(request.url);
                     return NavigationDecision.prevent;

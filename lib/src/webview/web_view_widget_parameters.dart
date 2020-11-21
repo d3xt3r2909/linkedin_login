@@ -24,6 +24,14 @@ abstract class Config {
   bool get destroySession;
 
   bool isCurrentUrlMatchToRedirection(String url);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Config && runtimeType == other.runtimeType;
+
+  @override
+  int get hashCode => 0;
 }
 
 abstract class WebViewConfig {
@@ -48,6 +56,23 @@ abstract class WebViewConfig {
   bool isRedirectionUrl(String url) {
     return url.startsWith(redirectUrl);
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is WebViewConfig &&
+          runtimeType == other.runtimeType &&
+          redirectUrl == other.redirectUrl &&
+          clientId == other.clientId &&
+          appBar == other.appBar &&
+          destroySession == other.destroySession;
+
+  @override
+  int get hashCode =>
+      redirectUrl.hashCode ^
+      clientId.hashCode ^
+      appBar.hashCode ^
+      destroySession.hashCode;
 }
 
 class AccessCodeConfig extends WebViewConfig implements Config {
@@ -81,6 +106,17 @@ class AccessCodeConfig extends WebViewConfig implements Config {
 
   @override
   bool isCurrentUrlMatchToRedirection(String url) => isRedirectionUrl(url);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AccessCodeConfig &&
+          runtimeType == other.runtimeType &&
+          clientSecretParam == other.clientSecretParam &&
+          projectionParam == other.projectionParam;
+
+  @override
+  int get hashCode => clientSecretParam.hashCode ^ projectionParam.hashCode;
 }
 
 class AuthCodeConfig extends WebViewConfig implements Config {
@@ -115,4 +151,14 @@ class AuthCodeConfig extends WebViewConfig implements Config {
   bool _isFrontendRedirectionUrl(String url) {
     return (frontendRedirectUrl != null && url.startsWith(frontendRedirectUrl));
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is AuthCodeConfig &&
+          runtimeType == other.runtimeType &&
+          frontendRedirectUrlParam == other.frontendRedirectUrlParam;
+
+  @override
+  int get hashCode => frontendRedirectUrlParam.hashCode;
 }
