@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class WebViewConfigStrategy {
   WebViewConfigStrategy({
-    this.configuration,
+    @required this.configuration,
   }) : assert(configuration != null);
 
   Config configuration;

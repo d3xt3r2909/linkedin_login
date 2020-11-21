@@ -11,15 +11,25 @@ import 'package:redux/redux.dart';
 /// Class will fetch code and access token from the user
 /// It will show web view so that we can access to linked in auth page
 class LinkedInWebViewHandler extends StatefulWidget {
-  LinkedInWebViewHandler(this.config) : assert(config != null);
+  LinkedInWebViewHandler(
+    this.config, {
+    this.onWebViewCreated, // this is just for testing purpose
+  }) : assert(config != null);
 
   final WebViewConfigStrategy config;
+  final Function(WebViewController) onWebViewCreated;
 
   @override
   State createState() => _LinkedInWebViewHandlerState();
 }
 
 class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
@@ -36,10 +46,12 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
                 initialUrl: viewModel.loginUrl,
                 javascriptMode: JavascriptMode.unrestricted,
                 onWebViewCreated: (WebViewController webViewController) {
-                  // _controller.complete(webViewController);
-                  print("onWebViewCreated started loading");
+                  if (widget.onWebViewCreated != null) {
+                    widget.onWebViewCreated(webViewController);
+                  }
                 },
                 navigationDelegate: (NavigationRequest request) async {
+                  print("::> navigationDelegate HERE");
                   if (viewModel.isUrlMatchingToRedirection(request.url)) {
                     viewModel.onRedirectionUrl(request.url);
                     return NavigationDecision.prevent;
@@ -47,10 +59,10 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
                   return NavigationDecision.navigate;
                 },
                 onPageStarted: (String url) {
-                  print('Page started loading: $url');
+                  print('::> Page started loading: $url');
                 },
                 onPageFinished: (String url) {
-                  print('Page finished loading: $url');
+                  print('::> Page finished loading: $url');
                 },
                 gestureNavigationEnabled: false,
               );
@@ -77,6 +89,7 @@ class _ViewModel {
         configuration: configuration,
       );
 
+  // @todo expose what we need from config
   final Config configuration;
   final Function(dynamic) onDispatch;
 
