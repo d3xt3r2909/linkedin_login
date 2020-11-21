@@ -4,11 +4,11 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import 'package:linkedin_login/linkedin_login.dart';
-import 'package:linkedin_login/src/utils/global_variables.dart';
 import 'package:linkedin_login/src/utils/session.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 import 'package:linkedin_login/src/wrappers/linked_in_error_object.dart';
 import 'package:linkedin_login/src/wrappers/linked_in_token_object.dart';
+import 'package:linkedin_login/src/utils/constants.dart';
 
 abstract class LinkedInFetcher {
   LinkedInFetcher({
@@ -131,7 +131,7 @@ class LinkedInRepository extends LinkedInFetcher {
     };
 
     final response = await post(
-      GlobalVariables.URL_LINKED_IN_GET_ACCESS_TOKEN,
+      UrlAccessPoint.URL_LINKED_IN_GET_ACCESS_TOKEN,
       body: body,
       headers: {
         HttpHeaders.acceptHeader: 'application/json',

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:linkedin_login/redux/app_state.dart';
-import 'package:linkedin_login/src/utils/global_variables.dart';
+import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/utils/session.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
@@ -96,7 +96,7 @@ class _ViewModel {
   void onRedirectionUrl(String url) =>
       onDispatch(DirectionUrlMatch(url, configuration));
 
-  String get loginUrl => '${GlobalVariables.URL_LINKED_IN_GET_AUTH_TOKEN}?'
+  String get loginUrl => '${UrlAccessPoint.URL_LINKED_IN_GET_AUTH_TOKEN}?'
       'response_type=code'
       '&client_id=${configuration.clientId}'
       '&state=${Session.clientState}'
