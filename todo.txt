@@ -14,3 +14,7 @@ Todo:
 - integration tests
 - can be error inside repository LinkedInErrorObject (check deprecate message is it ok)
 - implement logs
+- introduce graph
+- throwing Exception(tokenObject.error)
+- add logError to epics
+- remove unused packages pubspec

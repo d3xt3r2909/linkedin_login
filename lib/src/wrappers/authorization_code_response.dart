@@ -18,6 +18,8 @@ class AuthorizationCodeResponse {
     this.state,
   });
 
+  bool get isCodeValid => code != null && code.isNotEmpty;
+
   /// Setter for error object, store error object information inside [error]
   /// property
   set errorObject(LinkedInErrorObject error) {

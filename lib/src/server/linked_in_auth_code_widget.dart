@@ -4,6 +4,8 @@ import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/redux/core.dart';
 import 'package:linkedin_login/src/server/state.dart';
 import 'package:linkedin_login/src/utils/session.dart';
+import 'package:linkedin_login/src/utils/startup/graph.dart';
+import 'package:linkedin_login/src/utils/startup/initializer.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
 import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
@@ -43,9 +45,13 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
 }
 
 class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
+  Graph graph;
+
   @override
   void initState() {
     super.initState();
+
+    graph = Initializer().initialise();
 
     Session.clientState =
         (Session.clientState == null || Session.clientState.isEmpty)
@@ -56,7 +62,7 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
   @override
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
-      store: LinkedInStore.inject().store,
+      store: LinkedInStore.inject(graph).store,
       child: StoreConnector<AppState, _ViewModel>(
         distinct: true,
         converter: (store) => _ViewModel.from(store),

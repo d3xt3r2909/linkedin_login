@@ -4,6 +4,7 @@ import 'package:linkedin_login/src/server/actions.dart';
 import 'package:linkedin_login/src/server/epic.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/utils/session.dart';
+import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
 import 'package:redux_epics/redux_epics.dart';
@@ -15,9 +16,10 @@ import '../../utils/stream_utils.dart';
 
 void main() {
   EpicStore<AppState> epicStore;
-
+  Graph graph;
   setUp(() {
     final mockStore = MockStore();
+    graph = MockGraph();
     epicStore = EpicStore(mockStore);
 
     Session.clientState = Uuid().v4();
@@ -40,7 +42,7 @@ void main() {
   );
 
   test('Emits FetchAuthCodeFailedAction if state code is not valid', () async {
-    final events = serverEpics()(
+    final events = serverEpics(graph)(
       toStream(
         DirectionUrlMatchSucceededAction(
           '$urlAfterSuccessfulLogin&state=null',
@@ -59,7 +61,7 @@ void main() {
   });
 
   test('Emits FetchAuthCodeSucceededAction on success', () async {
-    final events = serverEpics()(
+    final events = serverEpics(graph)(
       toStream(
         DirectionUrlMatchSucceededAction(
           '$urlAfterSuccessfulLogin&state=${Session.clientState}',

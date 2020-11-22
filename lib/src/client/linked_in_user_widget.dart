@@ -6,6 +6,8 @@ import 'package:linkedin_login/src/client/state.dart';
 import 'package:linkedin_login/src/model/linked_in_user_model.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/utils/session.dart';
+import 'package:linkedin_login/src/utils/startup/graph.dart';
+import 'package:linkedin_login/src/utils/startup/initializer.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
 import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
 import 'package:redux/redux.dart';
@@ -53,10 +55,13 @@ class LinkedInUserWidget extends StatefulWidget {
 /// which will have as result user profile on the end
 class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
   String profileProjection = '';
+  Graph graph;
 
   @override
   void initState() {
     super.initState();
+
+    graph = Initializer().initialise();
 
     Session.clientState =
         (Session.clientState == null || Session.clientState.isEmpty)
@@ -68,7 +73,7 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
   @override
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
-      store: LinkedInStore.inject().store,
+      store: LinkedInStore.inject(graph).store,
       child: StoreConnector<AppState, _ViewModel>(
         distinct: true,
         converter: (store) => _ViewModel.from(store),

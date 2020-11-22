@@ -5,6 +5,7 @@ import 'package:linkedin_login/src/wrappers/linked_in_error_object.dart';
 class LinkedInTokenObject {
   String accessToken;
   int expiresIn;
+  @deprecated
   LinkedInErrorObject error;
 
   LinkedInTokenObject({

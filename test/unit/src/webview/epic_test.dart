@@ -1,5 +1,6 @@
 import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
+import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:linkedin_login/src/webview/epic.dart';
 import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
@@ -11,10 +12,12 @@ import '../../utils/stream_utils.dart';
 
 void main() {
   EpicStore<AppState> epicStore;
+  Graph graph;
 
   setUp(() {
     final mockStore = MockStore();
     epicStore = EpicStore(mockStore);
+    graph = MockGraph();
   });
 
   final urlAfterSuccessfulLogin =
@@ -34,7 +37,7 @@ void main() {
   );
 
   test('Emits succeeded on DirectionUrlMatch action', () async {
-    final events = webViewEpics()(
+    final events = webViewEpics(graph)(
       toStream(DirectionUrlMatch(urlAfterSuccessfulLogin, config)),
       epicStore,
     );

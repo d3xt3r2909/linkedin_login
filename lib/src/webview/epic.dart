@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:linkedin_login/redux/app_state.dart';
+import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
-Epic<AppState> _matchToRedirectionUrlEpic() => (
+Epic<AppState> _matchToRedirectionUrlEpic(Graph graph) => (
       Stream<dynamic> actions,
       EpicStore<AppState> store,
     ) {
@@ -25,8 +26,8 @@ Stream<dynamic> _urlMatchToDirection(DirectionUrlMatch action) async* {
   }
 }
 
-Epic<AppState> webViewEpics() => combineEpics<AppState>(
+Epic<AppState> webViewEpics(Graph graph) => combineEpics<AppState>(
       [
-        _matchToRedirectionUrlEpic(),
+        _matchToRedirectionUrlEpic(graph),
       ],
     );

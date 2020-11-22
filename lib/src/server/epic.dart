@@ -1,29 +1,29 @@
 import 'dart:async';
 
 import 'package:linkedin_login/redux/app_state.dart';
+import 'package:linkedin_login/src/DAL/repo/authorization_repository.dart';
 import 'package:linkedin_login/src/DAL/repository.dart';
 import 'package:linkedin_login/src/server/actions.dart';
+import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
-Epic<AppState> _fetchAuthTokenEpic() => (
+Epic<AppState> _fetchAuthTokenEpic(Graph graph) => (
       Stream<dynamic> actions,
       EpicStore<AppState> store,
     ) {
-      return actions
-          .whereType<DirectionUrlMatchSucceededAction>()
-          .switchMap(_fetchAuthToken);
+      return actions.whereType<DirectionUrlMatchSucceededAction>().switchMap(
+          (action) => _fetchAuthToken(action, graph.authorizationRepository));
     };
 
 Stream<dynamic> _fetchAuthToken(
   DirectionUrlMatchSucceededAction action,
+  AuthorizationRepository authRepo,
 ) async* {
   try {
-    final authorizationCodeResponse = await LinkedInRepository(
-      redirectionUrl: action.url,
-      clientId: action.configuration.clientId,
-    ).fetchWithAuthCode();
+    final authorizationCodeResponse =
+        authRepo.fetchAuthorizationCode(redirectedUrl: action.url);
 
     yield FetchAuthCodeSucceededAction(authorizationCodeResponse);
   } on Exception catch (e) {
@@ -31,6 +31,6 @@ Stream<dynamic> _fetchAuthToken(
   }
 }
 
-Epic<AppState> serverEpics() => combineEpics<AppState>([
-      _fetchAuthTokenEpic(),
+Epic<AppState> serverEpics(Graph graph) => combineEpics<AppState>([
+      _fetchAuthTokenEpic(graph),
     ]);
