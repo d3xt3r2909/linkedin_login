@@ -13,3 +13,4 @@ Todo:
 - creation of state - session - remove it
 - integration tests
 - can be error inside repository LinkedInErrorObject (check deprecate message is it ok)
+- implement logs
