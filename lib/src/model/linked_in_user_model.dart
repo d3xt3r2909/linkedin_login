@@ -13,8 +13,8 @@ import 'package:linkedin_login/src/wrappers/linked_in_token_object.dart';
 /// linkedIn page
 /// while [userId] is LinkedIn generated field same as values inside [token]
 class LinkedInUserModel {
-  final _LinkedInPersonalInfo firstName, lastName;
-  final _LinkedInProfilePicture profilePicture;
+  final LinkedInPersonalInfo firstName, lastName;
+  final LinkedInProfilePicture profilePicture;
   final String userId;
   LinkedInProfileEmail email;
   LinkedInTokenObject token;
@@ -36,11 +36,11 @@ class LinkedInUserModel {
 
     return LinkedInUserModel(
       firstName:
-          firstName != null ? _LinkedInPersonalInfo.fromJson(firstName) : null,
+          firstName != null ? LinkedInPersonalInfo.fromJson(firstName) : null,
       lastName:
-          lastName != null ? _LinkedInPersonalInfo.fromJson(lastName) : null,
+          lastName != null ? LinkedInPersonalInfo.fromJson(lastName) : null,
       profilePicture: profilePicture != null
-          ? _LinkedInProfilePicture.fromJson(profilePicture)
+          ? LinkedInProfilePicture.fromJson(profilePicture)
           : null,
       userId: userId ?? null,
     );
@@ -56,29 +56,29 @@ class LinkedInUserModel {
 }
 
 /// Helper children subclass
-class _LinkedInPersonalInfo {
-  final _LinkedInLocalInfo localized;
-  final _LinkedInPreferredLocal preferredLocal;
+class LinkedInPersonalInfo {
+  final LinkedInLocalInfo localized;
+  final LinkedInPreferredLocal preferredLocal;
 
-  factory _LinkedInPersonalInfo.fromJson(Map<String, dynamic> json) =>
-      _LinkedInPersonalInfo(
-        localized: _LinkedInLocalInfo.fromJson(json['localized']),
+  factory LinkedInPersonalInfo.fromJson(Map<String, dynamic> json) =>
+      LinkedInPersonalInfo(
+        localized: LinkedInLocalInfo.fromJson(json['localized']),
         preferredLocal:
-            _LinkedInPreferredLocal.fromJson(json['preferredLocale']),
+            LinkedInPreferredLocal.fromJson(json['preferredLocale']),
       );
 
-  _LinkedInPersonalInfo({this.localized, this.preferredLocal});
+  LinkedInPersonalInfo({this.localized, this.preferredLocal});
 }
 
 /// Helper children subclass
-class _LinkedInLocalInfo {
+class LinkedInLocalInfo {
   final String label;
 
-  _LinkedInLocalInfo({this.label});
+  LinkedInLocalInfo({this.label});
 
-  /// Convert response from API to [_LinkedInLocalInfo] object
-  factory _LinkedInLocalInfo.fromJson(Map<String, dynamic> json) =>
-      _LinkedInLocalInfo(
+  /// Convert response from API to [LinkedInLocalInfo] object
+  factory LinkedInLocalInfo.fromJson(Map<String, dynamic> json) =>
+      LinkedInLocalInfo(
         label: getFirstInListFromJson(json),
       );
 }
@@ -100,30 +100,30 @@ String getFirstInListFromJson(Map<String, dynamic> json) {
 }
 
 /// Helper children subclass
-class _LinkedInPreferredLocal {
+class LinkedInPreferredLocal {
   final String country;
   final String language;
 
-  _LinkedInPreferredLocal({this.country, this.language});
+  LinkedInPreferredLocal({this.country, this.language});
 
-  /// Convert response from API to [_LinkedInPreferredLocal] object
-  factory _LinkedInPreferredLocal.fromJson(Map<String, dynamic> json) =>
-      _LinkedInPreferredLocal(
+  /// Convert response from API to [LinkedInPreferredLocal] object
+  factory LinkedInPreferredLocal.fromJson(Map<String, dynamic> json) =>
+      LinkedInPreferredLocal(
         country: json['country'],
         language: json['language'],
       );
 }
 
 /// Helper children subclass
-class _LinkedInProfilePicture {
+class LinkedInProfilePicture {
   final String displayImage;
   final _DisplayImage displayImageContent;
 
-  _LinkedInProfilePicture({this.displayImage, this.displayImageContent});
+  LinkedInProfilePicture({this.displayImage, this.displayImageContent});
 
-  /// Convert response from API to [_LinkedInProfilePicture] object
-  factory _LinkedInProfilePicture.fromJson(Map<String, dynamic> json) =>
-      _LinkedInProfilePicture(
+  /// Convert response from API to [LinkedInProfilePicture] object
+  factory LinkedInProfilePicture.fromJson(Map<String, dynamic> json) =>
+      LinkedInProfilePicture(
         displayImage: json['displayImage'],
         displayImageContent: json['displayImage~'] != null
             ? _DisplayImage.fromJson(json['displayImage~'])
@@ -138,7 +138,7 @@ class _DisplayImage {
 
   _DisplayImage({this.paging, this.elements});
 
-  /// Convert response from API to [_LinkedInProfilePicture] object
+  /// Convert response from API to [LinkedInProfilePicture] object
   factory _DisplayImage.fromJson(Map<String, dynamic> json) => _DisplayImage(
         paging: _ImagePagination.fromJson(json['paging']),
         elements: (json['elements'] != null && '${json['elements']}' != '[]')
@@ -157,7 +157,7 @@ class _ImageItem {
 
   _ImageItem({this.artifact, this.authorizationMethod, this.identifiers});
 
-  /// Convert response from API to [_LinkedInProfilePicture] object
+  /// Convert response from API to [LinkedInProfilePicture] object
   factory _ImageItem.fromJson(Map<String, dynamic> json) => _ImageItem(
         artifact: json['artifact'],
         authorizationMethod: json['authorizationMethod'],
