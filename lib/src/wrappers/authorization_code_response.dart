@@ -19,6 +19,7 @@ class AuthorizationCodeResponse {
     this.code,
     this.error,
     this.state,
+    this.accessToken,
   });
 
   bool get isCodeValid => code != null && code.isNotEmpty;

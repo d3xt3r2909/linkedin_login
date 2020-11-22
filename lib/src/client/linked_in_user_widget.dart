@@ -61,6 +61,14 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
   void initState() {
     super.initState();
 
+    // redirectUrl
+    // clientId
+    // clientState
+
+    // clientSecret - can be null
+    // projection - can be null
+    // frontend - can be null
+
     graph = Initializer().initialise();
 
     Session.clientState =

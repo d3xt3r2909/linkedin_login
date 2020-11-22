@@ -19,14 +19,14 @@ class Initializer {
 
 class _GraphBuilder {
   Graph initialise() {
-    LinkedInApi api = _networking();
-
+    final api = _networking();
     final authRepository = AuthorizationRepository(api: api);
     final userRepository = UserRepository(api: api);
 
     return Graph(
       authorizationRepository: authRepository,
       userRepository: userRepository,
+      api: api,
     );
   }
 
