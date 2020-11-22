@@ -1,5 +1,7 @@
 import 'package:linkedin_login/linkedin_login.dart';
 import 'package:linkedin_login/redux/app_state.dart';
+import 'package:linkedin_login/src/client/actions.dart';
+import 'package:linkedin_login/src/client/epic.dart';
 import 'package:linkedin_login/src/server/actions.dart';
 import 'package:linkedin_login/src/server/epic.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
@@ -39,8 +41,9 @@ void main() {
     ],
   );
 
-  test('Emits FetchAuthCodeFailedAction if state code is not valid', () async {
-    final events = serverEpics()(
+  test('Emits FetchAccessCodeFailedAction if state code is not valid',
+      () async {
+    final events = clientEpics()(
       toStream(
         DirectionUrlMatchSucceededAction(
           '$urlAfterSuccessfulLogin&state=null',
@@ -53,13 +56,13 @@ void main() {
     expect(
       events,
       emits(
-        FetchAuthCodeFailedAction(Exception()),
+        FetchAccessCodeFailedAction(Exception()),
       ),
     );
   });
 
-  test('Emits FetchAuthCodeSucceededAction on success', () async {
-    final events = serverEpics()(
+  test('Emits FetchAccessCodeSucceededAction on success', () async {
+    final events = clientEpics()(
       toStream(
         DirectionUrlMatchSucceededAction(
           '$urlAfterSuccessfulLogin&state=${Session.clientState}',
@@ -71,7 +74,7 @@ void main() {
 
     expect(
       events,
-      emits(FetchAuthCodeSucceededAction(AuthorizationCodeResponse())),
+      emits(FetchAccessCodeSucceededAction(LinkedInTokenObject())),
     );
   });
 }

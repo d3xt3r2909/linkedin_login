@@ -130,6 +130,9 @@ class LinkedInRepository extends LinkedInFetcher {
       'client_secret': clientSecret,
     };
 
+    print("::> _getAuthorizationWithAccessToken ${authorizationCode.code} || ${clientSecret}");
+
+
     final response = await post(
       UrlAccessPoint.URL_LINKED_IN_GET_ACCESS_TOKEN,
       body: body,
