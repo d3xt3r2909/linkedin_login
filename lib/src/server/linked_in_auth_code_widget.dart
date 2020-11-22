@@ -13,7 +13,22 @@ import 'package:uuid/uuid.dart';
 /// This class is responsible to fetch all information for user after we get
 /// token and code from LinkedIn
 class LinkedInAuthCodeWidget extends StatefulWidget {
+  LinkedInAuthCodeWidget({
+    @required this.onGetAuthCode,
+    @required this.redirectUrl,
+    @required this.clientId,
+    this.destroySession = false,
+    this.frontendRedirectUrl,
+    this.catchError,
+    this.appBar,
+  })  : assert(onGetAuthCode != null),
+        assert(redirectUrl != null),
+        assert(clientId != null),
+        assert(destroySession != null);
+
   final Function(AuthorizationCodeResponse) onGetAuthCode;
+  @Deprecated(
+      'From 1.4.x version of library, this field will not be used anymore and in near future it will be removed. Error code will be set inside AuthorizationCodeResponse response [error] property')
   final Function catchError;
   final String redirectUrl;
   final String clientId;
@@ -22,17 +37,6 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
 
   // just in case that frontend in your team has changed redirect url
   final String frontendRedirectUrl;
-
-  /// Client state parameter needs to be unique range of characters - random one
-  LinkedInAuthCodeWidget({
-    @required this.onGetAuthCode,
-    @required this.redirectUrl,
-    @required this.clientId,
-    this.frontendRedirectUrl,
-    this.destroySession = false,
-    this.catchError,
-    this.appBar,
-  });
 
   @override
   State createState() => _LinkedInAuthCodeWidgetState();
