@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:linkedin_login/src/DAL/api/endpoint.dart';
+import 'package:linkedin_login/src/model/linked_in_user_model.dart';
 import 'package:linkedin_login/src/wrappers/linked_in_token_object.dart';
 import 'package:meta/meta.dart';
 import 'exceptions.dart';
@@ -21,8 +22,6 @@ class LinkedInApi {
   }
 
   final Endpoint _endpoint;
-
-  String token;
 
   Uri _generateEndpoint(EnvironmentAccess setup, String path,
       [Map<String, String> queryParameters]) {
@@ -49,7 +48,6 @@ class LinkedInApi {
     final response = await _postWithResponse(
       endpoint,
       body,
-      contentType: ContentType.json,
     );
 
     final responseBody = json.decode(response.body);
@@ -58,6 +56,29 @@ class LinkedInApi {
       accessToken: responseBody['access_token'].toString(),
       expiresIn: responseBody['expires_in'],
     );
+  }
+
+  Future<LinkedInUserModel> fetchProfile({
+    @required String token,
+  }) async {
+    final endpoint = _generateEndpoint(EnvironmentAccess.profile, 'me');
+
+    final response = await _get(endpoint, token);
+
+    return LinkedInUserModel.fromJson(response);
+  }
+
+  Future<LinkedInProfileEmail> fetchEmail({
+    @required String token,
+  }) async {
+    assert(token != null);
+
+    final endpoint = _generateEndpoint(EnvironmentAccess.profile,
+        'emailAddress?q=members&projection=(elements*(handle~))');
+
+    final response = await _get(endpoint, token);
+
+    return LinkedInProfileEmail.fromJson(response);
   }
 
   Future<dynamic> _get(Uri url, String token) async {
@@ -83,13 +104,11 @@ class LinkedInApi {
   Future<http.Response> _postWithResponse(
     Uri url,
     dynamic body, {
-    ContentType contentType,
     String token,
   }) async {
     final response = await _fetchPostResponse(
       url,
       body,
-      contentType: contentType,
       token: token,
     );
 
@@ -109,13 +128,11 @@ class LinkedInApi {
   Future<http.Response> _fetchPostResponse(
     Uri url,
     dynamic body, {
-    ContentType contentType,
     String token,
   }) async {
     assert(url != null);
 
     var headers = {
-      // HttpHeaders.contentTypeHeader: contentType?.value ?? 'application/json',
       HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
       HttpHeaders.acceptHeader: 'application/json',
     };

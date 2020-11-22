@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/DAL/repo/authorization_repository.dart';
-import 'package:linkedin_login/src/DAL/repository.dart';
+import 'package:linkedin_login/src/DAL/repo/user_repository.dart';
 import 'package:linkedin_login/src/client/actions.dart';
 import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
@@ -44,20 +44,24 @@ Epic<AppState> _fetchLinkedUserProfileEpic(Graph graph) => (
       Stream<dynamic> actions,
       EpicStore<AppState> store,
     ) {
-      return actions
-          .whereType<FetchAccessCodeSucceededAction>()
-          .switchMap(_fetchLinkedInProfile);
+      return actions.whereType<FetchAccessCodeSucceededAction>().switchMap(
+            (action) => _fetchLinkedInProfile(
+              action,
+              graph.userRepository,
+            ),
+          );
     };
 
 Stream<dynamic> _fetchLinkedInProfile(
   FetchAccessCodeSucceededAction action,
+  UserRepository userRepo,
 ) async* {
   try {
-    final user = await LinkedInUserRepositoryImpl(action.token)
-        .fetchFullLinkedInUserProfile();
+    final user = await userRepo.fetchFullProfile(token: action.token);
 
     yield FetchLinkedInUserSucceededAction(user);
-  } on Exception catch (e) {
+  } on Exception catch (e, s) {
+    logError('Unable to fetch LinkedIn profile', error: e, stackTrace: s);
     yield FetchLinkedInUserFailedAction(e);
   }
 }

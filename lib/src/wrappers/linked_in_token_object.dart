@@ -16,5 +16,6 @@ class LinkedInTokenObject {
 
   /// If there is not error at all, [isSuccess] getter will return a true value
   /// This means, that you should get correct response
+  @deprecated
   get isSuccess => error == null || error.description.isEmpty;
 }

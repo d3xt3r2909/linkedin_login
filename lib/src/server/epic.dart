@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/DAL/repo/authorization_repository.dart';
-import 'package:linkedin_login/src/DAL/repository.dart';
 import 'package:linkedin_login/src/server/actions.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/webview/actions.dart';

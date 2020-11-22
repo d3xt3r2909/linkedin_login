@@ -10,6 +10,7 @@ class ProjectionParameters {
 }
 
 /// Class contains static variables which are containing URLs for oAuth
+@Deprecated('Can be remove')
 class UrlAccessPoint {
   static const String URL_LINKED_IN_GET_ACCESS_TOKEN =
       'https://www.linkedin.com/oauth/v2/accessToken';
