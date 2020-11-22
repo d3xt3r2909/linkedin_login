@@ -82,19 +82,11 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
                 clientId: widget.clientId,
                 redirectUrl: widget.redirectUrl,
                 clientSecretParam: widget.clientSecret,
-                // frontendRedirectUrl: frontend @todo
                 projectionParam: widget.projection,
                 destroySession: widget.destroySession,
                 appBar: widget.appBar,
               ),
             ),
-            // config: AccessCodeConfig(
-            //   destroySession: widget.destroySession,
-            //   redirectUrl: widget.redirectUrl,
-            //   clientId: widget.clientId,
-            //   appBar: widget.appBar,
-            // ),
-            // clientSecret: widget.clientSecret,
           );
         },
       ),
