@@ -3,10 +3,9 @@ Todo:
 - Rest of tests
 - Clear cache feature - destroySession
 - ViewModel config move it to properties
-- projection is not working
 - auth code is throwing some error
 - test and refactor a little bit linked_in_buttons.dart
-- remove   final LinkedInUserState user; expose properties
+- remove  final LinkedInUserState user; expose properties
 - reorder changelog.md
 - github actions
 - new version of flutter null safety

@@ -14,10 +14,14 @@ class UserRepository {
 
   Future<LinkedInUserModel> fetchFullProfile({
     @required LinkedInTokenObject token,
+    @required List<String> projection,
   }) async {
     log.fine('Fetching user profile');
 
-    final basicUserProfile = await api.fetchProfile(token: token.accessToken);
+    final basicUserProfile = await api.fetchProfile(
+      token: token.accessToken,
+      projection: projection,
+    );
     final userEmail = await api.fetchEmail(token: token.accessToken);
 
     basicUserProfile.email = userEmail;

@@ -6,10 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:linkedin_login/redux/app_state.dart';
-import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
-import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
 import 'package:mockito/mockito.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:redux/redux.dart';
@@ -55,25 +53,25 @@ void main() {
   final urlAfterSuccessfulLogin =
       'https://www.app.dexter.com/?code=AQQTwafddqnG27k6XUWiK0ONMAXKXPietjbeNtDeQGZnBVVM8vHlyrWFHysjGVCFfCAtNw0ajFCitY8fGMm53e7Had8ug0MO62quDLefdSZwNgOFzs6B5jdXgqUg_zad998th7ug4nAzXB71kD4EsYmqjhpUuCDjRNxu3FmRlGzMVOVHQhmEQwjitt0pBA&state=null';
 
-  AccessCodeConfig configurationAccessCode({
-    List<String> projectionParam,
-    PreferredSizeWidget appBar,
-  }) {
-    return AccessCodeConfig(
-      redirectUrl: 'https://www.app.dexter.com',
-      clientId: '12345',
-      clientSecretParam: 'somethingrandom',
-      appBar: appBar,
-      projectionParam: projectionParam ??
-          const [
-            ProjectionParameters.id,
-            ProjectionParameters.localizedFirstName,
-            ProjectionParameters.localizedLastName,
-            ProjectionParameters.firstName,
-            ProjectionParameters.lastName,
-          ],
-    );
-  }
+  // AccessCodeConfig configurationAccessCode({
+  //   List<String> projectionParam,
+  //   PreferredSizeWidget appBar,
+  // }) {
+  //   return AccessCodeConfig(
+  //     redirectUrl: 'https://www.app.dexter.com',
+  //     clientId: '12345',
+  //     clientSecretParam: 'somethingrandom',
+  //     appBar: appBar,
+  //     projectionParam: projectionParam ??
+  //         const [
+  //           ProjectionParameters.id,
+  //           ProjectionParameters.localizedFirstName,
+  //           ProjectionParameters.localizedLastName,
+  //           ProjectionParameters.firstName,
+  //           ProjectionParameters.lastName,
+  //         ],
+  //   );
+  // }
 
   testWidgets('is created', (WidgetTester tester) async {
     LinkedInWebViewHandler();

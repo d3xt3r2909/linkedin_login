@@ -60,8 +60,10 @@ class LinkedInApi {
 
   Future<LinkedInUserModel> fetchProfile({
     @required String token,
+    @required List<String> projection,
   }) async {
-    final endpoint = _generateEndpoint(EnvironmentAccess.profile, 'me');
+    final projectionParameter = 'projection=(${projection.join(",")})';
+    final endpoint = _generateEndpoint(EnvironmentAccess.profile, 'me?$projectionParameter');
 
     final response = await _get(endpoint, token);
 

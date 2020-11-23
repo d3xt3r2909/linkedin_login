@@ -52,6 +52,7 @@ Epic<AppState> _fetchLinkedUserProfileEpic(Graph graph) => (
             (action) => _fetchLinkedInProfile(
               action,
               graph.userRepository,
+              graph.linkedInConfiguration,
             ),
           );
     };
@@ -59,9 +60,13 @@ Epic<AppState> _fetchLinkedUserProfileEpic(Graph graph) => (
 Stream<dynamic> _fetchLinkedInProfile(
   FetchAccessCodeSucceededAction action,
   UserRepository userRepo,
+  Config configuration,
 ) async* {
   try {
-    final user = await userRepo.fetchFullProfile(token: action.token);
+    final user = await userRepo.fetchFullProfile(
+      token: action.token,
+      projection: configuration.projection,
+    );
 
     yield FetchLinkedInUserSucceededAction(user);
   } on Exception catch (e, s) {
