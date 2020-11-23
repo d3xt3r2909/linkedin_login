@@ -217,7 +217,7 @@ class _ImagePagination {
 
 /// Helper children subclass
 class LinkedInProfileEmail {
-  List<_LinkedInDeepEmail> elements;
+  List<LinkedInDeepEmail> elements;
 
   LinkedInProfileEmail({this.elements});
 
@@ -226,7 +226,7 @@ class LinkedInProfileEmail {
       LinkedInProfileEmail(
         elements: (json['elements'] != null && '${json['elements']}' != '[]')
             ? (json['elements'] as List)
-                .map((i) => _LinkedInDeepEmail.fromJson(i))
+                .map((i) => LinkedInDeepEmail.fromJson(i))
                 .toList()
             : [],
       );
@@ -240,29 +240,29 @@ class LinkedInProfileEmail {
 }
 
 /// Helper children subclass
-class _LinkedInDeepEmail {
+class LinkedInDeepEmail {
   String handle;
-  _LinkedInDeepEmailHandle handleDeep;
+  LinkedInDeepEmailHandle handleDeep;
 
-  _LinkedInDeepEmail({this.handle, this.handleDeep});
+  LinkedInDeepEmail({this.handle, this.handleDeep});
 
-  /// Convert response from API to [_LinkedInDeepEmail] object
-  factory _LinkedInDeepEmail.fromJson(Map<String, dynamic> json) =>
-      _LinkedInDeepEmail(
+  /// Convert response from API to [LinkedInDeepEmail] object
+  factory LinkedInDeepEmail.fromJson(Map<String, dynamic> json) =>
+      LinkedInDeepEmail(
         handle: json['handle'],
-        handleDeep: _LinkedInDeepEmailHandle.fromJson(json['handle~']),
+        handleDeep: LinkedInDeepEmailHandle.fromJson(json['handle~']),
       );
 }
 
 /// Helper children subclass
-class _LinkedInDeepEmailHandle {
+class LinkedInDeepEmailHandle {
   String emailAddress;
 
-  _LinkedInDeepEmailHandle({this.emailAddress});
+  LinkedInDeepEmailHandle({this.emailAddress});
 
-  /// Convert response from API to [_LinkedInDeepEmailHandle] object
-  factory _LinkedInDeepEmailHandle.fromJson(Map<String, dynamic> json) =>
-      _LinkedInDeepEmailHandle(
+  /// Convert response from API to [LinkedInDeepEmailHandle] object
+  factory LinkedInDeepEmailHandle.fromJson(Map<String, dynamic> json) =>
+      LinkedInDeepEmailHandle(
         emailAddress: json['emailAddress'],
       );
 }
