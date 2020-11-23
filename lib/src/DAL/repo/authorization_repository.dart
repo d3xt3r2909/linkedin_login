@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:linkedin_login/src/DAL/api/exceptions.dart';
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
-import 'package:linkedin_login/src/wrappers/linked_in_token_object.dart';
 import 'package:logging/logging.dart';
 
 class AuthorizationRepository {
@@ -24,23 +23,16 @@ class AuthorizationRepository {
       clientState,
     );
 
-    if (authorizationCode.isCodeValid) {
-      final LinkedInTokenObject tokenObject = await api.login(
-        redirectUrl: redirectedUrl.split('/?')[0],
-        clientId: clientId,
-        authCode: authorizationCode.code,
-        clientSecret: clientSecret,
-      );
-
-      authorizationCode.accessToken = tokenObject;
-
-      return authorizationCode;
-    }
-
-    throw AuthCodeException(
-      authCode: authorizationCode?.code,
-      description: 'Authorization code not existing or it is empty.',
+    final tokenObject = await api.login(
+      redirectUrl: redirectedUrl.split('/?')[0],
+      clientId: clientId,
+      authCode: authorizationCode.code,
+      clientSecret: clientSecret,
     );
+
+    authorizationCode.accessToken = tokenObject;
+
+    return authorizationCode;
   }
 
   AuthorizationCodeResponse fetchAuthorizationCode({
@@ -57,7 +49,6 @@ class AuthorizationRepository {
     String url,
     String clientState,
   ) {
-    AuthorizationCodeResponse response;
     final List<String> parseUrl = url.split('?');
 
     if (parseUrl.isNotEmpty) {
@@ -67,9 +58,15 @@ class AuthorizationRepository {
         final List<String> codePart = queryPart.first.split('=');
         final List<String> statePart = queryPart.last.split('=');
 
-        // @todo move Session.clientState
+        if (_isAuthUrlEmpty(codePart, statePart)) {
+          throw AuthCodeException(
+            authCode: 'N/A',
+            description: 'Cannot parse code ($codePart) or state ($statePart)',
+          );
+        }
+
         if (statePart[1] == clientState) {
-          response = AuthorizationCodeResponse(
+          return AuthorizationCodeResponse(
             code: codePart[1],
             state: statePart[1],
           );
@@ -82,12 +79,22 @@ class AuthorizationRepository {
         }
       } else if (queryPart.isNotEmpty && queryPart.first.startsWith('error')) {
         throw AuthCodeException(
-          authCode: queryPart[2].split('=')[1],
-          description: queryPart[1].split('=')[1].replaceAll('+', ' '),
+          authCode: queryPart.length > 1 ? queryPart[1].split('=')[1] : 'N/A',
+          description: queryPart[0].split('=')[1].replaceAll('+', ' '),
         );
       }
     }
 
-    return response;
+    throw AuthCodeException(
+      authCode: 'N/A',
+      description: 'Cannot parse url: $url',
+    );
+  }
+
+  bool _isAuthUrlEmpty(List<String> code, List<String> state) {
+    return code.length < 2 ||
+        state.length < 2 ||
+        code[1].isEmpty ||
+        state[1].isEmpty;
   }
 }

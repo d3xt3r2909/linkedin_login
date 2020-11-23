@@ -22,6 +22,7 @@ class AuthorizationCodeResponse {
     this.accessToken,
   });
 
+  @deprecated
   bool get isCodeValid => code != null && code.isNotEmpty;
 
   /// Setter for error object, store error object information inside [error]
