@@ -5,6 +5,7 @@ import 'package:linkedin_login/src/DAL/repo/authorization_repository.dart';
 import 'package:linkedin_login/src/DAL/repo/user_repository.dart';
 import 'package:linkedin_login/src/server/actions.dart';
 import 'package:linkedin_login/src/server/epic.dart';
+import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:mockito/mockito.dart';
@@ -24,32 +25,17 @@ void main() {
     graph = MockGraph();
     store = EpicStore(mockStore);
 
-    final authorizationRepository = MockAuthorizationRepository();
-    final userRepository = MockUserRepository();
-
     builder = _ArrangeBuilder(
       graph,
       store,
-      authorizationRepository,
-      userRepository,
+      MockAuthorizationRepository(),
+      MockUserRepository(),
+      MockConfiguration(),
     );
   });
 
   final urlAfterSuccessfulLogin =
       'https://www.app.dexter.com/?code=AQQTwafddqnG27k6XUWiK0ONMAXKXPietjbeNtDeQGZnBVVM8vHlyrWFHysjGVCFfCAtNw0ajFCitY8fGMm53e7Had8ug0MO62quDLefdSZwNgOFzs6B5jdXgqUg_zad998th7ug4nAzXB71kD4EsYmqjhpUuCDjRNxu3FmRlGzMVOVHQhmEQwjitt0pBA';
-
-  // final config = AccessCodeConfig(
-  //   redirectUrl: 'https://www.app.dexter.com',
-  //   clientId: '12345',
-  //   clientSecretParam: 'somethingrandom',
-  //   projectionParam: const [
-  //     ProjectionParameters.id,
-  //     ProjectionParameters.localizedFirstName,
-  //     ProjectionParameters.localizedLastName,
-  //     ProjectionParameters.firstName,
-  //     ProjectionParameters.lastName,
-  //   ],
-  // );
 
   test('Emits FetchAuthCodeFailedAction if state code is not valid', () async {
     final exception = Exception();
@@ -97,10 +83,14 @@ class _ArrangeBuilder {
     this.store,
     this.authorizationRepository,
     this.userRepository,
+    this.configuration,
   ) : api = MockApi() {
     when(graph.api).thenReturn(api);
     when(graph.authorizationRepository).thenReturn(authorizationRepository);
     when(graph.userRepository).thenReturn(userRepository);
+    when(graph.linkedInConfiguration).thenReturn(configuration);
+
+    withConfiguration();
   }
 
   final Graph graph;
@@ -108,6 +98,7 @@ class _ArrangeBuilder {
   final AuthorizationRepository authorizationRepository;
   final UserRepository userRepository;
   final EpicStore<AppState> store;
+  final Config configuration;
 
   void withAuthCode() {
     when(authorizationRepository.fetchAuthorizationCode(
@@ -126,5 +117,15 @@ class _ArrangeBuilder {
       redirectedUrl: anyNamed('redirectedUrl'),
       clientState: anyNamed('clientState'),
     )).thenThrow(exception ?? Exception());
+  }
+
+  void withConfiguration() {
+    when(configuration.clientSecret).thenAnswer((_) => 'clientSecret');
+    when(configuration.projection).thenAnswer((_) => ['projection1']);
+    when(configuration.redirectUrl).thenAnswer((_) => 'https://redirectUrl.com');
+    when(configuration.frontendRedirectUrl).thenAnswer((_) => 'https://frontendRedirectUrl.com');
+    when(configuration.clientId).thenAnswer((_) => 'clientId');
+    when(configuration.state).thenAnswer((_) => 'state');
+    when(configuration.initialUrl).thenAnswer((_) => 'initialUrl');
   }
 }

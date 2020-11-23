@@ -47,19 +47,6 @@ class WidgetTestbed {
     );
   }
 
-  Future<void> withPlatform(
-    TargetPlatform platform,
-    Function body,
-  ) async {
-    debugDefaultTargetPlatformOverride = platform;
-
-    try {
-      await body();
-    } finally {
-      debugDefaultTargetPlatformOverride = null;
-    }
-  }
-
   Widget simpleWrap({
     Widget child,
     RouteFactory routeFactory,
