@@ -4,6 +4,7 @@ import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/DAL/repo/authorization_repository.dart';
 import 'package:linkedin_login/src/DAL/repo/user_repository.dart';
 import 'package:linkedin_login/src/client/actions.dart';
+import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
@@ -18,6 +19,7 @@ Epic<AppState> _fetchAccessTokenEpic(Graph graph) => (
             (action) => _fetchAccessTokenUser(
               action,
               graph.authorizationRepository,
+              graph.linkedInConfiguration,
             ),
           );
     };
@@ -25,12 +27,13 @@ Epic<AppState> _fetchAccessTokenEpic(Graph graph) => (
 Stream<dynamic> _fetchAccessTokenUser(
   DirectionUrlMatchSucceededAction action,
   AuthorizationRepository authRepo,
+  Config configuration,
 ) async* {
   try {
     final authorizationCodeResponse = await authRepo.fetchAccessTokenCode(
       redirectedUrl: action.url,
-      clientId: action.configuration.clientId,
-      clientSecret: action.configuration.clientSecret,
+      clientId: configuration.clientId,
+      clientSecret: configuration.clientSecret,
     );
 
     yield FetchAccessCodeSucceededAction(authorizationCodeResponse.accessToken);

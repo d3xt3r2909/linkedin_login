@@ -1,0 +1,106 @@
+import 'package:flutter/material.dart';
+import 'package:linkedin_login/src/utils/constants.dart';
+
+abstract class Config {
+  String get clientSecret;
+
+  List<String> get projection;
+
+  String get redirectUrl;
+
+  String get frontendRedirectUrl;
+
+  String get clientId;
+
+  String get state;
+
+  String get initialUrl;
+}
+
+class AccessCodeConfiguration implements Config {
+  AccessCodeConfiguration({
+    @required this.redirectUrlParam,
+    @required this.clientIdParam,
+    @required this.clientSecretParam,
+    @required this.projectionParam,
+    @required this.urlState,
+  })  : assert(redirectUrlParam != null),
+        assert(clientIdParam != null),
+        assert(clientSecretParam != null),
+        assert(projectionParam != null),
+        assert(urlState != null);
+
+  final String clientSecretParam;
+  final List<String> projectionParam;
+  final String redirectUrlParam;
+  final String clientIdParam;
+  final String urlState;
+
+  @override
+  String get clientId => clientIdParam;
+
+  @override
+  String get clientSecret => clientSecretParam;
+
+  @override
+  String get frontendRedirectUrl => null;
+
+  @override
+  List<String> get projection => projectionParam;
+
+  @override
+  String get redirectUrl => redirectUrlParam;
+
+  @override
+  String get state => urlState;
+
+  @override
+  String get initialUrl => '${UrlAccessPoint.URL_LINKED_IN_GET_AUTH_TOKEN}?'
+      'response_type=code'
+      '&client_id=$clientId'
+      '&state=$state'
+      '&redirect_uri=$redirectUrl'
+      '&scope=r_liteprofile%20r_emailaddress';
+}
+
+class AccessCodeConfig implements Config {
+  AccessCodeConfig({
+    @required this.redirectUrlParam,
+    @required this.clientIdParam,
+    @required this.urlState,
+    this.frontendRedirectUrlParam,
+  })  : assert(redirectUrlParam != null),
+        assert(clientIdParam != null),
+        assert(urlState != null);
+
+  final String redirectUrlParam;
+  final String clientIdParam;
+  final String frontendRedirectUrlParam;
+  final String urlState;
+
+  @override
+  String get clientId => clientIdParam;
+
+  @override
+  String get clientSecret => null;
+
+  @override
+  String get frontendRedirectUrl => frontendRedirectUrlParam;
+
+  @override
+  List<String> get projection => null;
+
+  @override
+  String get redirectUrl => redirectUrlParam;
+
+  @override
+  String get state => urlState;
+
+  @override
+  String get initialUrl => '${UrlAccessPoint.URL_LINKED_IN_GET_AUTH_TOKEN}?'
+      'response_type=code'
+      '&client_id=$clientId'
+      '&state=$state'
+      '&redirect_uri=$redirectUrl'
+      '&scope=r_liteprofile%20r_emailaddress';
+}

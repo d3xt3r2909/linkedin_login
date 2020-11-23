@@ -38,17 +38,14 @@ void main() {
 
   test('Emits succeeded on DirectionUrlMatch action', () async {
     final events = webViewEpics(graph)(
-      toStream(DirectionUrlMatch(urlAfterSuccessfulLogin, config)),
+      toStream(DirectionUrlMatch(urlAfterSuccessfulLogin)),
       epicStore,
     );
 
     expect(
       events,
       emits(
-        DirectionUrlMatchSucceededAction(
-          urlAfterSuccessfulLogin,
-          config,
-        ),
+        DirectionUrlMatchSucceededAction(urlAfterSuccessfulLogin),
       ),
     );
   });

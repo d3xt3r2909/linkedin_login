@@ -4,19 +4,20 @@ import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/utils/session.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
-import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:redux/redux.dart';
 
 /// Class will fetch code and access token from the user
 /// It will show web view so that we can access to linked in auth page
 class LinkedInWebViewHandler extends StatefulWidget {
-  LinkedInWebViewHandler(
-    this.config, {
+  LinkedInWebViewHandler({
+    this.appBar,
+    this.destroySession,
     this.onWebViewCreated, // this is just for testing purpose
-  }) : assert(config != null);
+  }) : assert(destroySession != null);
 
-  final WebViewConfigStrategy config;
+  final bool destroySession;
+  final PreferredSizeWidget appBar;
   final Function(WebViewController) onWebViewCreated;
 
   @override
@@ -25,22 +26,18 @@ class LinkedInWebViewHandler extends StatefulWidget {
 
 class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
       distinct: true,
-      converter: (store) => _ViewModel.from(
-        store,
-        configuration: widget.config.configuration,
-      ),
+      converter: (store) {
+
+        return _ViewModel.from(
+          store,
+        );
+      }
       builder: (context, viewModel) {
         return Scaffold(
-          appBar: widget.config.configuration.appBar,
+          appBar: widget.appBar,
           body: Builder(builder: (BuildContext context) {
             return WebView(
               initialUrl: viewModel.loginUrl,
@@ -76,25 +73,15 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
 class _ViewModel {
   const _ViewModel._({
     @required this.onDispatch,
-    @required this.configuration,
-  })  : assert(onDispatch != null),
-        assert(configuration != null);
+  }) : assert(onDispatch != null);
 
-  factory _ViewModel.from(
-    Store<AppState> store, {
-    @required Config configuration,
-  }) =>
-      _ViewModel._(
+  factory _ViewModel.from(Store<AppState> store) => _ViewModel._(
         onDispatch: store.dispatch,
-        configuration: configuration,
       );
 
-  // @todo expose what we need from config
-  final Config configuration;
   final Function(dynamic) onDispatch;
 
-  void onRedirectionUrl(String url) =>
-      onDispatch(DirectionUrlMatch(url, configuration));
+  void onRedirectionUrl(String url) => onDispatch(DirectionUrlMatch(url));
 
   String get loginUrl => '${UrlAccessPoint.URL_LINKED_IN_GET_AUTH_TOKEN}?'
       'response_type=code'
@@ -105,14 +92,4 @@ class _ViewModel {
 
   bool isUrlMatchingToRedirection(String url) =>
       configuration.isCurrentUrlMatchToRedirection(url);
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _ViewModel &&
-          runtimeType == other.runtimeType &&
-          configuration == other.configuration;
-
-  @override
-  int get hashCode => configuration.hashCode;
 }

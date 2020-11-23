@@ -17,10 +17,7 @@ Epic<AppState> _matchToRedirectionUrlEpic(Graph graph) => (
 
 Stream<dynamic> _urlMatchToDirection(DirectionUrlMatch action) async* {
   try {
-    yield DirectionUrlMatchSucceededAction(
-      action.url,
-      action.configuration,
-    );
+    yield DirectionUrlMatchSucceededAction(action.url);
   } on Exception catch (e) {
     yield DirectionUrlMatchFailedAction(e);
   }

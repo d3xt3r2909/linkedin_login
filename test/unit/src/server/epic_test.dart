@@ -65,7 +65,6 @@ void main() {
       toStream(
         DirectionUrlMatchSucceededAction(
           '$urlAfterSuccessfulLogin&state=null',
-          config,
         ),
       ),
       store,
@@ -86,7 +85,6 @@ void main() {
       toStream(
         DirectionUrlMatchSucceededAction(
           '$urlAfterSuccessfulLogin&state=${Session.clientState}',
-          config,
         ),
       ),
       store,

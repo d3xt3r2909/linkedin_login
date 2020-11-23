@@ -3,11 +3,11 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/redux/core.dart';
 import 'package:linkedin_login/src/server/state.dart';
+import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/session.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/initializer.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
-import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 import 'package:redux/redux.dart';
 import 'package:uuid/uuid.dart';
@@ -51,12 +51,14 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
   void initState() {
     super.initState();
 
-    graph = Initializer().initialise();
-
-    Session.clientState =
-        (Session.clientState == null || Session.clientState.isEmpty)
-            ? Uuid().v4()
-            : Session.clientState;
+    graph = Initializer().initialise(
+      AccessCodeConfig(
+        urlState: Uuid().v4(),
+        redirectUrlParam: widget.redirectUrl,
+        clientIdParam: widget.clientId,
+        frontendRedirectUrlParam: widget.frontendRedirectUrl,
+      ),
+    );
   }
 
   @override
@@ -71,15 +73,8 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
         ),
         builder: (context, viewModel) {
           return LinkedInWebViewHandler(
-            WebViewConfigStrategy(
-              configuration: AuthCodeConfig(
-                destroySession: widget.destroySession,
-                frontendRedirectUrlParam: widget.frontendRedirectUrl,
-                redirectUrl: widget.redirectUrl,
-                clientId: widget.clientId,
-                appBar: widget.appBar,
-              ),
-            ),
+            appBar: widget.appBar,
+            destroySession: widget.destroySession,
           );
         },
       ),

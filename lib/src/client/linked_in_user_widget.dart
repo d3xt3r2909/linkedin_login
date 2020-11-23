@@ -4,12 +4,11 @@ import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/redux/core.dart';
 import 'package:linkedin_login/src/client/state.dart';
 import 'package:linkedin_login/src/model/linked_in_user_model.dart';
+import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
-import 'package:linkedin_login/src/utils/session.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/initializer.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
-import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
 import 'package:redux/redux.dart';
 import 'package:uuid/uuid.dart';
 
@@ -61,20 +60,16 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
   void initState() {
     super.initState();
 
-    // redirectUrl
-    // clientId
-    // clientState
+    graph = Initializer().initialise(
+      AccessCodeConfiguration(
+        projectionParam: widget.projection,
+        clientSecretParam: widget.clientSecret,
+        clientIdParam: widget.clientId,
+        redirectUrlParam: widget.redirectUrl,
+        urlState: Uuid().v4(),
+      ),
+    );
 
-    // clientSecret - can be null
-    // projection - can be null
-    // frontend - can be null
-
-    graph = Initializer().initialise();
-
-    Session.clientState =
-        (Session.clientState == null || Session.clientState.isEmpty)
-            ? Uuid().v4()
-            : Session.clientState;
     profileProjection = 'projection=(${widget.projection.join(",")})';
   }
 
@@ -90,16 +85,7 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
         ),
         builder: (context, viewModel) {
           return LinkedInWebViewHandler(
-            WebViewConfigStrategy(
-              configuration: AccessCodeConfig(
-                clientId: widget.clientId,
-                redirectUrl: widget.redirectUrl,
-                clientSecretParam: widget.clientSecret,
-                projectionParam: widget.projection,
-                destroySession: widget.destroySession,
-                appBar: widget.appBar,
-              ),
-            ),
+
           );
         },
       ),

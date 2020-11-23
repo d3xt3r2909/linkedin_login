@@ -63,10 +63,7 @@ void main() {
 
     final events = clientEpics(graph)(
       toStream(
-        DirectionUrlMatchSucceededAction(
-          '$urlAfterSuccessfulLogin&state=null',
-          config,
-        ),
+        DirectionUrlMatchSucceededAction('$urlAfterSuccessfulLogin&state=null'),
       ),
       store,
     );
@@ -85,7 +82,6 @@ void main() {
       toStream(
         DirectionUrlMatchSucceededAction(
           '$urlAfterSuccessfulLogin&state=${Session.clientState}',
-          config,
         ),
       ),
       store,

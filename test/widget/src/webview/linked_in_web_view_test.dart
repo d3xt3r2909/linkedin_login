@@ -76,25 +76,14 @@ void main() {
   }
 
   testWidgets('is created', (WidgetTester tester) async {
-    LinkedInWebViewHandler(
-      WebViewConfigStrategy(configuration: configurationAccessCode()),
-    );
+    LinkedInWebViewHandler();
   });
 
-  testWidgets('is not created when config parameter is null',
-      (WidgetTester tester) async {
-    expect(
-      () => LinkedInWebViewHandler(null),
-      throwsAssertionError,
-    );
-  });
-
-  // @todo this test can be moved to WebViewConfigStrategy file
-  testWidgets('is not created when config is null',
+  testWidgets('is not created when destroy session parameter is null',
       (WidgetTester tester) async {
     expect(
       () => LinkedInWebViewHandler(
-        WebViewConfigStrategy(configuration: null),
+        destroySession: null,
       ),
       throwsAssertionError,
     );
@@ -103,11 +92,8 @@ void main() {
   testWidgets('with app bar', (WidgetTester tester) async {
     final testWidget = testbed.reduxWrap(
       child: LinkedInWebViewHandler(
-        WebViewConfigStrategy(
-          configuration: configurationAccessCode(
-              appBar: AppBar(
-            title: Text('Title'),
-          )),
+        appBar: AppBar(
+          title: Text('Title'),
         ),
       ),
     );
@@ -122,9 +108,6 @@ void main() {
     WebViewController controller;
     final testWidget = testbed.reduxWrap(
       child: LinkedInWebViewHandler(
-        WebViewConfigStrategy(
-          configuration: configurationAccessCode(),
-        ),
         onWebViewCreated: (webViewController) {
           controller = webViewController;
         },
@@ -140,11 +123,7 @@ void main() {
   testWidgets('test changing url if url does not match url',
       (WidgetTester tester) async {
     final testWidget = testbed.reduxWrap(
-      child: LinkedInWebViewHandler(
-        WebViewConfigStrategy(
-          configuration: configurationAccessCode(),
-        ),
-      ),
+      child: LinkedInWebViewHandler(),
     );
 
     await tester.pumpWidget(testWidget);
@@ -162,11 +141,7 @@ void main() {
   testWidgets('emit proper action if url is matching if redirection',
       (WidgetTester tester) async {
     final testWidget = testbed.reduxWrap(
-      child: LinkedInWebViewHandler(
-        WebViewConfigStrategy(
-          configuration: configurationAccessCode(),
-        ),
-      ),
+      child: LinkedInWebViewHandler(),
     );
 
     await tester.pumpWidget(testWidget);

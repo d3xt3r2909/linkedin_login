@@ -2,14 +2,15 @@ import 'package:linkedin_login/src/DAL/api/endpoint.dart';
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/DAL/repo/authorization_repository.dart';
 import 'package:linkedin_login/src/DAL/repo/user_repository.dart';
+import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 
 class Initializer {
-  Graph initialise() {
+  Graph initialise(Config configuration) {
     log('Initializing...');
 
-    final Graph graph = _GraphBuilder().initialise();
+    final Graph graph = _GraphBuilder().initialise(configuration);
 
     log('Initializing... Done');
 
@@ -18,7 +19,7 @@ class Initializer {
 }
 
 class _GraphBuilder {
-  Graph initialise() {
+  Graph initialise(Config configuration) {
     final api = _networking();
     final authRepository = AuthorizationRepository(api: api);
     final userRepository = UserRepository(api: api);
@@ -27,6 +28,7 @@ class _GraphBuilder {
       authorizationRepository: authRepository,
       userRepository: userRepository,
       api: api,
+      linkedInConfiguration: configuration,
     );
   }
 
