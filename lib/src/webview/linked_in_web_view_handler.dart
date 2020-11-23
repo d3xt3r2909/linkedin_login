@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:linkedin_login/redux/app_state.dart';
-import 'package:linkedin_login/src/utils/constants.dart';
-import 'package:linkedin_login/src/utils/session.dart';
+import 'package:linkedin_login/src/utils/startup/injector.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:redux/redux.dart';
@@ -12,7 +11,7 @@ import 'package:redux/redux.dart';
 class LinkedInWebViewHandler extends StatefulWidget {
   LinkedInWebViewHandler({
     this.appBar,
-    this.destroySession,
+    this.destroySession = false,
     this.onWebViewCreated, // this is just for testing purpose
   }) : assert(destroySession != null);
 
@@ -29,18 +28,13 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
       distinct: true,
-      converter: (store) {
-
-        return _ViewModel.from(
-          store,
-        );
-      }
+      converter: (store) => _ViewModel.from(store),
       builder: (context, viewModel) {
         return Scaffold(
           appBar: widget.appBar,
           body: Builder(builder: (BuildContext context) {
             return WebView(
-              initialUrl: viewModel.loginUrl,
+              initialUrl: viewModel.initialUrl(context),
               javascriptMode: JavascriptMode.unrestricted,
               onWebViewCreated: (WebViewController webViewController) {
                 if (widget.onWebViewCreated != null) {
@@ -48,7 +42,8 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
                 }
               },
               navigationDelegate: (NavigationRequest request) async {
-                if (viewModel.isUrlMatchingToRedirection(request.url)) {
+                if (viewModel.isUrlMatchingToRedirection(
+                    context, request.url)) {
                   viewModel.onRedirectionUrl(request.url);
                   return NavigationDecision.prevent;
                 }
@@ -83,13 +78,13 @@ class _ViewModel {
 
   void onRedirectionUrl(String url) => onDispatch(DirectionUrlMatch(url));
 
-  String get loginUrl => '${UrlAccessPoint.URL_LINKED_IN_GET_AUTH_TOKEN}?'
-      'response_type=code'
-      '&client_id=${configuration.clientId}'
-      '&state=${Session.clientState}'
-      '&redirect_uri=${configuration.redirectUrl}'
-      '&scope=r_liteprofile%20r_emailaddress';
+  String initialUrl(BuildContext context) {
+    return InjectorWidget.of(context).linkedInConfiguration.initialUrl;
+  }
 
-  bool isUrlMatchingToRedirection(String url) =>
-      configuration.isCurrentUrlMatchToRedirection(url);
+  bool isUrlMatchingToRedirection(BuildContext context, String url) {
+    return InjectorWidget.of(context)
+        .linkedInConfiguration
+        .isCurrentUrlMatchToRedirection(url);
+  }
 }

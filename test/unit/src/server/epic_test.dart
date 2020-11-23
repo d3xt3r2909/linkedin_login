@@ -6,14 +6,12 @@ import 'package:linkedin_login/src/DAL/repo/user_repository.dart';
 import 'package:linkedin_login/src/server/actions.dart';
 import 'package:linkedin_login/src/server/epic.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
-import 'package:linkedin_login/src/utils/session.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
 import 'package:mockito/mockito.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:test/test.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../utils/mocks.dart';
 import '../../utils/stream_utils.dart';
@@ -37,8 +35,6 @@ void main() {
       authorizationRepository,
       userRepository,
     );
-
-    Session.clientState = Uuid().v4();
   });
 
   final urlAfterSuccessfulLogin =
@@ -84,7 +80,7 @@ void main() {
     final events = serverEpics(graph)(
       toStream(
         DirectionUrlMatchSucceededAction(
-          '$urlAfterSuccessfulLogin&state=${Session.clientState}',
+          '$urlAfterSuccessfulLogin&state=state',
         ),
       ),
       store,
@@ -118,6 +114,7 @@ class _ArrangeBuilder {
   void withAuthCode() {
     when(authorizationRepository.fetchAuthorizationCode(
       redirectedUrl: anyNamed('redirectedUrl'),
+      clientState: anyNamed('clientState'),
     )).thenAnswer(
       (_) => AuthorizationCodeResponse(
         state: 'state',
@@ -129,6 +126,7 @@ class _ArrangeBuilder {
   void withAuthCodeError([Exception exception]) {
     when(authorizationRepository.fetchAuthorizationCode(
       redirectedUrl: anyNamed('redirectedUrl'),
+      clientState: anyNamed('clientState'),
     )).thenThrow(exception ?? Exception());
   }
 }

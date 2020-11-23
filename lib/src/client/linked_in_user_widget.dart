@@ -8,6 +8,7 @@ import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/initializer.dart';
+import 'package:linkedin_login/src/utils/startup/injector.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
 import 'package:redux/redux.dart';
 import 'package:uuid/uuid.dart';
@@ -75,19 +76,23 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreProvider<AppState>(
-      store: LinkedInStore.inject(graph).store,
-      child: StoreConnector<AppState, _ViewModel>(
-        distinct: true,
-        converter: (store) => _ViewModel.from(store),
-        onDidChange: (viewModel) => widget.onGetUserProfile(
-          viewModel.user.linkedInUser,
+    return InjectorWidget(
+      graph: graph,
+      child: StoreProvider<AppState>(
+        store: LinkedInStore.inject(graph).store,
+        child: StoreConnector<AppState, _ViewModel>(
+          distinct: true,
+          converter: (store) => _ViewModel.from(store),
+          onDidChange: (viewModel) => widget.onGetUserProfile(
+            viewModel.user.linkedInUser,
+          ),
+          builder: (context, viewModel) {
+            return LinkedInWebViewHandler(
+              appBar: widget.appBar,
+              destroySession: widget.destroySession,
+            );
+          },
         ),
-        builder: (context, viewModel) {
-          return LinkedInWebViewHandler(
-
-          );
-        },
       ),
     );
   }

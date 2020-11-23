@@ -34,6 +34,7 @@ Stream<dynamic> _fetchAccessTokenUser(
       redirectedUrl: action.url,
       clientId: configuration.clientId,
       clientSecret: configuration.clientSecret,
+      clientState: configuration.state,
     );
 
     yield FetchAccessCodeSucceededAction(authorizationCodeResponse.accessToken);

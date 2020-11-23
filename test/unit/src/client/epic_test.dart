@@ -6,14 +6,12 @@ import 'package:linkedin_login/src/DAL/repo/user_repository.dart';
 import 'package:linkedin_login/src/client/actions.dart';
 import 'package:linkedin_login/src/client/epic.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
-import 'package:linkedin_login/src/utils/session.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
 import 'package:mockito/mockito.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:test/test.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../utils/mocks.dart';
 import '../../utils/stream_utils.dart';
@@ -36,8 +34,6 @@ void main() {
       authorizationRepository,
       userRepository,
     );
-
-    Session.clientState = Uuid().v4();
   });
 
   final urlAfterSuccessfulLogin =
@@ -81,7 +77,7 @@ void main() {
     final events = clientEpics(graph)(
       toStream(
         DirectionUrlMatchSucceededAction(
-          '$urlAfterSuccessfulLogin&state=${Session.clientState}',
+          '$urlAfterSuccessfulLogin&state=state',
         ),
       ),
       store,
@@ -162,17 +158,18 @@ class _ArrangeBuilder {
 
   void withAccessCode() {
     when(authorizationRepository.fetchAccessTokenCode(
-      redirectedUrl: anyNamed('redirectedUrl'),
-      clientSecret: anyNamed('clientSecret'),
-      clientId: anyNamed('clientId'),
-    )).thenAnswer((_) async => AuthorizationCodeResponse(
-          state: 'state',
-          code: 'code',
-          accessToken: LinkedInTokenObject(
-            accessToken: 'accessToken',
-            expiresIn: 0,
-          ),
-        ));
+            redirectedUrl: anyNamed('redirectedUrl'),
+            clientSecret: anyNamed('clientSecret'),
+            clientId: anyNamed('clientId'),
+            clientState: anyNamed('clientState')))
+        .thenAnswer((_) async => AuthorizationCodeResponse(
+              state: 'state',
+              code: 'code',
+              accessToken: LinkedInTokenObject(
+                accessToken: 'accessToken',
+                expiresIn: 0,
+              ),
+            ));
   }
 
   void withAccessCodeError([Exception exception]) {
@@ -180,6 +177,7 @@ class _ArrangeBuilder {
       redirectedUrl: anyNamed('redirectedUrl'),
       clientSecret: anyNamed('clientSecret'),
       clientId: anyNamed('clientId'),
+      clientState: anyNamed('clientState'),
     )).thenThrow(exception ?? Exception());
   }
 

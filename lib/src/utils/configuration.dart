@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:linkedin_login/src/utils/constants.dart';
 
 abstract class Config {
   String get clientSecret;
@@ -15,6 +14,8 @@ abstract class Config {
   String get state;
 
   String get initialUrl;
+
+  bool isCurrentUrlMatchToRedirection(String url);
 }
 
 class AccessCodeConfiguration implements Config {
@@ -55,16 +56,23 @@ class AccessCodeConfiguration implements Config {
   String get state => urlState;
 
   @override
-  String get initialUrl => '${UrlAccessPoint.URL_LINKED_IN_GET_AUTH_TOKEN}?'
+  String get initialUrl => 'https://www.linkedin.com/oauth/v2/authorization?'
       'response_type=code'
       '&client_id=$clientId'
-      '&state=$state'
+      '&state=$urlState'
       '&redirect_uri=$redirectUrl'
       '&scope=r_liteprofile%20r_emailaddress';
+
+  @override
+  bool isCurrentUrlMatchToRedirection(String url) => _isRedirectionUrl(url);
+
+  bool _isRedirectionUrl(String url) {
+    return url.startsWith(redirectUrl);
+  }
 }
 
-class AccessCodeConfig implements Config {
-  AccessCodeConfig({
+class AuthCodeConfig implements Config {
+  AuthCodeConfig({
     @required this.redirectUrlParam,
     @required this.clientIdParam,
     @required this.urlState,
@@ -97,10 +105,22 @@ class AccessCodeConfig implements Config {
   String get state => urlState;
 
   @override
-  String get initialUrl => '${UrlAccessPoint.URL_LINKED_IN_GET_AUTH_TOKEN}?'
+  String get initialUrl => 'https://www.linkedin.com/oauth/v2/authorization?'
       'response_type=code'
       '&client_id=$clientId'
       '&state=$state'
       '&redirect_uri=$redirectUrl'
       '&scope=r_liteprofile%20r_emailaddress';
+
+  @override
+  bool isCurrentUrlMatchToRedirection(String url) =>
+      _isRedirectionUrl(url) || _isFrontendRedirectionUrl(url);
+
+  bool _isRedirectionUrl(String url) {
+    return url.startsWith(redirectUrl);
+  }
+
+  bool _isFrontendRedirectionUrl(String url) {
+    return (frontendRedirectUrl != null && url.startsWith(frontendRedirectUrl));
+  }
 }

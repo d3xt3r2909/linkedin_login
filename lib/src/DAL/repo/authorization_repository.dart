@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:linkedin_login/src/DAL/api/exceptions.dart';
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
-import 'package:linkedin_login/src/utils/session.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 import 'package:linkedin_login/src/wrappers/linked_in_token_object.dart';
 import 'package:logging/logging.dart';
@@ -16,11 +15,13 @@ class AuthorizationRepository {
     @required String redirectedUrl,
     @required String clientSecret,
     @required String clientId,
+    @required String clientState,
   }) async {
     log.fine('Fetching access token');
 
     AuthorizationCodeResponse authorizationCode = _getAuthorizationCode(
       redirectedUrl,
+      clientState,
     );
 
     if (authorizationCode.isCodeValid) {
@@ -44,14 +45,18 @@ class AuthorizationRepository {
 
   AuthorizationCodeResponse fetchAuthorizationCode({
     @required String redirectedUrl,
+    @required String clientState,
   }) {
-    return _getAuthorizationCode(redirectedUrl);
+    return _getAuthorizationCode(redirectedUrl, clientState);
   }
 
   /// Method will parse redirection URL to get authorization code from
   /// query parameters. If there is an error property inside
   /// [AuthorizationCodeResponse] object will be populate
-  AuthorizationCodeResponse _getAuthorizationCode(String url) {
+  AuthorizationCodeResponse _getAuthorizationCode(
+    String url,
+    String clientState,
+  ) {
     AuthorizationCodeResponse response;
     final List<String> parseUrl = url.split('?');
 
@@ -63,7 +68,7 @@ class AuthorizationRepository {
         final List<String> statePart = queryPart.last.split('=');
 
         // @todo move Session.clientState
-        if (statePart[1] == Session.clientState) {
+        if (statePart[1] == clientState) {
           response = AuthorizationCodeResponse(
             code: codePart[1],
             state: statePart[1],
@@ -72,7 +77,7 @@ class AuthorizationRepository {
           throw AuthCodeException(
             authCode: statePart[1],
             description:
-                'Current auth code is different from initial one: ${Session.clientState}',
+                'Current auth code is different from initial one: $clientState',
           );
         }
       } else if (queryPart.isNotEmpty && queryPart.first.startsWith('error')) {
