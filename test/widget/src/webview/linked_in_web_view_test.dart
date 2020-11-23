@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:linkedin_login/redux/app_state.dart';
+import 'package:linkedin_login/src/utils/configuration.dart';
+import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
 import 'package:mockito/mockito.dart';
@@ -16,6 +18,7 @@ import '../../widget_test_utils.dart';
 
 void main() {
   Store<AppState> store;
+  Graph graph;
   List actions;
   WidgetTestbed testbed;
   _ArrangeBuilder builder;
@@ -34,44 +37,20 @@ void main() {
 
   setUp(() {
     store = MockStore();
+    graph = MockGraph();
     actions = [];
 
     fakePlatformViewsController.reset();
     _fakeCookieManager.reset();
 
-    builder = _ArrangeBuilder(store, actions);
+    builder = _ArrangeBuilder(store, graph, actions);
 
     testbed = WidgetTestbed(
+      graph: graph,
       store: store,
       onReduction: builder.onReduction,
     );
   });
-
-  final initialUrl =
-      'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=12345&state=null&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress';
-
-  final urlAfterSuccessfulLogin =
-      'https://www.app.dexter.com/?code=AQQTwafddqnG27k6XUWiK0ONMAXKXPietjbeNtDeQGZnBVVM8vHlyrWFHysjGVCFfCAtNw0ajFCitY8fGMm53e7Had8ug0MO62quDLefdSZwNgOFzs6B5jdXgqUg_zad998th7ug4nAzXB71kD4EsYmqjhpUuCDjRNxu3FmRlGzMVOVHQhmEQwjitt0pBA&state=null';
-
-  // AccessCodeConfig configurationAccessCode({
-  //   List<String> projectionParam,
-  //   PreferredSizeWidget appBar,
-  // }) {
-  //   return AccessCodeConfig(
-  //     redirectUrl: 'https://www.app.dexter.com',
-  //     clientId: '12345',
-  //     clientSecretParam: 'somethingrandom',
-  //     appBar: appBar,
-  //     projectionParam: projectionParam ??
-  //         const [
-  //           ProjectionParameters.id,
-  //           ProjectionParameters.localizedFirstName,
-  //           ProjectionParameters.localizedLastName,
-  //           ProjectionParameters.firstName,
-  //           ProjectionParameters.lastName,
-  //         ],
-  //   );
-  // }
 
   testWidgets('is created', (WidgetTester tester) async {
     LinkedInWebViewHandler();
@@ -120,6 +99,7 @@ void main() {
 
   testWidgets('test changing url if url does not match url',
       (WidgetTester tester) async {
+    builder.withUrlNotMatch();
     final testWidget = testbed.reduxWrap(
       child: LinkedInWebViewHandler(),
     );
@@ -138,6 +118,7 @@ void main() {
 
   testWidgets('emit proper action if url is matching if redirection',
       (WidgetTester tester) async {
+    builder.withUrlMatch();
     final testWidget = testbed.reduxWrap(
       child: LinkedInWebViewHandler(),
     );
@@ -153,17 +134,30 @@ void main() {
   });
 }
 
+final initialUrl =
+    'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=12345&state=null&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress';
+
+final urlAfterSuccessfulLogin =
+    'https://www.app.dexter.com/?code=AQQTwafddqnG27k6XUWiK0ONMAXKXPietjbeNtDeQGZnBVVM8vHlyrWFHysjGVCFfCAtNw0ajFCitY8fGMm53e7Had8ug0MO62quDLefdSZwNgOFzs6B5jdXgqUg_zad998th7ug4nAzXB71kD4EsYmqjhpUuCDjRNxu3FmRlGzMVOVHQhmEQwjitt0pBA&state=null';
+
 class _ArrangeBuilder {
   _ArrangeBuilder(
     this.store,
-    this.actions,
-  ) {
+    this.graph,
+    this.actions, {
+    Config configuration,
+  }) : _configuration = configuration ?? MockConfiguration() {
     state = AppState.initialState();
     when(store.state).thenAnswer((_) => state);
+    when(graph.linkedInConfiguration).thenAnswer((_) => _configuration);
+
+    withConfiguration();
   }
 
   final Store<AppState> store;
   final List<dynamic> actions;
+  final Graph graph;
+  final Config _configuration;
 
   AppState state;
 
@@ -171,6 +165,21 @@ class _ArrangeBuilder {
     actions.add(event);
 
     return state;
+  }
+
+  void withConfiguration() {
+    when(_configuration.initialUrl).thenAnswer((_) =>
+        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=12345&state=null&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress');
+  }
+
+  void withUrlNotMatch() {
+    when(_configuration.isCurrentUrlMatchToRedirection(any))
+        .thenAnswer((_) => false);
+  }
+
+  void withUrlMatch() {
+    when(_configuration.isCurrentUrlMatchToRedirection(any))
+        .thenAnswer((_) => true);
   }
 }
 
