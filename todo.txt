@@ -3,7 +3,7 @@ Todo:
 Support:
 
 - Rest of tests
--> DAL
+-> DAL (tests for linkedinap)
 -> CONFIGURATION.dart
 -> core.dart
 -> client/linkedin_widget
