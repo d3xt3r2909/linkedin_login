@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 import 'package:linkedin_login/src/DAL/api/endpoint.dart';
 import 'package:linkedin_login/src/model/linked_in_user_model.dart';
 import 'package:linkedin_login/src/wrappers/linked_in_token_object.dart';
@@ -12,21 +11,26 @@ import 'package:meta/meta.dart';
 import 'exceptions.dart';
 
 class LinkedInApi {
-  factory LinkedInApi(Endpoint endpoint) => LinkedInApi._(endpoint);
+  LinkedInApi._(this._endpoint, this._client);
 
-  LinkedInApi._(this._endpoint);
+  factory LinkedInApi(Endpoint endpoint, http.Client client) =>
+      LinkedInApi._(endpoint, client);
 
   @visibleForTesting
-  factory LinkedInApi.test(Endpoint endpoint) {
-    return LinkedInApi._(endpoint);
+  factory LinkedInApi.test(Endpoint endpoint, http.Client client) {
+    return LinkedInApi._(endpoint, client);
   }
 
   final Endpoint _endpoint;
+  final http.Client _client;
 
   Uri _generateEndpoint(EnvironmentAccess setup, String path,
-      [Map<String, String> queryParameters]) {
-    return _endpoint.generate(setup, path, queryParameters);
-  }
+          [Map<String, String> queryParameters]) =>
+      _endpoint.generate(
+        setup,
+        path,
+        queryParameters,
+      );
 
   Future<LinkedInTokenObject> login({
     @required String redirectUrl,
@@ -34,8 +38,10 @@ class LinkedInApi {
     @required String clientSecret,
     @required String clientId,
   }) async {
-    final endpoint =
-        _generateEndpoint(EnvironmentAccess.authorization, 'accessToken');
+    final endpoint = _generateEndpoint(
+      EnvironmentAccess.authorization,
+      'accessToken',
+    );
 
     final Map<String, dynamic> body = {
       'grant_type': 'authorization_code',
@@ -63,7 +69,10 @@ class LinkedInApi {
     @required List<String> projection,
   }) async {
     final projectionParameter = 'projection=(${projection.join(",")})';
-    final endpoint = _generateEndpoint(EnvironmentAccess.profile, 'me?$projectionParameter');
+    final endpoint = _generateEndpoint(
+      EnvironmentAccess.profile,
+      'me?$projectionParameter',
+    );
 
     final response = await _get(endpoint, token);
 
@@ -75,8 +84,10 @@ class LinkedInApi {
   }) async {
     assert(token != null);
 
-    final endpoint = _generateEndpoint(EnvironmentAccess.profile,
-        'emailAddress?q=members&projection=(elements*(handle~))');
+    final endpoint = _generateEndpoint(
+      EnvironmentAccess.profile,
+      'emailAddress?q=members&projection=(elements*(handle~))',
+    );
 
     final response = await _get(endpoint, token);
 
@@ -93,7 +104,7 @@ class LinkedInApi {
       HttpHeaders.authorizationHeader: 'Bearer $token',
     };
 
-    final response = await get(url, headers: headers);
+    final response = await _client.get(url, headers: headers);
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
       return Future.error(Exception(
@@ -143,6 +154,6 @@ class LinkedInApi {
       headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
     }
 
-    return http.post(url, body: body, headers: headers);
+    return _client.post(url, body: body, headers: headers);
   }
 }

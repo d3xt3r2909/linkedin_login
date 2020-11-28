@@ -3,6 +3,7 @@ import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/DAL/repo/authorization_repository.dart';
 import 'package:linkedin_login/src/DAL/repo/user_repository.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
+import 'package:http/http.dart' as http;
 
 @immutable
 class Graph {
@@ -11,13 +12,16 @@ class Graph {
     @required this.userRepository,
     @required this.api,
     @required this.linkedInConfiguration,
+    @required this.httpClient,
   })  : assert(authorizationRepository != null),
         assert(userRepository != null),
         assert(api != null),
-        assert(linkedInConfiguration != null);
+        assert(linkedInConfiguration != null),
+        assert(httpClient != null);
 
   final AuthorizationRepository authorizationRepository;
   final UserRepository userRepository;
   final LinkedInApi api;
   final Config linkedInConfiguration;
+  final http.Client httpClient;
 }

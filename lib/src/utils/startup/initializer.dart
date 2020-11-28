@@ -5,12 +5,13 @@ import 'package:linkedin_login/src/DAL/repo/user_repository.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
+import 'package:http/http.dart' as http;
 
 class Initializer {
   Graph initialise(Config configuration) {
     log('Initializing...');
 
-    final Graph graph = _GraphBuilder().initialise(configuration);
+    final graph = _GraphBuilder().initialise(configuration);
 
     log('Initializing... Done');
 
@@ -29,24 +30,19 @@ class _GraphBuilder {
       userRepository: userRepository,
       api: api,
       linkedInConfiguration: configuration,
+      httpClient: http.Client(),
     );
   }
 
   LinkedInApi _networking() {
     log('Netwoking...');
 
-    final Endpoint endpoint = _environment();
+    final endpoint = Endpoint(Environment.production);
+    final client = http.Client();
 
-    final LinkedInApi api = LinkedInApi(endpoint);
+    final api = LinkedInApi(endpoint, client);
 
     log('Netwoking... Done');
     return api;
-  }
-
-  Endpoint _environment() {
-    log('Environment...');
-    final endpoint = Endpoint(Environment.production);
-    log('Environment... Done');
-    return endpoint;
   }
 }
