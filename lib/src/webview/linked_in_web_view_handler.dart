@@ -27,30 +27,38 @@ class LinkedInWebViewHandler extends StatefulWidget {
 class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
   @override
   Widget build(BuildContext context) {
+    log('LinkedInAuth steps start:');
     return StoreConnector<AppState, _ViewModel>(
       distinct: true,
       converter: (store) => _ViewModel.from(store),
       builder: (context, viewModel) {
+        log('LinkedInAuth-steps: [builder,'
+            ' initialUrl: ${viewModel.initialUrl(context)}]');
         return Scaffold(
           appBar: widget.appBar,
           body: Builder(builder: (BuildContext context) {
             return WebView(
               initialUrl: viewModel.initialUrl(context),
               javascriptMode: JavascriptMode.unrestricted,
-              onWebViewCreated: (WebViewController webViewController) {
+              onWebViewCreated: (WebViewController webViewController) async {
+                log('LinkedInAuth-steps: [onWebViewCreated, current url:: '
+                    '${await webViewController.currentUrl()}]');
+
                 if (widget.onWebViewCreated != null) {
                   widget.onWebViewCreated(webViewController);
                 }
               },
               navigationDelegate: (NavigationRequest request) async {
                 log('Navigation delegate...');
-                log('Redirection to ${request.url}');
                 final isMatch = viewModel.isUrlMatchingToRedirection(
                   context,
                   request.url,
                 );
+                log('Redirection to ${request.url}');
                 log('is LinkedIn URL match with this one: $isMatch');
+                log('LinkedInAuth-steps: [navigationDelegate, isMatch: $isMatch, currentUrL: ${request.url}');
                 if (isMatch) {
+                  log('LinkedInAuth-steps: [navigationDelegate, isMatch: MATCHED');
                   viewModel.onRedirectionUrl(request.url);
                   log('Navigation delegate prevent... done');
                   return NavigationDecision.prevent;

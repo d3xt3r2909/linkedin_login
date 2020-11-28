@@ -69,6 +69,11 @@ class AccessCodeConfiguration implements Config {
   bool _isRedirectionUrl(String url) {
     return url.startsWith(redirectUrl);
   }
+
+  @override
+  String toString() {
+    return 'AccessCodeConfiguration{clientSecretParam: ${clientSecretParam.isNotEmpty ? 'XXX' : 'INVALID'}, projectionParam: $projectionParam, redirectUrlParam: $redirectUrlParam, clientIdParam: $clientIdParam, urlState: $urlState}';
+  }
 }
 
 class AuthCodeConfig implements Config {

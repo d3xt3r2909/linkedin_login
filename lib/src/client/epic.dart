@@ -22,6 +22,10 @@ Stream<dynamic> _fetchAccessTokenUser(
   Graph graph,
 ) async* {
   try {
+    log('LinkedInAuth-steps: Fetching access token... '
+        '\nConfiguration: ${graph.linkedInConfiguration}, '
+        'redirectedUrl: ${action.url}');
+
     final authorizationCodeResponse =
         await graph.authorizationRepository.fetchAccessTokenCode(
       redirectedUrl: action.url,
@@ -31,6 +35,9 @@ Stream<dynamic> _fetchAccessTokenUser(
       client: graph.httpClient,
     );
 
+    log('LinkedInAuth-steps: Fetching access token...'
+        ' DONE - ${authorizationCodeResponse.accessToken.accessToken.isNotEmpty
+        ? 'VALID': 'INVALID'}');
     yield FetchAccessCodeSucceededAction(authorizationCodeResponse.accessToken);
   } on Exception catch (e, s) {
     logError('Unable to fetch access token code', error: e, stackTrace: s);

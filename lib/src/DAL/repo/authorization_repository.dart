@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:linkedin_login/src/DAL/api/exceptions.dart';
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
+import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 import 'package:logging/logging.dart';
 import 'package:http/http.dart' as http;
@@ -8,7 +9,6 @@ import 'package:http/http.dart' as http;
 class AuthorizationRepository {
   AuthorizationRepository({@required this.api}) : assert(api != null);
 
-  final Logger log = Logger('AuthorizationRepository');
   final LinkedInApi api;
 
   Future<AuthorizationCodeResponse> fetchAccessTokenCode({
@@ -18,12 +18,13 @@ class AuthorizationRepository {
     @required String clientState,
     @required http.Client client,
   }) async {
-    log.fine('Fetching access token');
-
+    log('LinkedInAuth-steps: parsing authorization code... ');
     AuthorizationCodeResponse authorizationCode = _getAuthorizationCode(
       redirectedUrl,
       clientState,
     );
+    log('LinkedInAuth-steps: parsing authorization code'
+        ' DONE - ${authorizationCode.code.isNotEmpty ? 'VALID' : 'INVALID'}');
 
     final tokenObject = await api.login(
       redirectUrl: redirectedUrl.split('/?')[0],

@@ -1,6 +1,8 @@
+import 'dart:io';
+
 import 'package:linkedin_login/linkedin_login.dart';
 import 'package:linkedin_login/redux/app_state.dart';
-import 'package:linkedin_login/src/DAL/api/exceptions.dart';
+import 'package:linkedin_login/src/DAL/api/endpoint.dart';
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/DAL/repo/authorization_repository.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
@@ -14,7 +16,7 @@ void main() {
   EpicStore<AppState> store;
   Graph graph;
   LinkedInApi api;
-  AuthorizationRepository repository;
+  http.Client httpClient;
 
   _ArrangeBuilder builder;
 
@@ -25,152 +27,32 @@ void main() {
     graph = MockGraph();
     store = EpicStore(mockStore);
     api = MockApi();
-    repository = AuthorizationRepository(api: api);
+    httpClient = MockClient();
 
     builder = _ArrangeBuilder(
       graph,
       store,
       api,
+      client: httpClient,
     );
   });
 
-  test('Throw AuthCodeException if state is null', () async {
-    expect(
-      () async => repository.fetchAccessTokenCode(
-        redirectedUrl: 'invalidUrL',
-        clientSecret: 'clientSecret',
-        clientId: 'clientId',
-        clientState: 'clientState',
-        client: graph.httpClient,
-      ),
-      throwsA(isA<AuthCodeException>().having(
-        (a) => a.description,
-        'Description',
-        contains('Cannot parse url: invalidUrL'),
-      )),
-    );
-  });
+  test('Fetch user profile with 200 HTTP code', () async {
+    final url =
+        'http://localhost:8080/v2/me?projection=(${ProjectionParameters.fullProjection.join(",")})';
 
-  test('Throw AuthCodeException if there is server error with state', () async {
-    expect(
-      () async => repository.fetchAccessTokenCode(
-        redirectedUrl:
-            'https://www.app.dexter.com/?error=errorDescription&state=aaaa',
-        clientSecret: 'clientSecret',
-        clientId: 'clientId',
-        clientState: 'clientState',
-        client: graph.httpClient,
-      ),
-      throwsA(isA<AuthCodeException>()
-          .having(
-            (a) => a.description,
-            'Description',
-            contains('errorDescription'),
-          )
-          .having(
-            (a) => a.authCode,
-            'authCode',
-            contains('aaaa'),
-          )),
-    );
-  });
+    final responsePath =
+        'test/unit/src/DAL/api/override/full_user_profile.json';
+    await builder.withFetchUrL(url, responsePath);
 
-  test('Throw AuthCodeException if there is server error without state',
-      () async {
-    expect(
-      () async => repository.fetchAccessTokenCode(
-        redirectedUrl: 'https://www.app.dexter.com/?error=errorDescription',
-        clientSecret: 'clientSecret',
-        clientId: 'clientId',
-        clientState: 'clientState',
-        client: graph.httpClient,
-      ),
-      throwsA(isA<AuthCodeException>().having(
-        (a) => a.description,
-        'Description',
-        contains('errorDescription'),
-      )),
-    );
-  });
-
-  test(
-      'Throw AuthCodeException when url state code does not match with param one',
-      () async {
-    expect(
-      () async => repository.fetchAccessTokenCode(
-        redirectedUrl: 'https://www.app.dexter.com/?code=AAA&state=BBB',
-        clientSecret: 'clientSecret',
-        clientId: 'clientId',
-        clientState: 'CCC',
-        client: graph.httpClient,
-      ),
-      throwsA(
-        isA<AuthCodeException>()
-            .having(
-              (a) => a.description,
-              'Description',
-              contains('Current auth code is different from initial one: CCC'),
-            )
-            .having(
-              (b) => b.authCode,
-              'authCode',
-              contains('BBB'),
-            ),
-      ),
-    );
-  });
-
-  test('Throw AuthCodeException code does not have value for code or state',
-      () async {
-    expect(
-      () async => repository.fetchAccessTokenCode(
-        redirectedUrl: 'https://www.app.dexter.com/?code=&state=',
-        clientSecret: 'clientSecret',
-        clientId: 'clientId',
-        clientState: '',
-        client: graph.httpClient,
-      ),
-      throwsA(
-        isA<AuthCodeException>()
-            .having(
-              (a) => a.description,
-              'Description',
-              contains('Cannot parse code ('),
-            )
-            .having(
-              (b) => b.authCode,
-              'authCode',
-              contains('N/A'),
-            ),
-      ),
-    );
-  });
-
-  test('Return AuthorizationCodeResponse object for fetchAccessTokenCode',
-      () async {
-    builder.withApiLogin();
-
-    final response = await repository.fetchAccessTokenCode(
-      redirectedUrl: 'https://www.app.dexter.com/?code=aaa&state=bbb',
-      clientSecret: 'clientSecret',
-      clientId: 'clientId',
-      clientState: 'bbb',
-      client: graph.httpClient,
+    final api = LinkedInApi.test(Endpoint(Environment.vm));
+    final linkedInUserModel = await api.fetchProfile(
+      token: 'accessToken',
+      projection: ProjectionParameters.fullProjection,
+      client: httpClient,
     );
 
-    expect(response.accessToken.accessToken, 'accessToken');
-    expect(response.accessToken.expiresIn, 1234);
-  });
-
-  test('Return AuthorizationCodeResponse object for fetchAuthorizationCode',
-      () async {
-    final response = repository.fetchAuthorizationCode(
-      redirectedUrl: 'https://www.app.dexter.com/?code=aaa&state=bbb',
-      clientState: 'bbb',
-    );
-
-    expect(response.state, 'bbb');
-    expect(response.code, 'aaa');
+    expect(linkedInUserModel, isA<LinkedInUserModel>());
   });
 }
 
@@ -190,18 +72,28 @@ class _ArrangeBuilder {
   final http.Client _client;
   final EpicStore<AppState> store;
 
-  void withApiLogin() {
-    when(api.login(
-      redirectUrl: 'https://www.app.dexter.com',
-      authCode: 'aaa',
-      clientSecret: 'clientSecret',
-      clientId: 'clientId',
-      client: anyNamed('client'),
-    )).thenAnswer(
-      (_) async => LinkedInTokenObject(
-        accessToken: 'accessToken',
-        expiresIn: 1234,
+  Future<String> getResponseFileContent(String pathToFile) async {
+    final file = File(pathToFile);
+    return file.readAsString();
+  }
+
+  Future<void> withFetchUrL(String url, String responseContentPath) async {
+    var headers = {
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.authorizationHeader: 'Bearer accessToken',
+    };
+
+    final response = await getResponseFileContent(responseContentPath);
+
+    when(
+      _client.get(
+        Uri.parse(url),
+        headers: headers,
       ),
+    ).thenAnswer(
+      (_) async {
+        return http.Response(response, 200);
+      },
     );
   }
 }

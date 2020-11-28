@@ -4,6 +4,9 @@ Support:
 
 - Rest of tests
 -> DAL (tests for linkedinap)
+---> Started with full_user_profile.json basic implementation
+
+
 -> CONFIGURATION.dart
 -> core.dart
 -> client/linkedin_widget

@@ -7,6 +7,14 @@ class ProjectionParameters {
   static const String localizedFirstName = "localizedFirstName";
   static const String profilePicture =
       "profilePicture(displayImage~:playableStreams)";
+
+  static List<String> fullProjection = const [
+    id,
+    localizedFirstName,
+    localizedLastName,
+    firstName,
+    lastName,
+  ];
 }
 
 bool get isUnderTest => _isUnderTest;
