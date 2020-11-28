@@ -151,14 +151,16 @@ class _ArrangeBuilder {
       clientId: anyNamed('clientId'),
       clientState: anyNamed('clientState'),
       client: anyNamed('client'),
-    )).thenAnswer((_) async => AuthorizationCodeResponse(
-          state: 'state',
-          code: 'code',
-          accessToken: LinkedInTokenObject(
-            accessToken: 'accessToken',
-            expiresIn: 0,
-          ),
-        ));
+    )).thenAnswer(
+      (_) async => AuthorizationCodeResponse(
+        state: 'state',
+        code: 'code',
+        accessToken: LinkedInTokenObject(
+          accessToken: 'accessToken',
+          expiresIn: 0,
+        ),
+      ),
+    );
   }
 
   void withAccessCodeError([Exception exception]) {

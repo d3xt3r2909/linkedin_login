@@ -3,7 +3,7 @@ Todo:
 Support:
 
 - Rest of tests
--> DAL (tests for linkedinap)
+-> DAL (tests for linkedIn api)
 ---> Started with full_user_profile.json basic implementation
 
 
