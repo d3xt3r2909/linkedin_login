@@ -29,12 +29,7 @@ void main() {
     final configuration = MockConfiguration();
 
     builder = _ArrangeBuilder(
-      graph,
-      store,
-      authorizationRepository,
-      userRepository,
-      configuration
-    );
+        graph, store, authorizationRepository, userRepository, configuration);
   });
 
   final urlAfterSuccessfulLogin =
@@ -151,18 +146,19 @@ class _ArrangeBuilder {
 
   void withAccessCode() {
     when(authorizationRepository.fetchAccessTokenCode(
-            redirectedUrl: anyNamed('redirectedUrl'),
-            clientSecret: anyNamed('clientSecret'),
-            clientId: anyNamed('clientId'),
-            clientState: anyNamed('clientState')))
-        .thenAnswer((_) async => AuthorizationCodeResponse(
-              state: 'state',
-              code: 'code',
-              accessToken: LinkedInTokenObject(
-                accessToken: 'accessToken',
-                expiresIn: 0,
-              ),
-            ));
+      redirectedUrl: anyNamed('redirectedUrl'),
+      clientSecret: anyNamed('clientSecret'),
+      clientId: anyNamed('clientId'),
+      clientState: anyNamed('clientState'),
+      client: anyNamed('client'),
+    )).thenAnswer((_) async => AuthorizationCodeResponse(
+          state: 'state',
+          code: 'code',
+          accessToken: LinkedInTokenObject(
+            accessToken: 'accessToken',
+            expiresIn: 0,
+          ),
+        ));
   }
 
   void withAccessCodeError([Exception exception]) {
@@ -171,6 +167,7 @@ class _ArrangeBuilder {
       clientSecret: anyNamed('clientSecret'),
       clientId: anyNamed('clientId'),
       clientState: anyNamed('clientState'),
+      client: anyNamed('client'),
     )).thenThrow(exception ?? Exception());
   }
 
@@ -178,6 +175,7 @@ class _ArrangeBuilder {
     when(userRepository.fetchFullProfile(
       token: anyNamed('token'),
       projection: anyNamed('projection'),
+      client: anyNamed('client'),
     )).thenThrow(exception ?? Exception());
   }
 
@@ -185,14 +183,17 @@ class _ArrangeBuilder {
     when(userRepository.fetchFullProfile(
       token: anyNamed('token'),
       projection: anyNamed('projection'),
+      client: anyNamed('client'),
     )).thenAnswer((_) async => LinkedInUserModel());
   }
 
   void withConfiguration() {
     when(configuration.clientSecret).thenAnswer((_) => 'clientSecret');
     when(configuration.projection).thenAnswer((_) => ['projection1']);
-    when(configuration.redirectUrl).thenAnswer((_) => 'https://redirectUrl.com');
-    when(configuration.frontendRedirectUrl).thenAnswer((_) => 'https://frontendRedirectUrl.com');
+    when(configuration.redirectUrl)
+        .thenAnswer((_) => 'https://redirectUrl.com');
+    when(configuration.frontendRedirectUrl)
+        .thenAnswer((_) => 'https://frontendRedirectUrl.com');
     when(configuration.clientId).thenAnswer((_) => 'clientId');
     when(configuration.state).thenAnswer((_) => 'state');
     when(configuration.initialUrl).thenAnswer((_) => 'initialUrl');

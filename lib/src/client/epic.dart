@@ -1,10 +1,7 @@
 import 'dart:async';
 
 import 'package:linkedin_login/redux/app_state.dart';
-import 'package:linkedin_login/src/DAL/repo/authorization_repository.dart';
-import 'package:linkedin_login/src/DAL/repo/user_repository.dart';
 import 'package:linkedin_login/src/client/actions.dart';
-import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
@@ -16,25 +13,22 @@ Epic<AppState> _fetchAccessTokenEpic(Graph graph) => (
       EpicStore<AppState> store,
     ) {
       return actions.whereType<DirectionUrlMatchSucceededAction>().switchMap(
-            (action) => _fetchAccessTokenUser(
-              action,
-              graph.authorizationRepository,
-              graph.linkedInConfiguration,
-            ),
+            (action) => _fetchAccessTokenUser(action, graph),
           );
     };
 
 Stream<dynamic> _fetchAccessTokenUser(
   DirectionUrlMatchSucceededAction action,
-  AuthorizationRepository authRepo,
-  Config configuration,
+  Graph graph,
 ) async* {
   try {
-    final authorizationCodeResponse = await authRepo.fetchAccessTokenCode(
+    final authorizationCodeResponse =
+        await graph.authorizationRepository.fetchAccessTokenCode(
       redirectedUrl: action.url,
-      clientId: configuration.clientId,
-      clientSecret: configuration.clientSecret,
-      clientState: configuration.state,
+      clientId: graph.linkedInConfiguration.clientId,
+      clientSecret: graph.linkedInConfiguration.clientSecret,
+      clientState: graph.linkedInConfiguration.state,
+      client: graph.httpClient,
     );
 
     yield FetchAccessCodeSucceededAction(authorizationCodeResponse.accessToken);
@@ -49,23 +43,19 @@ Epic<AppState> _fetchLinkedUserProfileEpic(Graph graph) => (
       EpicStore<AppState> store,
     ) {
       return actions.whereType<FetchAccessCodeSucceededAction>().switchMap(
-            (action) => _fetchLinkedInProfile(
-              action,
-              graph.userRepository,
-              graph.linkedInConfiguration,
-            ),
+            (action) => _fetchLinkedInProfile(action, graph),
           );
     };
 
 Stream<dynamic> _fetchLinkedInProfile(
   FetchAccessCodeSucceededAction action,
-  UserRepository userRepo,
-  Config configuration,
+  Graph graph,
 ) async* {
   try {
-    final user = await userRepo.fetchFullProfile(
+    final user = await graph.userRepository.fetchFullProfile(
       token: action.token,
-      projection: configuration.projection,
+      projection: graph.linkedInConfiguration.projection,
+      client: graph.httpClient,
     );
 
     yield FetchLinkedInUserSucceededAction(user);

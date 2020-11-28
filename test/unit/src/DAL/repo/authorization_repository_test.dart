@@ -7,6 +7,7 @@ import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:mockito/mockito.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:test/test.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../utils/mocks.dart';
 
@@ -41,6 +42,7 @@ void main() {
         clientSecret: 'clientSecret',
         clientId: 'clientId',
         clientState: 'clientState',
+        client: graph.httpClient,
       ),
       throwsA(isA<AuthCodeException>().having(
         (a) => a.description,
@@ -58,6 +60,7 @@ void main() {
         clientSecret: 'clientSecret',
         clientId: 'clientId',
         clientState: 'clientState',
+        client: graph.httpClient,
       ),
       throwsA(isA<AuthCodeException>()
           .having(
@@ -81,6 +84,7 @@ void main() {
         clientSecret: 'clientSecret',
         clientId: 'clientId',
         clientState: 'clientState',
+        client: graph.httpClient,
       ),
       throwsA(isA<AuthCodeException>().having(
         (a) => a.description,
@@ -99,6 +103,7 @@ void main() {
         clientSecret: 'clientSecret',
         clientId: 'clientId',
         clientState: 'CCC',
+        client: graph.httpClient,
       ),
       throwsA(
         isA<AuthCodeException>()
@@ -124,6 +129,7 @@ void main() {
         clientSecret: 'clientSecret',
         clientId: 'clientId',
         clientState: '',
+        client: graph.httpClient,
       ),
       throwsA(
         isA<AuthCodeException>()
@@ -150,6 +156,7 @@ void main() {
       clientSecret: 'clientSecret',
       clientId: 'clientId',
       clientState: 'bbb',
+      client: graph.httpClient,
     );
 
     expect(response.accessToken.accessToken, 'accessToken');
@@ -172,13 +179,16 @@ class _ArrangeBuilder {
   _ArrangeBuilder(
     this.graph,
     this.store,
-    this.api,
-  ) {
+    this.api, {
+    MockClient client,
+  }) : _client = client ?? MockClient() {
     when(graph.api).thenReturn(api);
+    when(graph.httpClient).thenReturn(_client);
   }
 
   final Graph graph;
   final LinkedInApi api;
+  final http.Client _client;
   final EpicStore<AppState> store;
 
   void withApiLogin() {
@@ -187,6 +197,7 @@ class _ArrangeBuilder {
       authCode: 'aaa',
       clientSecret: 'clientSecret',
       clientId: 'clientId',
+      client: anyNamed('client'),
     )).thenAnswer(
       (_) async => LinkedInTokenObject(
         accessToken: 'accessToken',

@@ -3,6 +3,7 @@ import 'package:linkedin_login/src/DAL/api/exceptions.dart';
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 import 'package:logging/logging.dart';
+import 'package:http/http.dart' as http;
 
 class AuthorizationRepository {
   AuthorizationRepository({@required this.api}) : assert(api != null);
@@ -15,6 +16,7 @@ class AuthorizationRepository {
     @required String clientSecret,
     @required String clientId,
     @required String clientState,
+    @required http.Client client,
   }) async {
     log.fine('Fetching access token');
 
@@ -28,6 +30,7 @@ class AuthorizationRepository {
       clientId: clientId,
       authCode: authorizationCode.code,
       clientSecret: clientSecret,
+      client: client,
     );
 
     authorizationCode.accessToken = tokenObject;

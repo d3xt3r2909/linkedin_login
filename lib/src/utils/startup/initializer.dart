@@ -38,9 +38,8 @@ class _GraphBuilder {
     log('Netwoking...');
 
     final endpoint = Endpoint(Environment.production);
-    final client = http.Client();
 
-    final api = LinkedInApi(endpoint, client);
+    final api = LinkedInApi(endpoint);
 
     log('Netwoking... Done');
     return api;

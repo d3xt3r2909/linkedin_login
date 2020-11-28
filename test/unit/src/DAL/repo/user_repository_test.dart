@@ -44,6 +44,7 @@ void main() {
         accessToken: 'accessToken',
       ),
       projection: ['projection1'],
+      client: graph.httpClient,
     );
 
     expect(response.email.elements[0].handleDeep.emailAddress,
@@ -72,13 +73,17 @@ class _ArrangeBuilder {
     when(api.fetchProfile(
       token: 'accessToken',
       projection: anyNamed('projection'),
+      client: anyNamed('client'),
     )).thenAnswer(
       (_) async => _generateUser(),
     );
   }
 
   void withUserEmail() {
-    when(api.fetchEmail(token: 'accessToken')).thenAnswer(
+    when(api.fetchEmail(
+      token: 'accessToken',
+      client: anyNamed('client'),
+    )).thenAnswer(
       (_) async => _generateUserEmail(),
     );
   }

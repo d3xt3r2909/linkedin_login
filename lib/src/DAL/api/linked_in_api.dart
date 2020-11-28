@@ -11,18 +11,16 @@ import 'package:meta/meta.dart';
 import 'exceptions.dart';
 
 class LinkedInApi {
-  LinkedInApi._(this._endpoint, this._client);
+  LinkedInApi._(this._endpoint);
 
-  factory LinkedInApi(Endpoint endpoint, http.Client client) =>
-      LinkedInApi._(endpoint, client);
+  factory LinkedInApi(Endpoint endpoint) => LinkedInApi._(endpoint);
 
   @visibleForTesting
   factory LinkedInApi.test(Endpoint endpoint, http.Client client) {
-    return LinkedInApi._(endpoint, client);
+    return LinkedInApi._(endpoint);
   }
 
   final Endpoint _endpoint;
-  final http.Client _client;
 
   Uri _generateEndpoint(EnvironmentAccess setup, String path,
           [Map<String, String> queryParameters]) =>
@@ -37,6 +35,7 @@ class LinkedInApi {
     @required String authCode,
     @required String clientSecret,
     @required String clientId,
+    @required http.Client client,
   }) async {
     final endpoint = _generateEndpoint(
       EnvironmentAccess.authorization,
@@ -51,10 +50,7 @@ class LinkedInApi {
       'client_secret': clientSecret,
     };
 
-    final response = await _postWithResponse(
-      endpoint,
-      body,
-    );
+    final response = await _postWithResponse(endpoint, client, body);
 
     final responseBody = json.decode(response.body);
 
@@ -67,20 +63,24 @@ class LinkedInApi {
   Future<LinkedInUserModel> fetchProfile({
     @required String token,
     @required List<String> projection,
+    @required http.Client client,
   }) async {
+    assert(client != null);
+
     final projectionParameter = 'projection=(${projection.join(",")})';
     final endpoint = _generateEndpoint(
       EnvironmentAccess.profile,
       'me?$projectionParameter',
     );
 
-    final response = await _get(endpoint, token);
+    final response = await _get(endpoint, token, client);
 
     return LinkedInUserModel.fromJson(response);
   }
 
   Future<LinkedInProfileEmail> fetchEmail({
     @required String token,
+    @required http.Client client,
   }) async {
     assert(token != null);
 
@@ -89,12 +89,16 @@ class LinkedInApi {
       'emailAddress?q=members&projection=(elements*(handle~))',
     );
 
-    final response = await _get(endpoint, token);
+    final response = await _get(endpoint, token, client);
 
     return LinkedInProfileEmail.fromJson(response);
   }
 
-  Future<dynamic> _get(Uri url, String token) async {
+  Future<dynamic> _get(
+    Uri url,
+    String token,
+    http.Client client,
+  ) async {
     assert(url != null);
     assert(token != null);
     assert(token.isNotEmpty);
@@ -104,7 +108,7 @@ class LinkedInApi {
       HttpHeaders.authorizationHeader: 'Bearer $token',
     };
 
-    final response = await _client.get(url, headers: headers);
+    final response = await client.get(url, headers: headers);
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
       return Future.error(Exception(
@@ -116,11 +120,13 @@ class LinkedInApi {
 
   Future<http.Response> _postWithResponse(
     Uri url,
+    http.Client client,
     dynamic body, {
     String token,
   }) async {
     final response = await _fetchPostResponse(
       url,
+      client,
       body,
       token: token,
     );
@@ -140,6 +146,7 @@ class LinkedInApi {
 
   Future<http.Response> _fetchPostResponse(
     Uri url,
+    http.Client client,
     dynamic body, {
     String token,
   }) async {
@@ -154,6 +161,6 @@ class LinkedInApi {
       headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
     }
 
-    return _client.post(url, body: body, headers: headers);
+    return client.post(url, body: body, headers: headers);
   }
 }

@@ -6,6 +6,7 @@ import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:mockito/mockito.dart';
 import 'package:redux/redux.dart';
+import 'package:http/http.dart' as http;
 
 class MockStore extends Mock implements Store<AppState> {}
 
@@ -20,3 +21,5 @@ class MockAuthorizationRepository extends Mock
 class MockApi extends Mock implements LinkedInApi {}
 
 class MockConfiguration extends Mock implements Config {}
+
+class MockClient extends Mock implements http.Client {}
