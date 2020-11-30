@@ -2,11 +2,10 @@ Todo:
 
 Support:
 
-
--> CONFIGURATION.dart
--> core.dart
+To test:
 -> client/linkedin_widget
 -> test and refactor a little bit linked_in_buttons.dart
+
 -> github actions
 -> integration tests
 
@@ -16,8 +15,8 @@ Support:
 Features:
 
 - Clear cache feature - destroySession
-- new version of flutter null safety
-- add logError to epics - implement logs
+- new version of flutter null safety - new dev after this reconstruction
+- add logError to epics - implement logs - do not show this on logs and in real app
 - remove unused packages pubspec
 
 Fix:
