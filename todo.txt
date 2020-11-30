@@ -2,10 +2,6 @@ Todo:
 
 Support:
 
-- Rest of tests
--> DAL (tests for linkedIn api)
----> Started with full_user_profile.json basic implementation
-
 
 -> CONFIGURATION.dart
 -> core.dart
