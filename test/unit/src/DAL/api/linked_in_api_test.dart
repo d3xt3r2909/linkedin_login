@@ -18,11 +18,14 @@ void main() {
   http.Client httpClient;
   String localHostUrlMeProfile;
   String localHostUrlLogin;
+  String localHostUrlEmail;
   _ArrangeBuilder builder;
 
   setUpAll(() {
     localHostUrlMeProfile = 'http://localhost:8080/v2/me?projection=';
     localHostUrlLogin = 'http://localhost:8080/oauth/v2/accessToken';
+    localHostUrlEmail =
+        'http://localhost:8080/v2/emailAddress?q=members&projection=(elements*(handle~))';
   });
 
   setUp(() {
@@ -298,34 +301,38 @@ void main() {
     });
   });
 
-  group('Fetching user profile API', () {
+  group('Fetching user email API', () {
     test('with 200 HTTP code', () async {
-      final url =
-          '$localHostUrlMeProfile(${ProjectionParameters.fullProjection.join(",")})';
-      final responsePath = '${builder.testPath}full_user_profile.json';
+      final responsePath = '${builder.testPath}user_email.json';
       final response = await builder.buildResponse(responsePath, 200);
-      await builder.withFetchUrL(url, response);
+      await builder.withFetchUrL(localHostUrlEmail, response);
 
       final api = LinkedInApi.test(Endpoint(Environment.vm));
 
-      final linkedInUserModel = await api.fetchProfile(
+      final userEmail = await api.fetchEmail(
         token: 'accessToken',
-        projection: ProjectionParameters.fullProjection,
         client: httpClient,
       );
 
-      expect(linkedInUserModel, isA<LinkedInUserModel>());
-      expect(linkedInUserModel.localizedLastName, 'Doe');
-      expect(linkedInUserModel.localizedFirstName, 'John');
-      expect(linkedInUserModel.lastName.localized.label, 'Doe');
-      expect(linkedInUserModel.firstName.localized.label, 'John');
-      expect(
-        linkedInUserModel.profilePicture.displayImageContent.elements[0]
-            .identifiers[0].identifier,
-        'https://media-exp1.licdn.com/dms/image/C4D03AQHirapDum_ZbC/profile-displayphoto-shrink_100_100/0?e=1611792000&v=beta&t=ijlJxIZEMFJDUhnJNrsoWX2vCBIUOXWv4eYCTlPOw-c',
-      );
-      expect(linkedInUserModel.userId, 'dwe_Pcc0k3');
-      expect(linkedInUserModel.email, isNull);
+      expect(userEmail, isA<LinkedInProfileEmail>());
+      expect(userEmail.elements[0]?.handleDeep?.emailAddress, 'xxx@xxx.xxx');
+    });
+
+    test('with 401 HTTP code', () async {
+      final responsePath = '${builder.testPath}invalid_access_token.json';
+      final response = await builder.buildResponse(responsePath, 401);
+      await builder.withFetchUrL(localHostUrlEmail, response);
+
+      final api = LinkedInApi.test(Endpoint(Environment.vm));
+
+      try {
+        await api.fetchEmail(
+          token: 'accessToken',
+          client: httpClient,
+        );
+      } on Exception catch (e) {
+        expect(e.toString(), contains('"message": "Invalid access token"'));
+      }
     });
   });
 }
