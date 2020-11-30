@@ -6,11 +6,11 @@ const Map<EnvironmentAccess, String> _kProduction = {
 };
 const Map<EnvironmentAccess, String> _kVM = {
   EnvironmentAccess.profile: 'http://localhost:8080',
-  EnvironmentAccess.authorization: 'http://localhost:8080',
+  EnvironmentAccess.authorization: 'http://localhost:8080/oauth',
 };
 const Map<EnvironmentAccess, String> _kEmulator = {
   EnvironmentAccess.profile: 'https://10.2.2:8080',
-  EnvironmentAccess.authorization: 'https://10.2.2:8080',
+  EnvironmentAccess.authorization: 'https://10.2.2:8080/oauth',
 };
 
 class Endpoint {

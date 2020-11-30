@@ -17,10 +17,12 @@ void main() {
   LinkedInApi api;
   http.Client httpClient;
   String localHostUrlMeProfile;
+  String localHostUrlLogin;
   _ArrangeBuilder builder;
 
   setUpAll(() {
     localHostUrlMeProfile = 'http://localhost:8080/v2/me?projection=';
+    localHostUrlLogin = 'http://localhost:8080/oauth/v2/accessToken';
   });
 
   setUp(() {
@@ -38,6 +40,65 @@ void main() {
     );
   });
 
+  group('Login user API', () {
+    test('with 200 HTTP code', () async {
+      final url = '$localHostUrlLogin';
+      final Map<String, dynamic> body = {
+        'grant_type': 'authorization_code',
+        'code': 'code',
+        'redirect_uri': 'https://www.app.dexter.com',
+        'client_id': 'client_id',
+        'client_secret': 'client_secret',
+      };
+      final responsePath = '${builder.testPath}access_token.json';
+      final response = await builder.buildResponse(responsePath, 200);
+      await builder.withPostLogin(url, response, body);
+
+      final api = LinkedInApi.test(Endpoint(Environment.vm));
+
+      final linkedInTokenObject = await api.login(
+        client: httpClient,
+        redirectUrl: 'https://www.app.dexter.com',
+        authCode: 'code',
+        clientSecret: 'client_secret',
+        clientId: 'client_id',
+      );
+
+      expect(linkedInTokenObject, isA<LinkedInTokenObject>());
+      expect(linkedInTokenObject.accessToken, 'xxxAccessToken');
+      expect(linkedInTokenObject.expiresIn, 5184000);
+    });
+
+    test('400 bad request should throw', () async {
+      final url = '$localHostUrlLogin';
+      final Map<String, dynamic> body = {
+        'grant_type': 'authorization_code',
+        'code': 'expire',
+        'redirect_uri': 'https://www.app.dexter.com',
+        'client_id': 'client_id',
+        'client_secret': 'client_secret',
+      };
+      final responsePath = '${builder.testPath}access_token_invalid_code.json';
+      final response = await builder.buildResponse(responsePath, 400);
+      await builder.withPostLogin(url, response, body);
+
+      final api = LinkedInApi.test(Endpoint(Environment.vm));
+
+      try {
+        await api.login(
+          client: httpClient,
+          redirectUrl: 'https://www.app.dexter.com',
+          authCode: 'expire',
+          clientSecret: 'client_secret',
+          clientId: 'client_id',
+        );
+      } on Exception catch (e) {
+        expect(e.toString(), contains('Or authorization code expired'));
+        expect(e.toString(), contains('"error": "invalid_request"'));
+      }
+    });
+  });
+
   group('Fetching user profile API', () {
     test('with 200 HTTP code', () async {
       final url =
@@ -47,6 +108,7 @@ void main() {
       await builder.withFetchUrL(url, response);
 
       final api = LinkedInApi.test(Endpoint(Environment.vm));
+
       final linkedInUserModel = await api.fetchProfile(
         token: 'accessToken',
         projection: ProjectionParameters.fullProjection,
@@ -235,6 +297,37 @@ void main() {
       }
     });
   });
+
+  group('Fetching user profile API', () {
+    test('with 200 HTTP code', () async {
+      final url =
+          '$localHostUrlMeProfile(${ProjectionParameters.fullProjection.join(",")})';
+      final responsePath = '${builder.testPath}full_user_profile.json';
+      final response = await builder.buildResponse(responsePath, 200);
+      await builder.withFetchUrL(url, response);
+
+      final api = LinkedInApi.test(Endpoint(Environment.vm));
+
+      final linkedInUserModel = await api.fetchProfile(
+        token: 'accessToken',
+        projection: ProjectionParameters.fullProjection,
+        client: httpClient,
+      );
+
+      expect(linkedInUserModel, isA<LinkedInUserModel>());
+      expect(linkedInUserModel.localizedLastName, 'Doe');
+      expect(linkedInUserModel.localizedFirstName, 'John');
+      expect(linkedInUserModel.lastName.localized.label, 'Doe');
+      expect(linkedInUserModel.firstName.localized.label, 'John');
+      expect(
+        linkedInUserModel.profilePicture.displayImageContent.elements[0]
+            .identifiers[0].identifier,
+        'https://media-exp1.licdn.com/dms/image/C4D03AQHirapDum_ZbC/profile-displayphoto-shrink_100_100/0?e=1611792000&v=beta&t=ijlJxIZEMFJDUhnJNrsoWX2vCBIUOXWv4eYCTlPOw-c',
+      );
+      expect(linkedInUserModel.userId, 'dwe_Pcc0k3');
+      expect(linkedInUserModel.email, isNull);
+    });
+  });
 }
 
 class _ArrangeBuilder {
@@ -267,6 +360,29 @@ class _ArrangeBuilder {
     when(
       _client.get(
         Uri.parse(url),
+        headers: headers,
+      ),
+    ).thenAnswer(
+      (_) async {
+        return response;
+      },
+    );
+  }
+
+  Future<void> withPostLogin(
+    String url,
+    http.Response response,
+    Map<String, dynamic> body,
+  ) async {
+    var headers = {
+      HttpHeaders.acceptHeader: 'application/json',
+      HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
+    };
+
+    when(
+      _client.post(
+        Uri.parse(url),
+        body: body,
         headers: headers,
       ),
     ).thenAnswer(

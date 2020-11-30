@@ -144,14 +144,12 @@ class LinkedInApi {
   Future<http.Response> _postWithResponse(
     Uri url,
     http.Client client,
-    dynamic body, {
-    String token,
-  }) async {
+    dynamic body,
+  ) async {
     final response = await _fetchPostResponse(
       url,
       client,
       body,
-      token: token,
     );
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
@@ -170,19 +168,14 @@ class LinkedInApi {
   Future<http.Response> _fetchPostResponse(
     Uri url,
     http.Client client,
-    dynamic body, {
-    String token,
-  }) async {
+    dynamic body,
+  ) async {
     assert(url != null);
 
     var headers = {
       HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
       HttpHeaders.acceptHeader: 'application/json',
     };
-
-    if (token != null) {
-      headers[HttpHeaders.authorizationHeader] = 'Bearer $token';
-    }
 
     return client.post(url, body: body, headers: headers);
   }
