@@ -62,17 +62,19 @@ void main() {
         clientState: 'clientState',
         client: graph.httpClient,
       ),
-      throwsA(isA<AuthCodeException>()
-          .having(
-            (a) => a.description,
-            'Description',
-            contains('errorDescription'),
-          )
-          .having(
-            (a) => a.authCode,
-            'authCode',
-            contains('aaaa'),
-          )),
+      throwsA(
+        isA<AuthCodeException>()
+            .having(
+              (a) => a.description,
+              'Description',
+              contains('errorDescription'),
+            )
+            .having(
+              (a) => a.authCode,
+              'authCode',
+              contains('aaaa'),
+            ),
+      ),
     );
   });
 

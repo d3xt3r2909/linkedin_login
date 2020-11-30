@@ -16,6 +16,7 @@ class LinkedInUserModel {
   final LinkedInPersonalInfo firstName, lastName;
   final LinkedInProfilePicture profilePicture;
   final String userId;
+  final String localizedFirstName, localizedLastName;
   LinkedInProfileEmail email;
   LinkedInTokenObject token;
 
@@ -25,6 +26,8 @@ class LinkedInUserModel {
     this.lastName,
     this.profilePicture,
     this.userId,
+    this.localizedFirstName,
+    this.localizedLastName,
   });
 
   /// Convert response from API to [LinkedInUserModel] object
@@ -32,6 +35,8 @@ class LinkedInUserModel {
     Map<String, dynamic> firstName = json['firstName'];
     Map<String, dynamic> lastName = json['lastName'];
     Map<String, dynamic> profilePicture = json['profilePicture'];
+    String localizedFirstName = json['localizedFirstName'];
+    String localizedLastName = json['localizedLastName'];
     String userId = json['id'];
 
     return LinkedInUserModel(
@@ -43,6 +48,8 @@ class LinkedInUserModel {
           ? LinkedInProfilePicture.fromJson(profilePicture)
           : null,
       userId: userId ?? null,
+      localizedFirstName: localizedFirstName,
+      localizedLastName: localizedLastName,
     );
   }
 

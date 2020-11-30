@@ -16,10 +16,12 @@ void main() {
   Graph graph;
   LinkedInApi api;
   http.Client httpClient;
-
+  String localHostUrlMeProfile;
   _ArrangeBuilder builder;
 
-  setUpAll(() {});
+  setUpAll(() {
+    localHostUrlMeProfile = 'http://localhost:8080/v2/me?projection=';
+  });
 
   setUp(() {
     final mockStore = MockStore();
@@ -36,51 +38,202 @@ void main() {
     );
   });
 
-  test('Fetch user profile with 200 HTTP code', () async {
-    final url =
-        'http://localhost:8080/v2/me?projection=(${ProjectionParameters.fullProjection.join(",")})';
-    final responsePath =
-        'test/unit/src/DAL/api/override/full_user_profile.json';
-    final response = await builder.buildResponse(responsePath, 200);
-    await builder.withFetchUrL(url, response);
+  group('Fetching user profile API', () {
+    test('with 200 HTTP code', () async {
+      final url =
+          '$localHostUrlMeProfile(${ProjectionParameters.fullProjection.join(",")})';
+      final responsePath = '${builder.testPath}full_user_profile.json';
+      final response = await builder.buildResponse(responsePath, 200);
+      await builder.withFetchUrL(url, response);
 
-    final api = LinkedInApi.test(Endpoint(Environment.vm));
-    final linkedInUserModel = await api.fetchProfile(
-      token: 'accessToken',
-      projection: ProjectionParameters.fullProjection,
-      client: httpClient,
-    );
-
-    expect(linkedInUserModel, isA<LinkedInUserModel>());
-    expect(linkedInUserModel.lastName.localized.label, 'Doe');
-    expect(linkedInUserModel.firstName.localized.label, 'John');
-    expect(
-      linkedInUserModel.profilePicture.displayImageContent.elements[0]
-          .identifiers[0].identifier,
-      'https://media-exp1.licdn.com/dms/image/C4D03AQHirapDum_ZbC/profile-displayphoto-shrink_100_100/0?e=1611792000&v=beta&t=ijlJxIZEMFJDUhnJNrsoWX2vCBIUOXWv4eYCTlPOw-c',
-    );
-    expect(linkedInUserModel.email, isNull);
-  });
-
-  test('Failed to fetch user profile 401 Unauthorized Invalid access token',
-      () async {
-    final url =
-        'http://localhost:8080/v2/me?projection=(${ProjectionParameters.fullProjection.join(",")})';
-    final responsePath =
-        'test/unit/src/DAL/api/override/invalid_access_token.json';
-    final response = await builder.buildResponse(responsePath, 401);
-    await builder.withFetchUrL(url, response);
-
-    try {
       final api = LinkedInApi.test(Endpoint(Environment.vm));
-      await api.fetchProfile(
+      final linkedInUserModel = await api.fetchProfile(
         token: 'accessToken',
         projection: ProjectionParameters.fullProjection,
         client: httpClient,
       );
-    } on Exception catch (e) {
-      expect(e.toString(), contains('"message": "Invalid access token"'));
-    }
+
+      expect(linkedInUserModel, isA<LinkedInUserModel>());
+      expect(linkedInUserModel.localizedLastName, 'Doe');
+      expect(linkedInUserModel.localizedFirstName, 'John');
+      expect(linkedInUserModel.lastName.localized.label, 'Doe');
+      expect(linkedInUserModel.firstName.localized.label, 'John');
+      expect(
+        linkedInUserModel.profilePicture.displayImageContent.elements[0]
+            .identifiers[0].identifier,
+        'https://media-exp1.licdn.com/dms/image/C4D03AQHirapDum_ZbC/profile-displayphoto-shrink_100_100/0?e=1611792000&v=beta&t=ijlJxIZEMFJDUhnJNrsoWX2vCBIUOXWv4eYCTlPOw-c',
+      );
+      expect(linkedInUserModel.userId, 'dwe_Pcc0k3');
+      expect(linkedInUserModel.email, isNull);
+    });
+
+    test(
+        'partially PROJECTION[(id, firstName,lastName,'
+        'profilePicture(displayImage~:playableStreams))]', () async {
+      final projection = builder.projectionWithoutLocalized();
+      final url = '$localHostUrlMeProfile(${projection.join(",")})';
+      final responsePath =
+          '${builder.testPath}user_profile_no_localized_names.json';
+      final response = await builder.buildResponse(responsePath, 200);
+      await builder.withFetchUrL(url, response);
+
+      final api = LinkedInApi.test(Endpoint(Environment.vm));
+      final linkedInUserModel = await api.fetchProfile(
+        token: 'accessToken',
+        projection: projection,
+        client: httpClient,
+      );
+
+      expect(linkedInUserModel, isA<LinkedInUserModel>());
+      expect(linkedInUserModel.localizedLastName, isNull);
+      expect(linkedInUserModel.localizedFirstName, isNull);
+      expect(linkedInUserModel.lastName.localized.label, 'Doe');
+      expect(linkedInUserModel.firstName.localized.label, 'John');
+      expect(
+        linkedInUserModel.profilePicture.displayImageContent.elements[0]
+            .identifiers[0].identifier,
+        'https://media-exp1.licdn.com/dms/image/C4D03AQHirapDum_ZbC/profile-displayphoto-shrink_100_100/0?e=1611792000&v=beta&t=ijlJxIZEMFJDUhnJNrsoWX2vCBIUOXWv4eYCTlPOw-c',
+      );
+      expect(linkedInUserModel.userId, 'dwe_Pcc0k3');
+      expect(linkedInUserModel.email, isNull);
+    });
+
+    test(
+        'partially PROJECTION[((id,localizedFirstName,'
+        'localizedLastName,profilePicture(displayImage~:playableStreams))]',
+        () async {
+      final projection = builder.projectionWithoutNames();
+      final url = '$localHostUrlMeProfile(${projection.join(",")})';
+      final responsePath = '${builder.testPath}user_profile_no_names.json';
+      final response = await builder.buildResponse(responsePath, 200);
+      await builder.withFetchUrL(url, response);
+
+      final api = LinkedInApi.test(Endpoint(Environment.vm));
+      final linkedInUserModel = await api.fetchProfile(
+        token: 'accessToken',
+        projection: projection,
+        client: httpClient,
+      );
+
+      expect(linkedInUserModel, isA<LinkedInUserModel>());
+      expect(linkedInUserModel.localizedLastName, 'Doe');
+      expect(linkedInUserModel.localizedFirstName, 'John');
+      expect(linkedInUserModel?.lastName?.localized?.label, isNull);
+      expect(linkedInUserModel?.firstName?.localized?.label, isNull);
+      expect(
+        linkedInUserModel.profilePicture.displayImageContent.elements[0]
+            .identifiers[0].identifier,
+        'https://media-exp1.licdn.com/dms/image/C4D03AQHirapDum_ZbC/profile-displayphoto-shrink_100_100/0?e=1611792000&v=beta&t=ijlJxIZEMFJDUhnJNrsoWX2vCBIUOXWv4eYCTlPOw-c',
+      );
+      expect(linkedInUserModel.userId, 'dwe_Pcc0k3');
+      expect(linkedInUserModel.email, isNull);
+    });
+
+    test(
+        'partially PROJECTION[((id,localizedFirstName,'
+        'localizedLastName,profilePicture(displayImage~:playableStreams))]',
+        () async {
+      final projection = builder.projectionWithoutNames();
+      final url = '$localHostUrlMeProfile(${projection.join(",")})';
+      final responsePath = '${builder.testPath}user_profile_no_names.json';
+      final response = await builder.buildResponse(responsePath, 200);
+      await builder.withFetchUrL(url, response);
+
+      final api = LinkedInApi.test(Endpoint(Environment.vm));
+      final linkedInUserModel = await api.fetchProfile(
+        token: 'accessToken',
+        projection: projection,
+        client: httpClient,
+      );
+
+      expect(linkedInUserModel, isA<LinkedInUserModel>());
+      expect(linkedInUserModel.localizedLastName, 'Doe');
+      expect(linkedInUserModel.localizedFirstName, 'John');
+      expect(linkedInUserModel?.lastName?.localized?.label, isNull);
+      expect(linkedInUserModel?.firstName?.localized?.label, isNull);
+      expect(
+        linkedInUserModel.profilePicture.displayImageContent.elements[0]
+            .identifiers[0].identifier,
+        'https://media-exp1.licdn.com/dms/image/C4D03AQHirapDum_ZbC/profile-displayphoto-shrink_100_100/0?e=1611792000&v=beta&t=ijlJxIZEMFJDUhnJNrsoWX2vCBIUOXWv4eYCTlPOw-c',
+      );
+      expect(linkedInUserModel.userId, 'dwe_Pcc0k3');
+      expect(linkedInUserModel.email, isNull);
+    });
+
+    test(
+        'partially PROJECTION[((id,localizedFirstName,'
+        'localizedLastName,firstName,lastName)]', () async {
+      final projection = builder.projectionWithoutProfilePicture();
+      final url = '$localHostUrlMeProfile(${projection.join(",")})';
+      final responsePath = '${builder.testPath}user_profile_no_image.json';
+      final response = await builder.buildResponse(responsePath, 200);
+      await builder.withFetchUrL(url, response);
+
+      final api = LinkedInApi.test(Endpoint(Environment.vm));
+      final linkedInUserModel = await api.fetchProfile(
+        token: 'accessToken',
+        projection: projection,
+        client: httpClient,
+      );
+
+      expect(linkedInUserModel, isA<LinkedInUserModel>());
+      expect(linkedInUserModel.localizedLastName, 'Doe');
+      expect(linkedInUserModel.localizedFirstName, 'John');
+      expect(linkedInUserModel.lastName.localized.label, 'Doe');
+      expect(linkedInUserModel.firstName.localized.label, 'John');
+      expect(linkedInUserModel?.profilePicture, isNull);
+      expect(linkedInUserModel.userId, 'dwe_Pcc0k3');
+      expect(linkedInUserModel.email, isNull);
+    });
+
+    test(
+        'partially PROJECTION[(localizedFirstName,localizedLastName,firstName,lastName,profilePicture(displayImage~:playableStreams))]',
+        () async {
+      final projection = builder.projectionWithoutId();
+      final url = '$localHostUrlMeProfile(${projection.join(",")})';
+      final responsePath = '${builder.testPath}user_profile_no_id.json';
+      final response = await builder.buildResponse(responsePath, 200);
+      await builder.withFetchUrL(url, response);
+
+      final api = LinkedInApi.test(Endpoint(Environment.vm));
+      final linkedInUserModel = await api.fetchProfile(
+        token: 'accessToken',
+        projection: projection,
+        client: httpClient,
+      );
+
+      expect(linkedInUserModel, isA<LinkedInUserModel>());
+      expect(linkedInUserModel.localizedLastName, 'Doe');
+      expect(linkedInUserModel.localizedFirstName, 'John');
+      expect(linkedInUserModel.lastName.localized.label, 'Doe');
+      expect(linkedInUserModel.firstName.localized.label, 'John');
+      expect(linkedInUserModel.userId, isNull);
+      expect(
+        linkedInUserModel.profilePicture.displayImageContent.elements[0]
+            .identifiers[0].identifier,
+        'https://media-exp1.licdn.com/dms/image/C4D03AQHirapDum_ZbC/profile-displayphoto-shrink_100_100/0?e=1611792000&v=beta&t=ijlJxIZEMFJDUhnJNrsoWX2vCBIUOXWv4eYCTlPOw-c',
+      );
+      expect(linkedInUserModel.email, isNull);
+    });
+
+    test('Failed - 401 Unauthorized Invalid access token', () async {
+      final url =
+          '$localHostUrlMeProfile(${ProjectionParameters.fullProjection.join(",")})';
+      final responsePath = '${builder.testPath}invalid_access_token.json';
+      final response = await builder.buildResponse(responsePath, 401);
+      await builder.withFetchUrL(url, response);
+
+      try {
+        final api = LinkedInApi.test(Endpoint(Environment.vm));
+        await api.fetchProfile(
+          token: 'accessToken',
+          projection: ProjectionParameters.fullProjection,
+          client: httpClient,
+        );
+      } on Exception catch (e) {
+        expect(e.toString(), contains('"message": "Invalid access token"'));
+      }
+    });
   });
 }
 
@@ -122,6 +275,47 @@ class _ArrangeBuilder {
       },
     );
   }
+
+  List<String> projectionWithoutLocalized() {
+    return [
+      ProjectionParameters.firstName,
+      ProjectionParameters.lastName,
+      ProjectionParameters.profilePicture,
+      ProjectionParameters.id,
+    ];
+  }
+
+  List<String> projectionWithoutNames() {
+    return [
+      ProjectionParameters.localizedFirstName,
+      ProjectionParameters.localizedLastName,
+      ProjectionParameters.profilePicture,
+      ProjectionParameters.id,
+    ];
+  }
+
+  List<String> projectionWithoutProfilePicture() {
+    return [
+      ProjectionParameters.firstName,
+      ProjectionParameters.lastName,
+      ProjectionParameters.localizedFirstName,
+      ProjectionParameters.localizedLastName,
+      ProjectionParameters.id,
+    ];
+  }
+
+  List<String> projectionWithoutId() {
+    return [
+      ProjectionParameters.firstName,
+      ProjectionParameters.lastName,
+      ProjectionParameters.localizedFirstName,
+      ProjectionParameters.localizedLastName,
+      ProjectionParameters.profilePicture,
+    ];
+  }
+
+  String get testPath =>
+      '${Directory.current.path.endsWith('test') ? '.' : './test'}/unit/src/DAL/api/override/';
 
   Future<http.Response> buildResponse(
     String responseContentPath,
