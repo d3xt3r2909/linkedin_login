@@ -16,14 +16,6 @@ import 'package:uuid/uuid.dart';
 /// This class is responsible to fetch all information for user after we get
 /// token and code from LinkedIn
 class LinkedInUserWidget extends StatefulWidget {
-  final Function(LinkedInUserModel) onGetUserProfile;
-  final Function catchError;
-  final String redirectUrl;
-  final String clientId, clientSecret;
-  final PreferredSizeWidget appBar;
-  final bool destroySession;
-  final List<String> projection;
-
   /// Client state parameter needs to be unique range of characters - random one
   LinkedInUserWidget({
     @required this.onGetUserProfile,
@@ -46,6 +38,19 @@ class LinkedInUserWidget extends StatefulWidget {
         assert(clientSecret != null),
         assert(destroySession != null),
         assert(projection != null && projection.isNotEmpty);
+
+  final Function(LinkedInUserModel) onGetUserProfile;
+  @Deprecated(
+    'From 1.4.x version of library, this field will not be used anymore'
+    ' and in near future it will be removed. Error code will be set'
+    ' inside AuthorizationCodeResponse response [error] property',
+  )
+  final Function catchError;
+  final String redirectUrl;
+  final String clientId, clientSecret;
+  final PreferredSizeWidget appBar;
+  final bool destroySession;
+  final List<String> projection;
 
   @override
   State createState() => _LinkedInUserWidgetState();
