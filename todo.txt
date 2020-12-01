@@ -1,26 +1,20 @@
 Todo:
 
-Support:
-
-To test:
--> client/linkedin_widget
--> test and refactor a little bit linked_in_buttons.dart
-
--> github actions
--> integration tests
-
-- remove  final LinkedInUserState user; expose properties
-- reorder changelog.md
-
 Features:
 
 - Clear cache feature - destroySession
-- new version of flutter null safety - new dev after this reconstruction
 - add logError to epics - implement logs - do not show this on logs and in real app
 - remove unused packages pubspec
 
 Fix:
 
 - auth code is throwing some error
-- can be error inside repository LinkedInErrorObject (check deprecate message is it ok)
 
+For next release
+
+- new version of flutter null safety - new dev after this reconstruction
+-> github actions
+-> integration tests
+-> reorder changelog.md
+-> fix quality of code - see quality mark on read me
+-> remove  final LinkedInUserState user; expose properties
