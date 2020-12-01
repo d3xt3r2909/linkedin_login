@@ -25,6 +25,21 @@ class LinkedInWebViewHandler extends StatefulWidget {
 }
 
 class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
+  WebViewController webViewController;
+  final CookieManager cookieManager = CookieManager();
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.destroySession) {
+      log('LinkedInAuth-steps: cache clearing... ');
+      cookieManager.clearCookies().then((value) {
+        log('LinkedInAuth-steps: cache clearing... DONE');
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     log('LinkedInAuth steps start:');
@@ -41,8 +56,7 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
               initialUrl: viewModel.initialUrl(context),
               javascriptMode: JavascriptMode.unrestricted,
               onWebViewCreated: (WebViewController webViewController) async {
-                log('LinkedInAuth-steps: [onWebViewCreated, current url:: '
-                    '${await webViewController.currentUrl()}]');
+                log('LinkedInAuth-steps: [onWebViewCreated]');
 
                 if (widget.onWebViewCreated != null) {
                   widget.onWebViewCreated(webViewController);
@@ -88,8 +102,7 @@ class _ViewModel {
     @required this.onDispatch,
   }) : assert(onDispatch != null);
 
-  factory _ViewModel.from(Store<AppState> store) =>
-      _ViewModel._(
+  factory _ViewModel.from(Store<AppState> store) => _ViewModel._(
         onDispatch: store.dispatch,
       );
 
@@ -98,15 +111,11 @@ class _ViewModel {
   void onRedirectionUrl(String url) => onDispatch(DirectionUrlMatch(url));
 
   String initialUrl(BuildContext context) {
-    return InjectorWidget
-        .of(context)
-        .linkedInConfiguration
-        .initialUrl;
+    return InjectorWidget.of(context).linkedInConfiguration.initialUrl;
   }
 
   bool isUrlMatchingToRedirection(BuildContext context, String url) {
-    return InjectorWidget
-        .of(context)
+    return InjectorWidget.of(context)
         .linkedInConfiguration
         .isCurrentUrlMatchToRedirection(url);
   }

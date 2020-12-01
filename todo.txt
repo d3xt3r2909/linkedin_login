@@ -2,7 +2,6 @@ Todo:
 
 Features:
 
-- Clear cache feature - destroySession
 - add logError to epics - implement logs - do not show this on logs and in real app
 - remove unused packages pubspec
 
