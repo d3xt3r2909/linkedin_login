@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:linkedin_login/linkedin_login.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
 
 void main() {

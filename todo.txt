@@ -8,10 +8,12 @@ Features:
 Fix:
 
 - auth code is throwing some error
+- update changelog
+- update version
 
 For next release
 
-- new version of flutter null safety - new dev after this reconstruction
+-> new version of flutter null safety - new dev after this reconstruction
 -> github actions
 -> integration tests
 -> reorder changelog.md

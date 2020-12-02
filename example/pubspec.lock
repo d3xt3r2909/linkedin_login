@@ -43,13 +43,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0-nullsafety.3"
-  colorize:
-    dependency: transitive
-    description:
-      name: colorize
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   convert:
     dependency: transitive
     description:
@@ -116,13 +109,6 @@ packages:
       relative: true
     source: path
     version: "1.3.1"
-  logging:
-    dependency: transitive
-    description:
-      name: logging
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.11.4"
   matcher:
     dependency: transitive
     description:
@@ -165,13 +151,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.14.0"
-  redux_logging:
-    dependency: transitive
-    description:
-      name: redux_logging
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.0"
   rxdart:
     dependency: transitive
     description:

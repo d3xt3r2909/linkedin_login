@@ -12,7 +12,6 @@ import 'package:linkedin_login/src/utils/startup/injector.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
 import 'package:redux/redux.dart';
 import 'package:uuid/uuid.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 /// This class is responsible to fetch all information for user after we get
 /// token and code from LinkedIn
