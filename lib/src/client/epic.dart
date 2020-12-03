@@ -22,12 +22,9 @@ Stream<dynamic> _fetchAccessTokenUser(
   Graph graph,
 ) async* {
   try {
-    log('LinkedInAuth-steps: Fetching access token... '
-        '\nConfiguration: ${graph.linkedInConfiguration}, '
-        'redirectedUrl: ${action.url}');
+    log('LinkedInAuth-steps: Fetching access token...');
 
-    final authorizationCodeResponse =
-        await graph.authorizationRepository.fetchAccessTokenCode(
+    final response = await graph.authorizationRepository.fetchAccessTokenCode(
       redirectedUrl: action.url,
       clientId: graph.linkedInConfiguration.clientId,
       clientSecret: graph.linkedInConfiguration.clientSecret,
@@ -35,10 +32,11 @@ Stream<dynamic> _fetchAccessTokenUser(
       client: graph.httpClient,
     );
 
-    log('LinkedInAuth-steps: Fetching access token...'
-        ' DONE - ${authorizationCodeResponse.accessToken.accessToken.isNotEmpty
-        ? 'VALID': 'INVALID'}');
-    yield FetchAccessCodeSucceededAction(authorizationCodeResponse.accessToken);
+    log(
+      'LinkedInAuth-steps: Fetching access token... DONE,'
+      ' isEmpty: ${response?.accessToken?.accessToken?.isEmpty}',
+    );
+    yield FetchAccessCodeSucceededAction(response.accessToken);
   } on Exception catch (e, s) {
     logError('Unable to fetch access token code', error: e, stackTrace: s);
     yield FetchAccessCodeFailedAction(e);
@@ -50,7 +48,10 @@ Epic<AppState> _fetchLinkedUserProfileEpic(Graph graph) => (
       EpicStore<AppState> store,
     ) {
       return actions.whereType<FetchAccessCodeSucceededAction>().switchMap(
-            (action) => _fetchLinkedInProfile(action, graph),
+            (action) => _fetchLinkedInProfile(
+              action,
+              graph,
+            ),
           );
     };
 
@@ -59,11 +60,15 @@ Stream<dynamic> _fetchLinkedInProfile(
   Graph graph,
 ) async* {
   try {
+    log('LinkedInAuth-steps: Fetching full profile...');
+
     final user = await graph.userRepository.fetchFullProfile(
       token: action.token,
       projection: graph.linkedInConfiguration.projection,
       client: graph.httpClient,
     );
+
+    log('LinkedInAuth-steps: Fetching full profile... DONE');
 
     yield FetchLinkedInUserSucceededAction(user);
   } on Exception catch (e, s) {

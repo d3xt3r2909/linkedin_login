@@ -4,6 +4,7 @@ import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/DAL/repo/authorization_repository.dart';
 import 'package:linkedin_login/src/server/actions.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
+import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:redux_epics/redux_epics.dart';
@@ -28,13 +29,18 @@ Stream<dynamic> _fetchAuthToken(
   Config configuration,
 ) async* {
   try {
+    log('LinkedInAuth-steps: Fetching authorization code...');
+
     final authorizationCodeResponse = authRepo.fetchAuthorizationCode(
       redirectedUrl: action.url,
       clientState: configuration.state,
     );
 
     yield FetchAuthCodeSucceededAction(authorizationCodeResponse);
-  } on Exception catch (e) {
+    log('LinkedInAuth-steps: Fetching authorization code... DONE, isEmpty: '
+        '${authorizationCodeResponse.code.isEmpty}');
+  } on Exception catch (e, s) {
+    logError('Unable to fetch auth token', error: e, stackTrace: s);
     yield FetchAuthCodeFailedAction(e);
   }
 }

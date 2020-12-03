@@ -17,13 +17,16 @@ class AuthorizationRepository {
     @required String clientState,
     @required http.Client client,
   }) async {
-    log('LinkedInAuth-steps: parsing authorization code... ');
+    log('LinkedInAuth-steps:fetchAccessTokenCode: parsing authorization code... ');
     AuthorizationCodeResponse authorizationCode = _getAuthorizationCode(
       redirectedUrl,
       clientState,
     );
-    log('LinkedInAuth-steps: parsing authorization code'
-        ' DONE - ${authorizationCode.code.isNotEmpty ? 'VALID' : 'INVALID'}');
+    log(
+      'LinkedInAuth-steps:fetchAccessTokenCode: parsing authorization code... '
+      'DONE, isEmpty: ${authorizationCode.code.isEmpty}'
+      ' \n LinkedInAuth-steps:fetchAccessTokenCode: fetching access token...',
+    );
 
     final tokenObject = await api.login(
       redirectUrl: redirectedUrl.split('/?')[0],
@@ -32,6 +35,8 @@ class AuthorizationRepository {
       clientSecret: clientSecret,
       client: client,
     );
+
+    log('LinkedInAuth-steps:fetchAccessTokenCode: fetching access token... DONE');
 
     authorizationCode.accessToken = tokenObject;
 
