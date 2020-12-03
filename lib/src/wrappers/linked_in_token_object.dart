@@ -5,6 +5,7 @@ import 'package:linkedin_login/src/wrappers/linked_in_error_object.dart';
 class LinkedInTokenObject {
   String accessToken;
   int expiresIn;
+  @deprecated
   LinkedInErrorObject error;
 
   LinkedInTokenObject({
@@ -15,5 +16,6 @@ class LinkedInTokenObject {
 
   /// If there is not error at all, [isSuccess] getter will return a true value
   /// This means, that you should get correct response
+  @deprecated
   get isSuccess => error == null || error.description.isEmpty;
 }

@@ -1,24 +1,21 @@
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:linkedin_login/src/utils/constants.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:linkedin_login/redux/app_state.dart';
+import 'package:linkedin_login/redux/core.dart';
+import 'package:linkedin_login/src/client/state.dart';
 import 'package:linkedin_login/src/model/linked_in_user_model.dart';
-import 'package:http/http.dart';
+import 'package:linkedin_login/src/utils/configuration.dart';
+import 'package:linkedin_login/src/utils/constants.dart';
+import 'package:linkedin_login/src/utils/startup/graph.dart';
+import 'package:linkedin_login/src/utils/startup/initializer.dart';
+import 'package:linkedin_login/src/utils/startup/injector.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
-import 'package:linkedin_login/src/webview/web_view_widget_parameters.dart';
-import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
+import 'package:redux/redux.dart';
+import 'package:uuid/uuid.dart';
 
 /// This class is responsible to fetch all information for user after we get
 /// token and code from LinkedIn
 class LinkedInUserWidget extends StatefulWidget {
-  final Function onGetUserProfile;
-  final Function catchError;
-  final String redirectUrl;
-  final String clientId, clientSecret;
-  final PreferredSizeWidget appBar;
-  final bool destroySession;
-  final List<String> projection;
-
   /// Client state parameter needs to be unique range of characters - random one
   LinkedInUserWidget({
     @required this.onGetUserProfile,
@@ -40,7 +37,20 @@ class LinkedInUserWidget extends StatefulWidget {
         assert(clientId != null),
         assert(clientSecret != null),
         assert(destroySession != null),
-        assert(projection != null);
+        assert(projection != null && projection.isNotEmpty);
+
+  final Function(LinkedInUserModel) onGetUserProfile;
+  @Deprecated(
+    'From 1.4.x version of library, this field will not be used anymore'
+    ' and in near future it will be removed. Error code will be set'
+    ' inside AuthorizationCodeResponse response [error] property',
+  )
+  final Function catchError;
+  final String redirectUrl;
+  final String clientId, clientSecret;
+  final PreferredSizeWidget appBar;
+  final bool destroySession;
+  final List<String> projection;
 
   @override
   State createState() => _LinkedInUserWidgetState();
@@ -49,65 +59,73 @@ class LinkedInUserWidget extends StatefulWidget {
 /// Class [_LinkedInUserWidgetState] is handling changes after user is singed in
 /// which will have as result user profile on the end
 class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
-  String urlLinkedInUserProfile = 'https://api.linkedin.com/v2/me';
-  final urlLinkedInEmailAddress =
-      'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))';
+  String profileProjection = '';
+  Graph graph;
 
   @override
   void initState() {
     super.initState();
 
-    String projection = 'projection=(${widget.projection.join(",")})';
-    urlLinkedInUserProfile = '$urlLinkedInUserProfile?$projection';
+    graph = Initializer().initialise(
+      AccessCodeConfiguration(
+        projectionParam: widget.projection,
+        clientSecretParam: widget.clientSecret,
+        clientIdParam: widget.clientId,
+        redirectUrlParam: widget.redirectUrl,
+        urlState: Uuid().v4(),
+      ),
+    );
+
+    profileProjection = 'projection=(${widget.projection.join(",")})';
   }
 
   @override
-  Widget build(BuildContext context) => LinkedInWebViewHandler(
-        AuthorizationWebViewConfig(
-          destroySession: widget.destroySession,
-          redirectUrl: widget.redirectUrl,
-          clientSecret: widget.clientSecret,
-          clientId: widget.clientId,
-          appBar: widget.appBar,
-          onCallBack: (AuthorizationCodeResponse result) {
-            if (result != null && result.accessToken != null) {
-              get(
-                urlLinkedInUserProfile,
-                headers: {
-                  HttpHeaders.acceptHeader: 'application/json',
-                  HttpHeaders.authorizationHeader:
-                      'Bearer ${result.accessToken.accessToken}'
-                },
-              ).then((basicProfile) {
-                get(
-                  urlLinkedInEmailAddress,
-                  headers: {
-                    HttpHeaders.acceptHeader: 'application/json',
-                    HttpHeaders.authorizationHeader:
-                        'Bearer ${result.accessToken.accessToken}'
-                  },
-                ).then((emailProfile) {
-                  // Get basic user profile
-                  final LinkedInUserModel linkedInUser =
-                      LinkedInUserModel.fromJson(
-                          json.decode(basicProfile.body));
-                  // Get email for current user profile
-                  linkedInUser.email = LinkedInProfileEmail.fromJson(
-                    json.decode(emailProfile.body),
-                  );
-                  linkedInUser.token = result.accessToken;
-
-                  // Notify parent class / widget that we have user
-                  widget.onGetUserProfile(linkedInUser);
-                });
-              });
-            } else {
-              // If inner class catch the error, then forward it to parent class
-              if (result.error != null && result.error.description.isNotEmpty) {
-                widget.catchError(result.error);
-              }
-            }
+  Widget build(BuildContext context) {
+    return InjectorWidget(
+      graph: graph,
+      child: StoreProvider<AppState>(
+        store: LinkedInStore.inject(graph).store,
+        child: StoreConnector<AppState, _ViewModel>(
+          distinct: true,
+          converter: (store) => _ViewModel.from(store),
+          onDidChange: (viewModel) => widget.onGetUserProfile(
+            viewModel.user.linkedInUser,
+          ),
+          builder: (context, viewModel) {
+            return LinkedInWebViewHandler(
+              appBar: widget.appBar,
+              destroySession: widget.destroySession,
+            );
           },
         ),
-      );
+      ),
+    );
+  }
+}
+
+class _ViewModel {
+  _ViewModel({
+    @required this.onDispatch,
+    @required this.user,
+  }) : assert(onDispatch != null);
+
+  factory _ViewModel.from(Store<AppState> store) {
+    return _ViewModel(
+      user: store.state.linkedInUserState,
+      onDispatch: (action) => store.dispatch(action),
+    );
+  }
+
+  final LinkedInUserState user;
+  final Function(dynamic) onDispatch;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is _ViewModel &&
+          runtimeType == other.runtimeType &&
+          user == other.user;
+
+  @override
+  int get hashCode => user.hashCode;
 }

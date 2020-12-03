@@ -10,16 +10,24 @@ class AuthorizationCodeResponse {
   String state;
   String code;
   LinkedInTokenObject accessToken;
+  @Deprecated(
+      'Error callback will be removed in next versions, from now on, logs are'
+      ' inside console')
   LinkedInErrorObject error;
 
   AuthorizationCodeResponse({
     this.code,
     this.error,
     this.state,
+    this.accessToken,
   });
+
+  @deprecated
+  bool get isCodeValid => code != null && code.isNotEmpty;
 
   /// Setter for error object, store error object information inside [error]
   /// property
+  @deprecated
   set errorObject(LinkedInErrorObject error) {
     this.error = error;
     this.accessToken = null;
