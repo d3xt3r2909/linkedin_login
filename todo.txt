@@ -1,15 +1,11 @@
 Todo:
 
-Features:
-
-- add logError to epics - implement logs - do not show this on logs and in real app
-- remove unused packages pubspec
-
 Fix:
 
-- auth code is throwing some error
-- update changelog
-- update version
+-> auth code is throwing some error
+-> update changelog
+-> update version
+-> add possibility to have loading widget, introduce datastate
 
 For next release
 

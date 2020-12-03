@@ -1,13 +1,20 @@
 import 'package:linkedin_login/redux/actions.dart';
 
+enum WidgetType { full_profile, auth_code }
+
 class DirectionUrlMatch extends LinkedInAction {
-  const DirectionUrlMatch(this.url) : assert(url != null);
+  const DirectionUrlMatch(
+    this.url,
+    this.widgetType,
+  )   : assert(url != null),
+        assert(widgetType != null);
 
   final String url;
+  final WidgetType widgetType;
 
   @override
   String toString() {
-    return 'DirectionUrlMatch{url: $url}';
+    return 'DirectionUrlMatch{url: $url, widgetType: $widgetType}';
   }
 }
 

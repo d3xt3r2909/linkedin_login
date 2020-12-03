@@ -2,11 +2,13 @@ import 'package:linkedin_login/linkedin_login.dart';
 import 'package:linkedin_login/redux/actions.dart';
 
 class FetchAuthCode extends LinkedInAction {
-  const FetchAuthCode();
+  const FetchAuthCode(this.url) : assert(url != null);
+
+  final String url;
 
   @override
   String toString() {
-    return 'FetchAuthCode{}';
+    return 'FetchAuthCode{url: $url}';
   }
 }
 

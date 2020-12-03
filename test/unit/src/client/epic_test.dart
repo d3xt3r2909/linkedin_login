@@ -42,7 +42,7 @@ void main() {
 
     final events = clientEpics(graph)(
       toStream(
-        DirectionUrlMatchSucceededAction('$urlAfterSuccessfulLogin&state=null'),
+        FetchAccessCode('$urlAfterSuccessfulLogin&state=null'),
       ),
       store,
     );
@@ -59,7 +59,7 @@ void main() {
     builder.withAccessCode();
     final events = clientEpics(graph)(
       toStream(
-        DirectionUrlMatchSucceededAction(
+        FetchAccessCode(
           '$urlAfterSuccessfulLogin&state=state',
         ),
       ),

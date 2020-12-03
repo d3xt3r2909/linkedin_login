@@ -11,19 +11,20 @@ void main() {
     String lastName = 'DexterLast',
   }) {
     return LinkedInUserModel(
-        firstName: LinkedInPersonalInfo(
-          localized: LinkedInLocalInfo(
-            label: firstName,
-          ),
-          preferredLocal: LinkedInPreferredLocal(country: 'BA', language: 'bs'),
+      firstName: LinkedInPersonalInfo(
+        localized: LinkedInLocalInfo(
+          label: firstName,
         ),
-        lastName: LinkedInPersonalInfo(
-          localized: LinkedInLocalInfo(
-            label: lastName,
-          ),
-          preferredLocal: LinkedInPreferredLocal(country: 'BA', language: 'bs'),
+        preferredLocal: LinkedInPreferredLocal(country: 'BA', language: 'bs'),
+      ),
+      lastName: LinkedInPersonalInfo(
+        localized: LinkedInLocalInfo(
+          label: lastName,
         ),
-        userId: 'id');
+        preferredLocal: LinkedInPreferredLocal(country: 'BA', language: 'bs'),
+      ),
+      userId: 'id',
+    );
   }
 
   test('triggers when user is fetched', () {

@@ -6,7 +6,6 @@ import 'package:linkedin_login/src/server/actions.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
-import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -14,7 +13,7 @@ Epic<AppState> _fetchAuthTokenEpic(Graph graph) => (
       Stream<dynamic> actions,
       EpicStore<AppState> store,
     ) {
-      return actions.whereType<DirectionUrlMatchSucceededAction>().switchMap(
+      return actions.whereType<FetchAuthCode>().switchMap(
             (action) => _fetchAuthToken(
               action,
               graph.authorizationRepository,
@@ -24,7 +23,7 @@ Epic<AppState> _fetchAuthTokenEpic(Graph graph) => (
     };
 
 Stream<dynamic> _fetchAuthToken(
-  DirectionUrlMatchSucceededAction action,
+    FetchAuthCode action,
   AuthorizationRepository authRepo,
   Config configuration,
 ) async* {

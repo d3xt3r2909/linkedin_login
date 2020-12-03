@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:linkedin_login/redux/app_state.dart';
+import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/logger.dart';
+import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/injector.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -44,7 +46,7 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _ViewModel>(
       distinct: true,
-      converter: (store) => _ViewModel.from(store),
+      converter: (store) => _ViewModel.from(store, context),
       builder: (context, viewModel) {
         return Scaffold(
           appBar: widget.appBar,
@@ -95,23 +97,30 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
 class _ViewModel {
   const _ViewModel._({
     @required this.onDispatch,
+    @required this.graph,
   }) : assert(onDispatch != null);
 
-  factory _ViewModel.from(Store<AppState> store) => _ViewModel._(
+  factory _ViewModel.from(Store<AppState> store, BuildContext context) =>
+      _ViewModel._(
         onDispatch: store.dispatch,
+        graph: InjectorWidget.of(context),
       );
 
   final Function(dynamic) onDispatch;
+  final Graph graph;
 
-  void onRedirectionUrl(String url) => onDispatch(DirectionUrlMatch(url));
+  void onRedirectionUrl(String url) {
+    final type = graph.linkedInConfiguration is AccessCodeConfiguration
+        ? WidgetType.full_profile
+        : WidgetType.auth_code;
+    onDispatch(DirectionUrlMatch(url, type));
+  }
 
   String initialUrl(BuildContext context) {
-    return InjectorWidget.of(context).linkedInConfiguration.initialUrl;
+    return graph.linkedInConfiguration.initialUrl;
   }
 
   bool isUrlMatchingToRedirection(BuildContext context, String url) {
-    return InjectorWidget.of(context)
-        .linkedInConfiguration
-        .isCurrentUrlMatchToRedirection(url);
+    return graph.linkedInConfiguration.isCurrentUrlMatchToRedirection(url);
   }
 }

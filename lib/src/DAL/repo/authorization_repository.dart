@@ -74,10 +74,13 @@ class AuthorizationRepository {
         }
 
         if (statePart[1] == clientState) {
-          return AuthorizationCodeResponse(
+
+          final test = AuthorizationCodeResponse(
             code: codePart[1],
             state: statePart[1],
           );
+
+          return test;
         } else {
           throw AuthCodeException(
             authCode: statePart[1],

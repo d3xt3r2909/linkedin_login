@@ -43,7 +43,7 @@ void main() {
 
     final events = serverEpics(graph)(
       toStream(
-        DirectionUrlMatchSucceededAction(
+        FetchAuthCode(
           '$urlAfterSuccessfulLogin&state=null',
         ),
       ),
@@ -63,7 +63,7 @@ void main() {
 
     final events = serverEpics(graph)(
       toStream(
-        DirectionUrlMatchSucceededAction(
+        FetchAuthCode(
           '$urlAfterSuccessfulLogin&state=state',
         ),
       ),
@@ -122,8 +122,10 @@ class _ArrangeBuilder {
   void withConfiguration() {
     when(configuration.clientSecret).thenAnswer((_) => 'clientSecret');
     when(configuration.projection).thenAnswer((_) => ['projection1']);
-    when(configuration.redirectUrl).thenAnswer((_) => 'https://redirectUrl.com');
-    when(configuration.frontendRedirectUrl).thenAnswer((_) => 'https://frontendRedirectUrl.com');
+    when(configuration.redirectUrl)
+        .thenAnswer((_) => 'https://redirectUrl.com');
+    when(configuration.frontendRedirectUrl)
+        .thenAnswer((_) => 'https://frontendRedirectUrl.com');
     when(configuration.clientId).thenAnswer((_) => 'clientId');
     when(configuration.state).thenAnswer((_) => 'state');
     when(configuration.initialUrl).thenAnswer((_) => 'initialUrl');
