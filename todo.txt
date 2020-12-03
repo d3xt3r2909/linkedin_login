@@ -2,7 +2,6 @@ Todo:
 
 Fix:
 
--> auth code is throwing some error
 -> update changelog
 -> update version
 -> add possibility to have loading widget, introduce datastate
