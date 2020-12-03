@@ -11,6 +11,5 @@ For next release
 -> new version of flutter null safety - new dev after this reconstruction
 -> github actions
 -> integration tests
--> reorder changelog.md
 -> fix quality of code - see quality mark on read me
 -> remove  final LinkedInUserState user; expose properties
