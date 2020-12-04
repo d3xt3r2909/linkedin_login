@@ -1,3 +1,4 @@
+import 'package:flutter_test/flutter_test.dart';
 import 'package:linkedin_login/linkedin_login.dart';
 import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
@@ -5,7 +6,6 @@ import 'package:linkedin_login/src/DAL/repo/user_repository.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:mockito/mockito.dart';
 import 'package:redux_epics/redux_epics.dart';
-import 'package:test/test.dart';
 
 import '../../../utils/mocks.dart';
 
@@ -30,6 +30,13 @@ void main() {
       graph,
       store,
       api,
+    );
+  });
+
+  test('not created if API is null', () async {
+    expect(
+      () => UserRepository(api: null),
+      throwsAssertionError,
     );
   });
 

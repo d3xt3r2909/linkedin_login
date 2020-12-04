@@ -28,11 +28,13 @@ class FetchAccessCodeFailedAction extends LinkedInExceptionAction {
 }
 
 class FetchLinkedInUser extends LinkedInAction {
-  const FetchLinkedInUser();
+  const FetchLinkedInUser(this.token) : assert(token != null);
+
+  final LinkedInTokenObject token;
 
   @override
   String toString() {
-    return 'FetchLinkedInUser{}';
+    return 'FetchLinkedInUser{token: $token}';
   }
 }
 

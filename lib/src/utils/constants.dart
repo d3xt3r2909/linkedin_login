@@ -17,14 +17,3 @@ class ProjectionParameters {
   ];
 }
 
-bool get isUnderTest => _isUnderTest;
-bool _isUnderTest = false;
-
-/// Indicates if the system is currently under test
-set isUnderTest(bool value) {
-  assert(value != null);
-  if (_isUnderTest == value) {
-    return;
-  }
-  _isUnderTest = value;
-}

@@ -21,8 +21,11 @@ class Endpoint {
   Map<EnvironmentAccess, String> get _host =>
       _authority(overrides.environment ?? environment);
 
-  Uri generate(EnvironmentAccess envSetup, String path,
-      [Map<String, String> queryParameters]) {
+  Uri generate(
+    EnvironmentAccess envSetup,
+    String path, [
+    Map<String, String> queryParameters,
+  ]) {
     return Uri.parse('${_host[envSetup]}/v2/$path')
         .replace(queryParameters: queryParameters);
   }
@@ -35,8 +38,9 @@ class Endpoint {
         return _kEmulator;
       case Environment.vm:
         return _kVM;
+      default:
+        throw UnsupportedError('Unsupported environment $environment');
     }
-    throw UnsupportedError('Unsupported environment $environment');
   }
 }
 
@@ -44,6 +48,7 @@ enum Environment {
   emulator,
   production,
   vm,
+  unsupported,
 }
 
 enum EnvironmentAccess {

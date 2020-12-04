@@ -81,12 +81,14 @@ void main() {
     final exception = Exception();
     builder.withFullProfileError();
 
+    final action = FetchLinkedInUser(
+      LinkedInTokenObject(accessToken: 'accessToken'),
+    );
+
+    action.toString();
+
     final events = clientEpics(graph)(
-      toStream(
-        FetchAccessCodeSucceededAction(
-          LinkedInTokenObject(accessToken: 'accessToken'),
-        ),
-      ),
+      toStream(action),
       store,
     );
 
@@ -102,7 +104,7 @@ void main() {
     builder.withFullProfile();
     final events = clientEpics(graph)(
       toStream(
-        FetchAccessCodeSucceededAction(
+        FetchLinkedInUser(
           LinkedInTokenObject(accessToken: 'accessToken'),
         ),
       ),

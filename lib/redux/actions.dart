@@ -1,5 +1,4 @@
 import 'package:meta/meta.dart';
-import 'package:meta/meta.dart';
 
 @immutable
 abstract class LinkedInAction {
@@ -17,6 +16,10 @@ abstract class LinkedInAction {
 
   @override
   int get hashCode => 0;
+}
+
+class TestLinkedInAction extends LinkedInAction {
+  TestLinkedInAction();
 }
 
 @immutable

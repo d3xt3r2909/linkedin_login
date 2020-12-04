@@ -7,7 +7,6 @@ import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:redux_epics/redux_epics.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:redux/redux.dart';
 
 Epic<AppState> _matchToRedirectionUrlEpic(Graph graph) => (
       Stream<dynamic> actions,
