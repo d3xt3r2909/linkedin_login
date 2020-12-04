@@ -1,5 +1,4 @@
 import 'package:meta/meta.dart';
-import 'package:meta/meta.dart';
 
 @immutable
 abstract class LinkedInAction {

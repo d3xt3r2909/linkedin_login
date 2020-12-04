@@ -1,3 +1,4 @@
+import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/utils/overrides.dart';
 
 const Map<EnvironmentAccess, String> _kProduction = {
@@ -21,8 +22,11 @@ class Endpoint {
   Map<EnvironmentAccess, String> get _host =>
       _authority(overrides.environment ?? environment);
 
-  Uri generate(EnvironmentAccess envSetup, String path,
-      [Map<String, String> queryParameters]) {
+  Uri generate(
+    EnvironmentAccess envSetup,
+    String path, [
+    Map<String, String> queryParameters,
+  ]) {
     return Uri.parse('${_host[envSetup]}/v2/$path')
         .replace(queryParameters: queryParameters);
   }
@@ -36,7 +40,8 @@ class Endpoint {
       case Environment.vm:
         return _kVM;
     }
-    throw UnsupportedError('Unsupported environment $environment');
+    log('Unsupported environment $environment, production will be used');
+    return _kProduction;
   }
 }
 
