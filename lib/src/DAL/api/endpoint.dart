@@ -1,4 +1,3 @@
-import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/utils/overrides.dart';
 
 const Map<EnvironmentAccess, String> _kProduction = {
@@ -39,9 +38,9 @@ class Endpoint {
         return _kEmulator;
       case Environment.vm:
         return _kVM;
+      default:
+        throw UnsupportedError('Unsupported environment $environment');
     }
-    log('Unsupported environment $environment, production will be used');
-    return _kProduction;
   }
 }
 
@@ -49,6 +48,7 @@ enum Environment {
   emulator,
   production,
   vm,
+  unsupported,
 }
 
 enum EnvironmentAccess {
