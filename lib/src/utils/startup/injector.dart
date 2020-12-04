@@ -12,9 +12,7 @@ class InjectorWidget extends InheritedWidget {
         super(key: key, child: child);
 
   static Graph of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(InjectorWidget)
-            as InjectorWidget)
-        .graph;
+    return (context.dependOnInheritedWidgetOfExactType<InjectorWidget>()).graph;
   }
 
   final Graph graph;
