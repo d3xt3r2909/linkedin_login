@@ -24,4 +24,23 @@ void main() {
     expect(graph.linkedInConfiguration.state, 'urlState');
     expect(graph.linkedInConfiguration.projection.length, 5);
   });
+
+  test('is graph created with init for AuthCodeConfig', () async {
+    final graph = Initializer().initialise(
+      AuthCodeConfig(
+        urlState: 'urlState',
+        clientIdParam: 'clientIdParam',
+        redirectUrlParam: 'redirectUrlParam',
+        frontendRedirectUrlParam: 'frontendRedirectUrlParam',
+      ),
+    );
+
+    expect(graph, isA<Graph>());
+    expect(graph.linkedInConfiguration.state, 'urlState');
+    expect(graph.linkedInConfiguration.redirectUrl, 'redirectUrlParam');
+    expect(graph.linkedInConfiguration.state, 'urlState');
+    expect(graph.linkedInConfiguration.frontendRedirectUrl, 'frontendRedirectUrlParam');
+    expect(graph.linkedInConfiguration.projection, isNull);
+    expect(graph.linkedInConfiguration.clientSecret, isNull);
+  });
 }
