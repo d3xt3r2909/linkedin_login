@@ -83,7 +83,7 @@ void main() {
 
     final events = clientEpics(graph)(
       toStream(
-        FetchAccessCodeSucceededAction(
+        FetchLinkedInUser(
           LinkedInTokenObject(accessToken: 'accessToken'),
         ),
       ),
@@ -102,7 +102,7 @@ void main() {
     builder.withFullProfile();
     final events = clientEpics(graph)(
       toStream(
-        FetchAccessCodeSucceededAction(
+        FetchLinkedInUser(
           LinkedInTokenObject(accessToken: 'accessToken'),
         ),
       ),

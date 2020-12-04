@@ -36,6 +36,7 @@ Stream<dynamic> _fetchAccessTokenUser(
       ' isEmpty: ${response?.accessToken?.accessToken?.isEmpty}',
     );
     yield FetchAccessCodeSucceededAction(response.accessToken);
+    yield FetchLinkedInUser(response.accessToken);
   } on Exception catch (e, s) {
     logError('Unable to fetch access token code', error: e, stackTrace: s);
     yield FetchAccessCodeFailedAction(e);
@@ -46,7 +47,7 @@ Epic<AppState> _fetchLinkedUserProfileEpic(Graph graph) => (
       Stream<dynamic> actions,
       EpicStore<AppState> store,
     ) {
-      return actions.whereType<FetchAccessCodeSucceededAction>().switchMap(
+      return actions.whereType<FetchLinkedInUser>().switchMap(
             (action) => _fetchLinkedInProfile(
               action,
               graph,
@@ -55,7 +56,7 @@ Epic<AppState> _fetchLinkedUserProfileEpic(Graph graph) => (
     };
 
 Stream<dynamic> _fetchLinkedInProfile(
-  FetchAccessCodeSucceededAction action,
+  FetchLinkedInUser action,
   Graph graph,
 ) async* {
   try {
