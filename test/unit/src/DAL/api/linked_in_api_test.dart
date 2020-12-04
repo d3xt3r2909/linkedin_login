@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter_test/flutter_test.dart';
 import 'package:linkedin_login/linkedin_login.dart';
 import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/DAL/api/endpoint.dart';
@@ -7,7 +8,6 @@ import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:mockito/mockito.dart';
 import 'package:redux_epics/redux_epics.dart';
-import 'package:test/test.dart';
 import 'package:http/http.dart' as http;
 import '../../../utils/mocks.dart';
 
@@ -130,6 +130,32 @@ void main() {
       );
       expect(linkedInUserModel.userId, 'dwe_Pcc0k3');
       expect(linkedInUserModel.email, isNull);
+    });
+
+    test('throws exception if client is null for fetching profile', () async {
+      final api = LinkedInApi.test(Endpoint(Environment.vm));
+
+      expect(
+        () async => await api.fetchProfile(
+          token: 'accessToken',
+          projection: ProjectionParameters.fullProjection,
+          client: null,
+        ),
+        throwsAssertionError,
+      );
+    });
+
+    test('throws exception if client is null for fetching profile', () async {
+      final api = LinkedInApi.test(Endpoint(Environment.vm));
+
+      expect(
+        () async => await api.fetchProfile(
+          token: 'accessToken',
+          projection: ProjectionParameters.fullProjection,
+          client: null,
+        ),
+        throwsAssertionError,
+      );
     });
 
     test(
@@ -318,6 +344,18 @@ void main() {
       expect(userEmail.elements[0]?.handleDeep?.emailAddress, 'xxx@xxx.xxx');
     });
 
+    test('throws exception if token is null', () async {
+      final api = LinkedInApi.test(Endpoint(Environment.vm));
+
+      expect(
+        () async => await api.fetchEmail(
+          token: null,
+          client: httpClient,
+        ),
+        throwsAssertionError,
+      );
+    });
+
     test('with 401 HTTP code', () async {
       final responsePath = '${builder.testPath}invalid_access_token.json';
       final response = await builder.buildResponse(responsePath, 401);
@@ -358,6 +396,10 @@ void main() {
     final res = api.takeUrl('https://something.com/?code=bla');
 
     expect(res, 'https://something.com/');
+  });
+
+  test('LinkedInApi factory is called', () async {
+    LinkedInApi(Endpoint(Environment.vm));
   });
 }
 
