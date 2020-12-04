@@ -105,6 +105,7 @@ class _LinkedInProfileExamplePageState
 
                         Navigator.pop(context);
                       },
+                      // ignore: deprecated_member_use
                       catchError: (LinkedInErrorObject error) {
                         print('Error description: ${error.description},'
                             ' Error code: ${error.statusCode.toString()}');
@@ -181,6 +182,7 @@ class _LinkedInAuthCodeExamplePageState
 
                     Navigator.pop(context);
                   },
+                  // ignore: deprecated_member_use
                   catchError: (LinkedInErrorObject error) {
                     print('Error description: ${error.description},'
                         ' Error code: ${error.statusCode.toString()}');
