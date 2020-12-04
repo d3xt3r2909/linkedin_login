@@ -4,8 +4,4 @@ Overrides overrides = Overrides();
 
 class Overrides {
   Environment environment;
-
-  void dispose() {
-    environment = null;
-  }
 }
