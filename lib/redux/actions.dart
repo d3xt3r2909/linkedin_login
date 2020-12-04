@@ -19,6 +19,10 @@ abstract class LinkedInAction {
   int get hashCode => 0;
 }
 
+class TestLinkedInAction extends LinkedInAction {
+  TestLinkedInAction();
+}
+
 @immutable
 abstract class LinkedInExceptionAction {
   const LinkedInExceptionAction(this.exception);
