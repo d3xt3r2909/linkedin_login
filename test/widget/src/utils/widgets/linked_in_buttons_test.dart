@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:linkedin_login/src/client/linked_in_user_widget.dart';
-import 'package:linkedin_login/src/model/linked_in_user_model.dart';
-import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/utils/widgets/linked_in_buttons.dart';
 
 import '../../../widget_test_utils.dart';

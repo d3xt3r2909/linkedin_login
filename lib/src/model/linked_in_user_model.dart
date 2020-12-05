@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:linkedin_login/src/wrappers/linked_in_token_object.dart';
 
@@ -51,14 +49,6 @@ class LinkedInUserModel {
       localizedFirstName: localizedFirstName,
       localizedLastName: localizedLastName,
     );
-  }
-
-  /// Static method which will based on string response parse the user into
-  /// [LinkedInUserModel] object
-  static LinkedInUserModel parseUser(String responseBody) {
-    final parsed = json.decode(responseBody).cast<String, dynamic>();
-
-    return LinkedInUserModel.fromJson(parsed);
   }
 }
 
@@ -237,13 +227,6 @@ class LinkedInProfileEmail {
                 .toList()
             : [],
       );
-
-  /// Based on string response parse to [LinkedInProfileEmail]
-  static LinkedInProfileEmail parseUser(String responseBody) {
-    final parsed = json.decode(responseBody).cast<String, dynamic>();
-
-    return LinkedInProfileEmail.fromJson(parsed);
-  }
 }
 
 /// Helper children subclass

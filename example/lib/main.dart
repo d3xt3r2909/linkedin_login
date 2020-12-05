@@ -105,12 +105,6 @@ class _LinkedInProfileExamplePageState
 
                         Navigator.pop(context);
                       },
-                      // ignore: deprecated_member_use
-                      catchError: (LinkedInErrorObject error) {
-                        print('Error description: ${error.description},'
-                            ' Error code: ${error.statusCode.toString()}');
-                        Navigator.pop(context);
-                      },
                     ),
                     fullscreenDialog: true,
                   ),
@@ -180,12 +174,6 @@ class _LinkedInAuthCodeExamplePageState
                     );
                     setState(() {});
 
-                    Navigator.pop(context);
-                  },
-                  // ignore: deprecated_member_use
-                  catchError: (LinkedInErrorObject error) {
-                    print('Error description: ${error.description},'
-                        ' Error code: ${error.statusCode.toString()}');
                     Navigator.pop(context);
                   },
                 ),

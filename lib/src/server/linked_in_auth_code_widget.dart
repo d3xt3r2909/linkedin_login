@@ -21,7 +21,6 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
     @required this.clientId,
     this.destroySession = false,
     this.frontendRedirectUrl,
-    this.catchError,
     this.appBar,
   })  : assert(onGetAuthCode != null),
         assert(redirectUrl != null),
@@ -29,12 +28,6 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
         assert(destroySession != null);
 
   final Function(AuthorizationCodeResponse) onGetAuthCode;
-  @Deprecated(
-    'From 1.4.x version of library, this field will not be used anymore and'
-    ' in near future it will be removed. Error code will be set inside'
-    ' AuthorizationCodeResponse response [error] property',
-  )
-  final Function catchError;
   final String redirectUrl;
   final String clientId;
   final AppBar appBar;
