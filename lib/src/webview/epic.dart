@@ -18,17 +18,13 @@ Epic<AppState> _matchToRedirectionUrlEpic(Graph graph) => (
     };
 
 Stream<dynamic> _urlMatchToDirection(DirectionUrlMatch action) async* {
-  try {
-    if (action.widgetType == WidgetType.full_profile) {
-      yield FetchAccessCode(action.url);
-    } else {
-      yield FetchAuthCode(action.url);
-    }
-
-    yield DirectionUrlMatchSucceededAction(action.url);
-  } on Exception catch (e) {
-    yield DirectionUrlMatchFailedAction(e);
+  if (action.widgetType == WidgetType.full_profile) {
+    yield FetchAccessCode(action.url);
+  } else {
+    yield FetchAuthCode(action.url);
   }
+
+  yield DirectionUrlMatchSucceededAction(action.url);
 }
 
 Epic<AppState> webViewEpics(Graph graph) => combineEpics<AppState>(

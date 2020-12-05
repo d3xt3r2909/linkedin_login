@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -35,7 +34,6 @@ class WidgetTestbed {
     Widget child,
     RouteFactory routeFactory,
     Brightness brightness = Brightness.light,
-    @Deprecated('Please [withPlatform] instead') TargetPlatform platform,
   }) {
     _trueStore = Store<AppState>(
       (AppState state, dynamic action) {
@@ -60,7 +58,6 @@ class WidgetTestbed {
     Widget child,
     RouteFactory routeFactory,
     Brightness brightness = Brightness.light,
-    @Deprecated('Please [withPlatform] instead') TargetPlatform platform,
   }) {
     return MaterialApp(
       theme: ThemeData(brightness: brightness),
@@ -73,7 +70,4 @@ class WidgetTestbed {
   void increaseScreenSize(WidgetTester tester) {
     tester.binding.window.physicalSizeTestValue = Size(30000, 30000);
   }
-
-  @Deprecated('Please [withPlatform] instead')
-  void resetPlatform() => debugDefaultTargetPlatformOverride = null;
 }

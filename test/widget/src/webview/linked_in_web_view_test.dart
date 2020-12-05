@@ -132,6 +132,40 @@ void main() {
 
     expect(actions.whereType<DirectionUrlMatch>(), hasLength(1));
   });
+
+  testWidgets(
+      'callback for cookie clear is called when destroying session is active',
+      (WidgetTester tester) async {
+    var isCleared = false;
+    final testWidget = testbed.reduxWrap(
+      child: LinkedInWebViewHandler(
+        destroySession: true,
+        onCookieClear: (value) => isCleared = value,
+      ),
+    );
+
+    await tester.pumpWidget(testWidget);
+    await tester.pumpAndSettle();
+
+    expect(isCleared, isTrue);
+  });
+
+  testWidgets(
+      'callback for cookie clearing is not called when destroying session is inactive',
+      (WidgetTester tester) async {
+    var isCleared = false;
+    final testWidget = testbed.reduxWrap(
+      child: LinkedInWebViewHandler(
+        destroySession: false,
+        onCookieClear: (value) => isCleared = value,
+      ),
+    );
+
+    await tester.pumpWidget(testWidget);
+    await tester.pumpAndSettle();
+
+    expect(isCleared, isFalse);
+  });
 }
 
 final initialUrl =

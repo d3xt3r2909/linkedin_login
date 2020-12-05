@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.0.0-dev.2 - 2020-12-03
+### Library refactor
+
+-   test code coverage >90
+-   remove catchError callback *BREAKING CHANGE*, issues needs to be fixed before releasing
+-   improved logging errors, exceptions and steps inside debug mode
+
 ## 2.0.0-dev.1 - 2020-12-03
 ### Library refactor
 

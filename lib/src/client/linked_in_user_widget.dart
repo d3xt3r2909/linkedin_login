@@ -22,7 +22,6 @@ class LinkedInUserWidget extends StatefulWidget {
     @required this.redirectUrl,
     @required this.clientId,
     @required this.clientSecret,
-    this.catchError,
     this.destroySession = false,
     this.appBar,
     this.projection = const [
@@ -40,12 +39,6 @@ class LinkedInUserWidget extends StatefulWidget {
         assert(projection != null && projection.isNotEmpty);
 
   final Function(LinkedInUserModel) onGetUserProfile;
-  @Deprecated(
-    'From 1.4.x version of library, this field will not be used anymore'
-    ' and in near future it will be removed. Error code will be set'
-    ' inside AuthorizationCodeResponse response [error] property',
-  )
-  final Function catchError;
   final String redirectUrl;
   final String clientId, clientSecret;
   final PreferredSizeWidget appBar;

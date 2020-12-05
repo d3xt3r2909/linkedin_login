@@ -15,12 +15,14 @@ class LinkedInWebViewHandler extends StatefulWidget {
   LinkedInWebViewHandler({
     this.appBar,
     this.destroySession = false,
+    this.onCookieClear,
     this.onWebViewCreated, // this is just for testing purpose
   }) : assert(destroySession != null);
 
   final bool destroySession;
   final PreferredSizeWidget appBar;
   final Function(WebViewController) onWebViewCreated;
+  final Function(bool) onCookieClear;
 
   @override
   State createState() => _LinkedInWebViewHandlerState();
@@ -37,6 +39,7 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
     if (widget.destroySession) {
       log('LinkedInAuth-steps: cache clearing... ');
       cookieManager.clearCookies().then((value) {
+        widget?.onCookieClear?.call(true);
         log('LinkedInAuth-steps: cache clearing... DONE');
       });
     }
