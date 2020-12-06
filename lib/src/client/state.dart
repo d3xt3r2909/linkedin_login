@@ -7,7 +7,7 @@ class LinkedInUserState {
     @required this.linkedInUser,
   }) : assert(linkedInUser != null);
 
-  LinkedInUserState.initialState() : linkedInUser = null;
+  const LinkedInUserState.initialState() : linkedInUser = null;
 
   final LinkedInUserModel linkedInUser;
 

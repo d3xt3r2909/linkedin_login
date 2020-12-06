@@ -105,7 +105,7 @@ void main() {
   group('Fetching user profile API', () {
     test('with 200 HTTP code', () async {
       final url =
-          '$localHostUrlMeProfile(${ProjectionParameters.fullProjection.join(",")})';
+          '$localHostUrlMeProfile(${ProjectionParameters.projectionWithoutPicture.join(",")})';
       final responsePath = '${builder.testPath}full_user_profile.json';
       final response = await builder.buildResponse(responsePath, 200);
       await builder.withFetchUrL(url, response);
@@ -114,7 +114,7 @@ void main() {
 
       final linkedInUserModel = await api.fetchProfile(
         token: 'accessToken',
-        projection: ProjectionParameters.fullProjection,
+        projection: ProjectionParameters.projectionWithoutPicture,
         client: httpClient,
       );
 
@@ -136,9 +136,9 @@ void main() {
       final api = LinkedInApi.test(Endpoint(Environment.vm));
 
       expect(
-        () async => await api.fetchProfile(
+        () async => api.fetchProfile(
           token: 'accessToken',
-          projection: ProjectionParameters.fullProjection,
+          projection: ProjectionParameters.projectionWithoutPicture,
           client: null,
         ),
         throwsAssertionError,
@@ -149,9 +149,9 @@ void main() {
       final api = LinkedInApi.test(Endpoint(Environment.vm));
 
       expect(
-        () async => await api.fetchProfile(
+        () async => api.fetchProfile(
           token: 'accessToken',
-          projection: ProjectionParameters.fullProjection,
+          projection: ProjectionParameters.projectionWithoutPicture,
           client: null,
         ),
         throwsAssertionError,
@@ -309,7 +309,7 @@ void main() {
 
     test('Failed - 401 Unauthorized Invalid access token', () async {
       final url =
-          '$localHostUrlMeProfile(${ProjectionParameters.fullProjection.join(",")})';
+          '$localHostUrlMeProfile(${ProjectionParameters.projectionWithoutPicture.join(",")})';
       final responsePath = '${builder.testPath}invalid_access_token.json';
       final response = await builder.buildResponse(responsePath, 401);
       await builder.withFetchUrL(url, response);
@@ -318,7 +318,7 @@ void main() {
         final api = LinkedInApi.test(Endpoint(Environment.vm));
         await api.fetchProfile(
           token: 'accessToken',
-          projection: ProjectionParameters.fullProjection,
+          projection: ProjectionParameters.projectionWithoutPicture,
           client: httpClient,
         );
       } on Exception catch (e) {
@@ -348,7 +348,7 @@ void main() {
       final api = LinkedInApi.test(Endpoint(Environment.vm));
 
       expect(
-        () async => await api.fetchEmail(
+        () async => api.fetchEmail(
           token: null,
           client: httpClient,
         ),
@@ -425,7 +425,7 @@ class _ArrangeBuilder {
   }
 
   Future<void> withFetchUrL(String url, http.Response response) async {
-    var headers = {
+    final headers = {
       HttpHeaders.acceptHeader: 'application/json',
       HttpHeaders.authorizationHeader: 'Bearer accessToken',
     };
@@ -447,7 +447,7 @@ class _ArrangeBuilder {
     http.Response response,
     Map<String, dynamic> body,
   ) async {
-    var headers = {
+    final headers = {
       HttpHeaders.acceptHeader: 'application/json',
       HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
     };

@@ -12,15 +12,15 @@ void main() {
     });
 
     test('If json is contains int type as value, return null', () {
-      expect(getFirstInListFromJson({"local": 23}), null);
+      expect(getFirstInListFromJson({'local': 23}), null);
     });
 
     test('If json is contains English local, return the en_US code', () {
-      expect(getFirstInListFromJson({"local": "en_US"}), "en_US");
+      expect(getFirstInListFromJson({'local': 'en_US'}), 'en_US');
     });
 
     test('If json is contains Spanish local, return the es_ES code', () {
-      expect(getFirstInListFromJson({"local": "es_ES"}), "es_ES");
+      expect(getFirstInListFromJson({'local': 'es_ES'}), 'es_ES');
     });
   });
 }

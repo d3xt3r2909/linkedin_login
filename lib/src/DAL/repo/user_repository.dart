@@ -30,8 +30,9 @@ class UserRepository {
       token: token.accessToken,
     );
 
-    basicUserProfile.email = userEmail;
-    basicUserProfile.token = token;
+    basicUserProfile
+      ..email = userEmail
+      ..token = token;
 
     return basicUserProfile;
   }

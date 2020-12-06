@@ -126,6 +126,6 @@ class AuthCodeConfig implements Config {
   }
 
   bool _isFrontendRedirectionUrl(String url) {
-    return (frontendRedirectUrl != null && url.startsWith(frontendRedirectUrl));
+    return frontendRedirectUrl != null && url.startsWith(frontendRedirectUrl);
   }
 }

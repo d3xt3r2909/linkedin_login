@@ -7,7 +7,7 @@ class UserAuthCodeState {
     @required this.userAuthCode,
   }) : assert(userAuthCode != null);
 
-  UserAuthCodeState.initialState() : userAuthCode = null;
+  const UserAuthCodeState.initialState() : userAuthCode = null;
 
   final AuthorizationCodeResponse userAuthCode;
 

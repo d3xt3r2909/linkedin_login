@@ -12,9 +12,9 @@ import 'package:meta/meta.dart';
 import 'exceptions.dart';
 
 class LinkedInApi {
-  LinkedInApi._(this._endpoint);
-
   factory LinkedInApi(Endpoint endpoint) => LinkedInApi._(endpoint);
+
+  LinkedInApi._(this._endpoint);
 
   @visibleForTesting
   factory LinkedInApi.test(Endpoint endpoint) {
@@ -127,7 +127,7 @@ class LinkedInApi {
     assert(token != null);
     assert(token.isNotEmpty);
 
-    var headers = {
+    final headers = {
       HttpHeaders.acceptHeader: 'application/json',
       HttpHeaders.authorizationHeader: 'Bearer $token',
     };
@@ -176,7 +176,7 @@ class LinkedInApi {
   ) async {
     assert(url != null);
 
-    var headers = {
+    final headers = {
       HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
       HttpHeaders.acceptHeader: 'application/json',
     };

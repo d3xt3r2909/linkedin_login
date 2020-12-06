@@ -19,7 +19,7 @@ abstract class LinkedInAction {
 }
 
 class TestLinkedInAction extends LinkedInAction {
-  TestLinkedInAction();
+  const TestLinkedInAction();
 }
 
 @immutable

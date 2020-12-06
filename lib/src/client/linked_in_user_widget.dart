@@ -96,8 +96,9 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
   }
 }
 
+@immutable
 class _ViewModel {
-  _ViewModel({
+  const _ViewModel({
     @required this.onDispatch,
     @required this.user,
   }) : assert(onDispatch != null);

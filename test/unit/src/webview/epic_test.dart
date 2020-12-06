@@ -20,7 +20,7 @@ void main() {
     graph = MockGraph();
   });
 
-  final urlAfterSuccessfulLogin =
+  const urlAfterSuccessfulLogin =
       'https://www.app.dexter.com/?code=AQQTwafddqnG27k6XUWiK0ONMAXKXPietjbeNtDeQGZnBVVM8vHlyrWFHysjGVCFfCAtNw0ajFCitY8fGMm53e7Had8ug0MO62quDLefdSZwNgOFzs6B5jdXgqUg_zad998th7ug4nAzXB71kD4EsYmqjhpUuCDjRNxu3FmRlGzMVOVHQhmEQwjitt0pBA&state=null';
 
   test('Emits succeeded on DirectionUrlMatch & FetchAccessCode action',
@@ -29,7 +29,7 @@ void main() {
       toStream(
         DirectionUrlMatch(
           urlAfterSuccessfulLogin,
-          WidgetType.full_profile,
+          WidgetType.fullProfile,
         ),
       ),
       epicStore,
@@ -51,7 +51,7 @@ void main() {
       toStream(
         DirectionUrlMatch(
           urlAfterSuccessfulLogin,
-          WidgetType.auth_code,
+          WidgetType.authCode,
         ),
       ),
       epicStore,
