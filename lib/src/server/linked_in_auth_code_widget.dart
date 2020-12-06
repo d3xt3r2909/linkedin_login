@@ -15,7 +15,7 @@ import 'package:uuid/uuid.dart';
 /// This class is responsible to fetch all information for user after we get
 /// token and code from LinkedIn
 class LinkedInAuthCodeWidget extends StatefulWidget {
-  LinkedInAuthCodeWidget({
+  const LinkedInAuthCodeWidget({
     @required this.onGetAuthCode,
     @required this.redirectUrl,
     @required this.clientId,
@@ -81,8 +81,9 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
   }
 }
 
+@immutable
 class _ViewModel {
-  _ViewModel({
+  const _ViewModel({
     @required this.onDispatch,
     @required this.authCode,
   }) : assert(onDispatch != null);

@@ -18,7 +18,7 @@ Epic<AppState> _matchToRedirectionUrlEpic(Graph graph) => (
     };
 
 Stream<dynamic> _urlMatchToDirection(DirectionUrlMatch action) async* {
-  if (action.widgetType == WidgetType.full_profile) {
+  if (action.widgetType == WidgetType.fullProfile) {
     yield FetchAccessCode(action.url);
   } else {
     yield FetchAuthCode(action.url);

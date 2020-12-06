@@ -6,13 +6,13 @@ import 'package:linkedin_login/src/wrappers/linked_in_token_object.dart';
 /// Code that you will exchange for access token later
 /// Error property will be filled up if flow catch any of errors
 class AuthorizationCodeResponse {
-  String state;
-  String code;
-  LinkedInTokenObject accessToken;
-
   AuthorizationCodeResponse({
     this.code,
     this.state,
     this.accessToken,
   });
+
+  String state;
+  String code;
+  LinkedInTokenObject accessToken;
 }

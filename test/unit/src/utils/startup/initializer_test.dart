@@ -8,7 +8,7 @@ void main() {
   test('is graph created with init', () async {
     final graph = Initializer().initialise(
       AccessCodeConfiguration(
-        projectionParam: ProjectionParameters.fullProjection,
+        projectionParam: ProjectionParameters.projectionWithoutPicture,
         clientSecretParam: 'clientSecretParam',
         urlState: 'urlState',
         clientIdParam: 'clientIdParam',

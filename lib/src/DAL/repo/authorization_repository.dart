@@ -18,7 +18,7 @@ class AuthorizationRepository {
     @required http.Client client,
   }) async {
     log('LinkedInAuth-steps:fetchAccessTokenCode: parsing authorization code... ');
-    AuthorizationCodeResponse authorizationCode = _getAuthorizationCode(
+    final authorizationCode = _getAuthorizationCode(
       redirectedUrl,
       clientState,
     );

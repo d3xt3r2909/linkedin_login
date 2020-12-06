@@ -13,6 +13,7 @@ void main() {
         EnvironmentAccess.profile,
         'path',
       );
+    // ignore: avoid_catching_errors
     } on Error catch (e) {
       expect(e, isA<UnsupportedError>());
     }

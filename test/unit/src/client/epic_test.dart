@@ -31,7 +31,7 @@ void main() {
         graph, store, authorizationRepository, userRepository, configuration);
   });
 
-  final urlAfterSuccessfulLogin =
+  const urlAfterSuccessfulLogin =
       'https://www.app.dexter.com/?code=AQQTwafddqnG27k6XUWiK0ONMAXKXPietjbeNtDeQGZnBVVM8vHlyrWFHysjGVCFfCAtNw0ajFCitY8fGMm53e7Had8ug0MO62quDLefdSZwNgOFzs6B5jdXgqUg_zad998th7ug4nAzXB71kD4EsYmqjhpUuCDjRNxu3FmRlGzMVOVHQhmEQwjitt0pBA';
 
   test('Emits FetchAccessCodeFailedAction if state code is not valid',
@@ -85,7 +85,8 @@ void main() {
       LinkedInTokenObject(accessToken: 'accessToken'),
     );
 
-    action.toString();
+    // ignore: avoid_print
+    print(action.toString());
 
     final events = clientEpics(graph)(
       toStream(action),

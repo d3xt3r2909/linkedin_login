@@ -39,11 +39,6 @@ Call LinkedIn authorization and get user object:
                 print('First name: ${linkedInUser.firstName.localized.label}');
                 print('Last name: ${linkedInUser.lastName.localized.label}');
        },
-       catchError: (LinkedInErrorObject error) {
-         print(
-             'Error description: ${error.description},'
-             ' Error code: ${error.statusCode.toString()}');
-        },
     )
 ```
 

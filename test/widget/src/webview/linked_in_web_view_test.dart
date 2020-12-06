@@ -106,9 +106,8 @@ void main() {
 
     await tester.pumpWidget(testWidget);
     await tester.pumpAndSettle();
-    final FakePlatformWebView platformWebView =
-        fakePlatformViewsController.lastCreatedView;
-    platformWebView.fakeNavigate('https://www.google.com');
+    final platformWebView = (fakePlatformViewsController.lastCreatedView)
+      ..fakeNavigate('https://www.google.com');
     await tester.pump();
 
     expect(platformWebView.hasNavigationDelegate, true);
@@ -125,9 +124,8 @@ void main() {
 
     await tester.pumpWidget(testWidget);
     await tester.pumpAndSettle();
-    final FakePlatformWebView platformWebView =
-        fakePlatformViewsController.lastCreatedView;
-    platformWebView.fakeNavigate(urlAfterSuccessfulLogin);
+    fakePlatformViewsController.lastCreatedView
+        .fakeNavigate(urlAfterSuccessfulLogin);
     await tester.pumpAndSettle();
 
     expect(actions.whereType<DirectionUrlMatch>(), hasLength(1));
@@ -168,10 +166,10 @@ void main() {
   });
 }
 
-final initialUrl =
+const initialUrl =
     'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=12345&state=null&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress';
 
-final urlAfterSuccessfulLogin =
+const urlAfterSuccessfulLogin =
     'https://www.app.dexter.com/?code=AQQTwafddqnG27k6XUWiK0ONMAXKXPietjbeNtDeQGZnBVVM8vHlyrWFHysjGVCFfCAtNw0ajFCitY8fGMm53e7Had8ug0MO62quDLefdSZwNgOFzs6B5jdXgqUg_zad998th7ug4nAzXB71kD4EsYmqjhpUuCDjRNxu3FmRlGzMVOVHQhmEQwjitt0pBA&state=null';
 
 class _ArrangeBuilder {
@@ -259,8 +257,8 @@ class FakePlatformWebView {
     debuggingEnabled = params['settings']['debuggingEnabled'];
     userAgent = params['settings']['userAgent'];
     channel = MethodChannel(
-        'plugins.flutter.io/webview_$id', const StandardMethodCodec());
-    channel.setMockMethodCallHandler(onMethodCall);
+        'plugins.flutter.io/webview_$id', const StandardMethodCodec())
+      ..setMockMethodCallHandler(onMethodCall);
   }
 
   MethodChannel channel;
@@ -326,7 +324,7 @@ class FakePlatformWebView {
       case 'removeJavascriptChannels':
         final List<String> channelNames = List<String>.from(call.arguments);
         javascriptChannelNames
-            .removeWhere((String channel) => channelNames.contains(channel));
+            .removeWhere(channelNames.contains);
         break;
       case 'clearCache':
         hasCache = false;
@@ -336,12 +334,12 @@ class FakePlatformWebView {
   }
 
   void fakeJavascriptPostMessage(String jsChannel, String message) {
-    final StandardMethodCodec codec = const StandardMethodCodec();
-    final Map<String, dynamic> arguments = <String, dynamic>{
+    const codec = const StandardMethodCodec();
+    final arguments = <String, dynamic>{
       'channel': jsChannel,
       'message': message
     };
-    final ByteData data = codec
+    final data = codec
         .encodeMethodCall(MethodCall('javascriptChannelMessage', arguments));
     ServicesBinding.instance.defaultBinaryMessenger
         .handlePlatformMessage(channel.name, data, (ByteData data) {});
@@ -351,11 +349,10 @@ class FakePlatformWebView {
   // the user clicks a link in the currently loaded page.
   void fakeNavigate(String url) {
     if (!hasNavigationDelegate) {
-      print('no navigation delegate');
       _loadUrl(url);
       return;
     }
-    final StandardMethodCodec codec = const StandardMethodCodec();
+    const StandardMethodCodec codec = const StandardMethodCodec();
     final Map<String, dynamic> arguments = <String, dynamic>{
       'url': url,
       'isForMainFrame': true
@@ -372,7 +369,7 @@ class FakePlatformWebView {
   }
 
   void fakeOnPageStartedCallback() {
-    final StandardMethodCodec codec = const StandardMethodCodec();
+    const StandardMethodCodec codec = const StandardMethodCodec();
 
     final ByteData data = codec.encodeMethodCall(MethodCall(
       'onPageStarted',
@@ -387,7 +384,7 @@ class FakePlatformWebView {
   }
 
   void fakeOnPageFinishedCallback() {
-    final StandardMethodCodec codec = const StandardMethodCodec();
+    const codec = const StandardMethodCodec();
 
     final ByteData data = codec.encodeMethodCall(MethodCall(
       'onPageFinished',
@@ -402,8 +399,9 @@ class FakePlatformWebView {
   }
 
   void _loadUrl(String url) {
-    history = history.sublist(0, currentPosition + 1);
-    history.add(url);
+    history = history
+      ..sublist(0, currentPosition + 1)
+      ..add(url);
     currentPosition++;
     amountOfReloadsOnCurrentUrl = 0;
   }
@@ -411,11 +409,10 @@ class FakePlatformWebView {
 
 class _FakeCookieManager {
   _FakeCookieManager() {
-    final MethodChannel channel = const MethodChannel(
+    const MethodChannel(
       'plugins.flutter.io/cookie_manager',
       StandardMethodCodec(),
-    );
-    channel.setMockMethodCallHandler(onMethodCall);
+    ).setMockMethodCallHandler(onMethodCall);
   }
 
   bool hasCookies = true;

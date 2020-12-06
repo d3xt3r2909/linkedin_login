@@ -11,8 +11,9 @@ import 'package:redux/redux.dart';
 
 /// Class will fetch code and access token from the user
 /// It will show web view so that we can access to linked in auth page
+@immutable
 class LinkedInWebViewHandler extends StatefulWidget {
-  LinkedInWebViewHandler({
+  const LinkedInWebViewHandler({
     this.appBar,
     this.destroySession = false,
     this.onCookieClear,
@@ -114,8 +115,8 @@ class _ViewModel {
 
   void onRedirectionUrl(String url) {
     final type = graph.linkedInConfiguration is AccessCodeConfiguration
-        ? WidgetType.full_profile
-        : WidgetType.auth_code;
+        ? WidgetType.fullProfile
+        : WidgetType.authCode;
     onDispatch(DirectionUrlMatch(url, type));
   }
 
