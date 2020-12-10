@@ -52,7 +52,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 -   Update API documentation
 
-
 ## v1.1.5 - 2020-05-31
 ### Version updated to v1.1.5
 
@@ -131,5 +130,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   Login with LinkedIn support to Android and IOS using pure dart
 -   LinkedIn default button
 -   Retrieve basic user information from linked login with email and token
-
-
