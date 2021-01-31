@@ -1,42 +1,29 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:linkedin_login/linkedin_login.dart';
-import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/DAL/repo/user_repository.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:mockito/mockito.dart';
-import 'package:redux_epics/redux_epics.dart';
 
 import '../../../utils/mocks.dart';
 
 void main() {
-  EpicStore<AppState> store;
-  Graph graph;
-  LinkedInApi api;
-  UserRepository repository;
+  late Graph graph;
+  late LinkedInApi api;
+  late UserRepository repository;
 
-  _ArrangeBuilder builder;
+  late _ArrangeBuilder builder;
 
   setUpAll(() {});
 
   setUp(() {
-    final mockStore = MockStore();
     graph = MockGraph();
-    store = EpicStore(mockStore);
     api = MockApi();
     repository = UserRepository(api: api);
 
     builder = _ArrangeBuilder(
       graph,
-      store,
       api,
-    );
-  });
-
-  test('not created if API is null', () async {
-    expect(
-      () => UserRepository(api: null),
-      throwsAssertionError,
     );
   });
 
@@ -54,11 +41,11 @@ void main() {
       client: graph.httpClient,
     );
 
-    expect(response.email.elements[0].handleDeep.emailAddress,
+    expect(response.email!.elements![0].handleDeep!.emailAddress,
         'dexter@dexter.com');
-    expect(response.token.accessToken, 'accessToken');
-    expect(response.firstName.localized.label, 'DexterFirst');
-    expect(response.lastName.localized.label, 'DexterLast');
+    expect(response.token!.accessToken, 'accessToken');
+    expect(response.firstName!.localized!.label, 'DexterFirst');
+    expect(response.lastName!.localized!.label, 'DexterLast');
     expect(response.userId, 'id');
   });
 }
@@ -66,7 +53,6 @@ void main() {
 class _ArrangeBuilder {
   _ArrangeBuilder(
     this.graph,
-    this.store,
     this.api,
   ) {
     when(graph.api).thenReturn(api);
@@ -74,7 +60,6 @@ class _ArrangeBuilder {
 
   final Graph graph;
   final LinkedInApi api;
-  final EpicStore<AppState> store;
 
   void withBasicProfile() {
     when(api.fetchProfile(

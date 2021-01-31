@@ -1,36 +1,28 @@
 import 'package:linkedin_login/linkedin_login.dart';
-import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/DAL/api/exceptions.dart';
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/DAL/repo/authorization_repository.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:mockito/mockito.dart';
-import 'package:redux_epics/redux_epics.dart';
 import 'package:test/test.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../utils/mocks.dart';
 
 void main() {
-  EpicStore<AppState> store;
-  Graph graph;
-  LinkedInApi api;
-  AuthorizationRepository repository;
+  late Graph graph;
+  late LinkedInApi api;
+  late AuthorizationRepository repository;
 
-  _ArrangeBuilder builder;
-
-  setUpAll(() {});
+  late _ArrangeBuilder builder;
 
   setUp(() {
-    final mockStore = MockStore();
     graph = MockGraph();
-    store = EpicStore(mockStore);
     api = MockApi();
     repository = AuthorizationRepository(api: api);
 
     builder = _ArrangeBuilder(
       graph,
-      store,
       api,
     );
   });
@@ -161,8 +153,8 @@ void main() {
       client: graph.httpClient,
     );
 
-    expect(response.accessToken.accessToken, 'accessToken');
-    expect(response.accessToken.expiresIn, 1234);
+    expect(response.accessToken!.accessToken, 'accessToken');
+    expect(response.accessToken!.expiresIn, 1234);
   });
 
   test('Return AuthorizationCodeResponse object for fetchAuthorizationCode',
@@ -180,9 +172,8 @@ void main() {
 class _ArrangeBuilder {
   _ArrangeBuilder(
     this.graph,
-    this.store,
     this.api, {
-    MockClient client,
+    MockClient? client,
   }) : _client = client ?? MockClient() {
     when(graph.api).thenReturn(api);
     when(graph.httpClient).thenReturn(_client);
@@ -191,7 +182,6 @@ class _ArrangeBuilder {
   final Graph graph;
   final LinkedInApi api;
   final http.Client _client;
-  final EpicStore<AppState> store;
 
   void withApiLogin() {
     when(api.login(

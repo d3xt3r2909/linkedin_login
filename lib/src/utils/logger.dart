@@ -5,13 +5,13 @@ import 'package:flutter/foundation.dart';
 
 void log(
   String message, {
-  DateTime time,
-  int sequenceNumber,
+  DateTime? time,
+  int? sequenceNumber,
   int level = 0,
   String name = '',
-  Object error,
-  Zone zone,
-  StackTrace stackTrace,
+  Object? error,
+  Zone? zone,
+  StackTrace? stackTrace,
 }) =>
     SecretLogger().log(
       message,
@@ -26,13 +26,13 @@ void log(
 
 void logError(
   String message, {
-  DateTime time,
-  int sequenceNumber,
+  DateTime? time,
+  int? sequenceNumber,
   int level = 0,
   String name = 'Logger',
-  Object error,
-  Zone zone,
-  StackTrace stackTrace,
+  Object? error,
+  Zone? zone,
+  StackTrace? stackTrace,
 }) =>
     SecretLogger().logError(
       message,
@@ -53,13 +53,13 @@ class SecretLogger {
 
   void log(
     String message, {
-    DateTime time,
-    int sequenceNumber,
+    DateTime? time,
+    int? sequenceNumber,
     int level = 0,
     String name = 'Logger',
-    Object error,
-    Zone zone,
-    StackTrace stackTrace,
+    Object? error,
+    Zone? zone,
+    StackTrace? stackTrace,
   }) {
     final msg = '$name: $message ${error ?? ''}';
 
@@ -70,12 +70,12 @@ class SecretLogger {
 
   void logError(
     String message, {
-    DateTime time,
-    int sequenceNumber,
+    DateTime? time,
+    int? sequenceNumber,
     String name = 'Logger',
-    Object error,
-    Zone zone,
-    StackTrace stackTrace,
+    Object? error,
+    Zone? zone,
+    StackTrace? stackTrace,
   }) {
     // ignore: avoid_print
     print('LinkedInLogin: $message ${error ?? ''}');

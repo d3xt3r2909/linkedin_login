@@ -44,12 +44,12 @@ class LinkedInUserModel {
     );
   }
 
-  final LinkedInPersonalInfo firstName, lastName;
-  final LinkedInProfilePicture profilePicture;
-  final String userId;
-  final String localizedFirstName, localizedLastName;
-  LinkedInProfileEmail email;
-  LinkedInTokenObject token;
+  final LinkedInPersonalInfo? firstName, lastName;
+  final LinkedInProfilePicture? profilePicture;
+  final String? userId;
+  final String? localizedFirstName, localizedLastName;
+  LinkedInProfileEmail? email;
+  LinkedInTokenObject? token;
 }
 
 /// Helper children subclass
@@ -63,8 +63,8 @@ class LinkedInPersonalInfo {
             LinkedInPreferredLocal.fromJson(json['preferredLocale']),
       );
 
-  final LinkedInLocalInfo localized;
-  final LinkedInPreferredLocal preferredLocal;
+  final LinkedInLocalInfo? localized;
+  final LinkedInPreferredLocal? preferredLocal;
 }
 
 /// Helper children subclass
@@ -77,13 +77,13 @@ class LinkedInLocalInfo {
         label: getFirstInListFromJson(json),
       );
 
-  final String label;
+  final String? label;
 }
 
 /// Helper function to parse first element from json
 /// If there is no element, or element is not string it will return you null
 @visibleForTesting
-String getFirstInListFromJson(Map<String, dynamic> json) {
+String? getFirstInListFromJson(Map<String, dynamic>? json) {
   final jsonValue = json?.values;
 
   if (jsonValue != null && jsonValue.isNotEmpty) {
@@ -107,8 +107,8 @@ class LinkedInPreferredLocal {
         language: json['language'],
       );
 
-  final String country;
-  final String language;
+  final String? country;
+  final String? language;
 }
 
 /// Helper children subclass
@@ -124,8 +124,8 @@ class LinkedInProfilePicture {
             : null,
       );
 
-  final String displayImage;
-  final _DisplayImage displayImageContent;
+  final String? displayImage;
+  final _DisplayImage? displayImageContent;
 }
 
 /// Will contain info about image if it's included into response
@@ -143,8 +143,8 @@ class _DisplayImage {
             : [],
       );
 
-  final _ImagePagination paging;
-  final List<_ImageItem> elements;
+  final _ImagePagination? paging;
+  final List<_ImageItem>? elements;
 }
 
 /// Contain URL and other information about one user image
@@ -164,9 +164,9 @@ class _ImageItem {
                 : [],
       );
 
-  final String artifact;
-  final String authorizationMethod;
-  final List<_ImageIdentifierItem> identifiers;
+  final String? artifact;
+  final String? authorizationMethod;
+  final List<_ImageIdentifierItem>? identifiers;
 }
 
 /// Main type of image, will contain URL for image related to user
@@ -191,12 +191,12 @@ class _ImageIdentifierItem {
         identifierExpiresInSeconds: json['identifierExpiresInSeconds'],
       );
 
-  final String identifier;
-  final int index;
-  final String mediaType;
-  final String file;
-  final String identifierType;
-  final int identifierExpiresInSeconds;
+  final String? identifier;
+  final int? index;
+  final String? mediaType;
+  final String? file;
+  final String? identifierType;
+  final int? identifierExpiresInSeconds;
 }
 
 /// Class which is containing info about pagination for images
@@ -210,8 +210,8 @@ class _ImagePagination {
         start: json['start'],
       );
 
-  final int count;
-  final int start;
+  final int? count;
+  final int? start;
 }
 
 /// Helper children subclass
@@ -229,7 +229,7 @@ class LinkedInProfileEmail {
             : [],
       );
 
-  List<LinkedInDeepEmail> elements;
+  List<LinkedInDeepEmail>? elements;
 }
 
 /// Helper children subclass
@@ -243,8 +243,8 @@ class LinkedInDeepEmail {
         handleDeep: LinkedInDeepEmailHandle.fromJson(json['handle~']),
       );
 
-  String handle;
-  LinkedInDeepEmailHandle handleDeep;
+  String? handle;
+  LinkedInDeepEmailHandle? handleDeep;
 }
 
 /// Helper children subclass
@@ -257,5 +257,5 @@ class LinkedInDeepEmailHandle {
         emailAddress: json['emailAddress'],
       );
 
-  String emailAddress;
+  String? emailAddress;
 }

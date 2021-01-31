@@ -5,23 +5,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
 import 'package:mockito/mockito.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:redux/redux.dart';
 import '../../../unit/utils/mocks.dart';
 import '../../widget_test_utils.dart';
 
 void main() {
-  Store<AppState> store;
-  Graph graph;
-  List actions;
-  WidgetTestbed testbed;
-  _ArrangeBuilder builder;
+  late Graph graph;
+  late List actions;
+  late WidgetTestbed testbed;
+  late _ArrangeBuilder builder;
 
   TestWidgetsFlutterBinding.ensureInitialized();
   final _FakeCookieManager _fakeCookieManager = _FakeCookieManager();
@@ -36,42 +33,32 @@ void main() {
   });
 
   setUp(() {
-    store = MockStore();
     graph = MockGraph();
     actions = [];
 
     fakePlatformViewsController.reset();
     _fakeCookieManager.reset();
 
-    builder = _ArrangeBuilder(store, graph, actions);
+    builder = _ArrangeBuilder(graph, actions);
 
     testbed = WidgetTestbed(
       graph: graph,
-      store: store,
-      onReduction: builder.onReduction,
     );
   });
 
   testWidgets('is created', (WidgetTester tester) async {
-    LinkedInWebViewHandler();
-  });
-
-  testWidgets('is not created when destroy session parameter is null',
-      (WidgetTester tester) async {
-    expect(
-      () => LinkedInWebViewHandler(
-        destroySession: null,
-      ),
-      throwsAssertionError,
+    LinkedInWebViewHandler(
+      onUrlMatch: (_) {},
     );
   });
 
   testWidgets('with app bar', (WidgetTester tester) async {
-    final testWidget = testbed.reduxWrap(
+    final testWidget = testbed.simpleWrap(
       child: LinkedInWebViewHandler(
         appBar: AppBar(
           title: Text('Title'),
         ),
+        onUrlMatch: (_) {},
       ),
     );
 
@@ -82,31 +69,34 @@ void main() {
   });
 
   testWidgets('test with initial url', (WidgetTester tester) async {
-    WebViewController controller;
-    final testWidget = testbed.reduxWrap(
+    WebViewController? controller;
+    final testWidget = testbed.simpleWrap(
       child: LinkedInWebViewHandler(
         onWebViewCreated: (webViewController) {
           controller = webViewController;
         },
+        onUrlMatch: (_) {},
       ),
     );
 
     await tester.pumpWidget(testWidget);
     await tester.pumpAndSettle();
 
-    expect(await controller.currentUrl(), initialUrl);
+    expect(await controller?.currentUrl(), initialUrl);
   });
 
   testWidgets('test changing url if url does not match url',
       (WidgetTester tester) async {
     builder.withUrlNotMatch();
-    final testWidget = testbed.reduxWrap(
-      child: LinkedInWebViewHandler(),
+    final testWidget = testbed.simpleWrap(
+      child: LinkedInWebViewHandler(
+        onUrlMatch: (_) {},
+      ),
     );
 
     await tester.pumpWidget(testWidget);
     await tester.pumpAndSettle();
-    final platformWebView = (fakePlatformViewsController.lastCreatedView)
+    final platformWebView = (fakePlatformViewsController.lastCreatedView!)
       ..fakeNavigate('https://www.google.com');
     await tester.pump();
 
@@ -118,13 +108,15 @@ void main() {
   testWidgets('emit proper action if url is matching if redirection',
       (WidgetTester tester) async {
     builder.withUrlMatch();
-    final testWidget = testbed.reduxWrap(
-      child: LinkedInWebViewHandler(),
+    final testWidget = testbed.simpleWrap(
+      child: LinkedInWebViewHandler(
+        onUrlMatch: (_) {},
+      ),
     );
 
     await tester.pumpWidget(testWidget);
     await tester.pumpAndSettle();
-    fakePlatformViewsController.lastCreatedView
+    fakePlatformViewsController.lastCreatedView!
         .fakeNavigate(urlAfterSuccessfulLogin);
     await tester.pumpAndSettle();
 
@@ -135,10 +127,11 @@ void main() {
       'callback for cookie clear is called when destroying session is active',
       (WidgetTester tester) async {
     var isCleared = false;
-    final testWidget = testbed.reduxWrap(
+    final testWidget = testbed.simpleWrap(
       child: LinkedInWebViewHandler(
         destroySession: true,
         onCookieClear: (value) => isCleared = value,
+        onUrlMatch: (_) {},
       ),
     );
 
@@ -152,10 +145,11 @@ void main() {
       'callback for cookie clearing is not called when destroying session is inactive',
       (WidgetTester tester) async {
     var isCleared = false;
-    final testWidget = testbed.reduxWrap(
+    final testWidget = testbed.simpleWrap(
       child: LinkedInWebViewHandler(
         destroySession: false,
         onCookieClear: (value) => isCleared = value,
+        onUrlMatch: (_) {},
       ),
     );
 
@@ -174,30 +168,18 @@ const urlAfterSuccessfulLogin =
 
 class _ArrangeBuilder {
   _ArrangeBuilder(
-    this.store,
     this.graph,
     this.actions, {
-    Config configuration,
+    Config? configuration,
   }) : _configuration = configuration ?? MockConfiguration() {
-    state = AppState.initialState();
-    when(store.state).thenAnswer((_) => state);
     when(graph.linkedInConfiguration).thenAnswer((_) => _configuration);
 
     withConfiguration();
   }
 
-  final Store<AppState> store;
   final List<dynamic> actions;
   final Graph graph;
   final Config _configuration;
-
-  AppState state;
-
-  AppState onReduction(dynamic event) {
-    actions.add(event);
-
-    return state;
-  }
 
   void withConfiguration() {
     when(_configuration.initialUrl).thenAnswer((_) =>
@@ -216,7 +198,7 @@ class _ArrangeBuilder {
 }
 
 class _FakePlatformViewsController {
-  FakePlatformWebView lastCreatedView;
+  FakePlatformWebView? lastCreatedView;
 
   Future<dynamic> fakePlatformViewsMethodHandler(MethodCall call) {
     switch (call.method) {
@@ -243,7 +225,7 @@ class FakePlatformWebView {
     if (params.containsKey('initialUrl')) {
       final String initialUrl = params['initialUrl'];
       if (initialUrl != null) {
-        history.add(initialUrl);
+        history!.add(initialUrl);
         currentPosition++;
       }
     }
@@ -261,20 +243,20 @@ class FakePlatformWebView {
       ..setMockMethodCallHandler(onMethodCall);
   }
 
-  MethodChannel channel;
+  MethodChannel? channel;
 
-  List<String> history = <String>[];
+  List<String>? history = <String>[];
   int currentPosition = -1;
   int amountOfReloadsOnCurrentUrl = 0;
   bool hasCache = true;
 
-  String get currentUrl => history.isEmpty ? null : history[currentPosition];
-  JavascriptMode javascriptMode;
-  List<String> javascriptChannelNames;
+  String? get currentUrl => history!.isEmpty ? null : history![currentPosition];
+  JavascriptMode? javascriptMode;
+  List<String>? javascriptChannelNames;
 
-  bool hasNavigationDelegate;
-  bool debuggingEnabled;
-  String userAgent;
+  bool? hasNavigationDelegate;
+  bool? debuggingEnabled;
+  String? userAgent;
 
   Future<dynamic> onMethodCall(MethodCall call) {
     switch (call.method) {
@@ -298,14 +280,14 @@ class FakePlatformWebView {
         return Future<bool>.sync(() => currentPosition > 0);
         break;
       case 'canGoForward':
-        return Future<bool>.sync(() => currentPosition < history.length - 1);
+        return Future<bool>.sync(() => currentPosition < history!.length - 1);
         break;
       case 'goBack':
         currentPosition = max(-1, currentPosition - 1);
         return Future<void>.sync(() {});
         break;
       case 'goForward':
-        currentPosition = min(history.length - 1, currentPosition + 1);
+        currentPosition = min(history!.length - 1, currentPosition + 1);
         return Future<void>.sync(() {});
       case 'reload':
         amountOfReloadsOnCurrentUrl++;
@@ -319,12 +301,11 @@ class FakePlatformWebView {
         break;
       case 'addJavascriptChannels':
         final List<String> channelNames = List<String>.from(call.arguments);
-        javascriptChannelNames.addAll(channelNames);
+        javascriptChannelNames!.addAll(channelNames);
         break;
       case 'removeJavascriptChannels':
         final List<String> channelNames = List<String>.from(call.arguments);
-        javascriptChannelNames
-            .removeWhere(channelNames.contains);
+        javascriptChannelNames!.removeWhere(channelNames.contains);
         break;
       case 'clearCache':
         hasCache = false;
@@ -341,14 +322,14 @@ class FakePlatformWebView {
     };
     final data = codec
         .encodeMethodCall(MethodCall('javascriptChannelMessage', arguments));
-    ServicesBinding.instance.defaultBinaryMessenger
-        .handlePlatformMessage(channel.name, data, (ByteData data) {});
+    ServicesBinding.instance!.defaultBinaryMessenger
+        .handlePlatformMessage(channel!.name, data, (ByteData? data) {});
   }
 
   // Fakes a main frame navigation that was initiated by the webview, e.g when
   // the user clicks a link in the currently loaded page.
   void fakeNavigate(String url) {
-    if (!hasNavigationDelegate) {
+    if (!hasNavigationDelegate!) {
       _loadUrl(url);
       return;
     }
@@ -359,9 +340,9 @@ class FakePlatformWebView {
     };
     final ByteData data =
         codec.encodeMethodCall(MethodCall('navigationRequest', arguments));
-    ServicesBinding.instance.defaultBinaryMessenger
-        .handlePlatformMessage(channel.name, data, (ByteData data) {
-      final bool allow = codec.decodeEnvelope(data);
+    ServicesBinding.instance!.defaultBinaryMessenger
+        .handlePlatformMessage(channel!.name, data, (ByteData? data) {
+      final bool allow = codec.decodeEnvelope(data!);
       if (allow) {
         _loadUrl(url);
       }
@@ -376,10 +357,10 @@ class FakePlatformWebView {
       <dynamic, dynamic>{'url': currentUrl},
     ));
 
-    ServicesBinding.instance.defaultBinaryMessenger.handlePlatformMessage(
-      channel.name,
+    ServicesBinding.instance!.defaultBinaryMessenger.handlePlatformMessage(
+      channel!.name,
       data,
-      (ByteData data) {},
+      (ByteData? data) {},
     );
   }
 
@@ -391,15 +372,15 @@ class FakePlatformWebView {
       <dynamic, dynamic>{'url': currentUrl},
     ));
 
-    ServicesBinding.instance.defaultBinaryMessenger.handlePlatformMessage(
-      channel.name,
+    ServicesBinding.instance!.defaultBinaryMessenger.handlePlatformMessage(
+      channel!.name,
       data,
-      (ByteData data) {},
+      (ByteData? data) {},
     );
   }
 
   void _loadUrl(String url) {
-    history = history
+    history = history!
       ..sublist(0, currentPosition + 1)
       ..add(url);
     currentPosition++;
@@ -430,7 +411,7 @@ class _FakeCookieManager {
         });
         break;
     }
-    return Future<bool>.sync(() => null);
+    return Future<bool>.sync(() => false);
   }
 
   void reset() {

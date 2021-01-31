@@ -8,16 +8,12 @@ import 'package:http/http.dart' as http;
 @immutable
 class Graph {
   const Graph({
-    @required this.authorizationRepository,
-    @required this.userRepository,
-    @required this.api,
-    @required this.linkedInConfiguration,
-    @required this.httpClient,
-  })  : assert(authorizationRepository != null),
-        assert(userRepository != null),
-        assert(api != null),
-        assert(linkedInConfiguration != null),
-        assert(httpClient != null);
+    required this.authorizationRepository,
+    required this.userRepository,
+    required this.api,
+    required this.linkedInConfiguration,
+    required this.httpClient,
+  });
 
   final AuthorizationRepository authorizationRepository;
   final UserRepository userRepository;

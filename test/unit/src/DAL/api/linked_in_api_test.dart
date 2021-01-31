@@ -2,24 +2,21 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:linkedin_login/linkedin_login.dart';
-import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/DAL/api/endpoint.dart';
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:mockito/mockito.dart';
-import 'package:redux_epics/redux_epics.dart';
 import 'package:http/http.dart' as http;
 import '../../../utils/mocks.dart';
 
 void main() {
-  EpicStore<AppState> store;
-  Graph graph;
-  LinkedInApi api;
-  http.Client httpClient;
-  String localHostUrlMeProfile;
-  String localHostUrlLogin;
-  String localHostUrlEmail;
-  _ArrangeBuilder builder;
+  late Graph graph;
+  late LinkedInApi api;
+  late MockClient httpClient;
+  late String localHostUrlMeProfile;
+  late String localHostUrlLogin;
+  late String localHostUrlEmail;
+  late _ArrangeBuilder builder;
 
   setUpAll(() {
     localHostUrlMeProfile = 'http://localhost:8080/v2/me?projection=';
@@ -29,15 +26,12 @@ void main() {
   });
 
   setUp(() {
-    final mockStore = MockStore();
     graph = MockGraph();
-    store = EpicStore(mockStore);
     api = MockApi();
     httpClient = MockClient();
 
     builder = _ArrangeBuilder(
       graph,
-      store,
       api,
       client: httpClient,
     );
@@ -121,41 +115,15 @@ void main() {
       expect(linkedInUserModel, isA<LinkedInUserModel>());
       expect(linkedInUserModel.localizedLastName, 'Doe');
       expect(linkedInUserModel.localizedFirstName, 'John');
-      expect(linkedInUserModel.lastName.localized.label, 'Doe');
-      expect(linkedInUserModel.firstName.localized.label, 'John');
+      expect(linkedInUserModel.lastName!.localized!.label, 'Doe');
+      expect(linkedInUserModel.firstName!.localized!.label, 'John');
       expect(
-        linkedInUserModel.profilePicture.displayImageContent.elements[0]
-            .identifiers[0].identifier,
+        linkedInUserModel.profilePicture!.displayImageContent!.elements![0]
+            .identifiers![0].identifier,
         'https://media-exp1.licdn.com/dms/image/C4D03AQHirapDum_ZbC/profile-displayphoto-shrink_100_100/0?e=1611792000&v=beta&t=ijlJxIZEMFJDUhnJNrsoWX2vCBIUOXWv4eYCTlPOw-c',
       );
       expect(linkedInUserModel.userId, 'dwe_Pcc0k3');
       expect(linkedInUserModel.email, isNull);
-    });
-
-    test('throws exception if client is null for fetching profile', () async {
-      final api = LinkedInApi.test(Endpoint(Environment.vm));
-
-      expect(
-        () async => api.fetchProfile(
-          token: 'accessToken',
-          projection: ProjectionParameters.projectionWithoutPicture,
-          client: null,
-        ),
-        throwsAssertionError,
-      );
-    });
-
-    test('throws exception if client is null for fetching profile', () async {
-      final api = LinkedInApi.test(Endpoint(Environment.vm));
-
-      expect(
-        () async => api.fetchProfile(
-          token: 'accessToken',
-          projection: ProjectionParameters.projectionWithoutPicture,
-          client: null,
-        ),
-        throwsAssertionError,
-      );
     });
 
     test(
@@ -178,11 +146,11 @@ void main() {
       expect(linkedInUserModel, isA<LinkedInUserModel>());
       expect(linkedInUserModel.localizedLastName, isNull);
       expect(linkedInUserModel.localizedFirstName, isNull);
-      expect(linkedInUserModel.lastName.localized.label, 'Doe');
-      expect(linkedInUserModel.firstName.localized.label, 'John');
+      expect(linkedInUserModel.lastName!.localized!.label, 'Doe');
+      expect(linkedInUserModel.firstName!.localized!.label, 'John');
       expect(
-        linkedInUserModel.profilePicture.displayImageContent.elements[0]
-            .identifiers[0].identifier,
+        linkedInUserModel.profilePicture!.displayImageContent!.elements![0]
+            .identifiers![0].identifier,
         'https://media-exp1.licdn.com/dms/image/C4D03AQHirapDum_ZbC/profile-displayphoto-shrink_100_100/0?e=1611792000&v=beta&t=ijlJxIZEMFJDUhnJNrsoWX2vCBIUOXWv4eYCTlPOw-c',
       );
       expect(linkedInUserModel.userId, 'dwe_Pcc0k3');
@@ -209,11 +177,11 @@ void main() {
       expect(linkedInUserModel, isA<LinkedInUserModel>());
       expect(linkedInUserModel.localizedLastName, 'Doe');
       expect(linkedInUserModel.localizedFirstName, 'John');
-      expect(linkedInUserModel?.lastName?.localized?.label, isNull);
-      expect(linkedInUserModel?.firstName?.localized?.label, isNull);
+      expect(linkedInUserModel.lastName?.localized?.label, isNull);
+      expect(linkedInUserModel.firstName?.localized?.label, isNull);
       expect(
-        linkedInUserModel.profilePicture.displayImageContent.elements[0]
-            .identifiers[0].identifier,
+        linkedInUserModel.profilePicture!.displayImageContent!.elements![0]
+            .identifiers![0].identifier,
         'https://media-exp1.licdn.com/dms/image/C4D03AQHirapDum_ZbC/profile-displayphoto-shrink_100_100/0?e=1611792000&v=beta&t=ijlJxIZEMFJDUhnJNrsoWX2vCBIUOXWv4eYCTlPOw-c',
       );
       expect(linkedInUserModel.userId, 'dwe_Pcc0k3');
@@ -240,11 +208,11 @@ void main() {
       expect(linkedInUserModel, isA<LinkedInUserModel>());
       expect(linkedInUserModel.localizedLastName, 'Doe');
       expect(linkedInUserModel.localizedFirstName, 'John');
-      expect(linkedInUserModel?.lastName?.localized?.label, isNull);
-      expect(linkedInUserModel?.firstName?.localized?.label, isNull);
+      expect(linkedInUserModel.lastName?.localized?.label, isNull);
+      expect(linkedInUserModel.firstName?.localized?.label, isNull);
       expect(
-        linkedInUserModel.profilePicture.displayImageContent.elements[0]
-            .identifiers[0].identifier,
+        linkedInUserModel.profilePicture!.displayImageContent!.elements![0]
+            .identifiers![0].identifier,
         'https://media-exp1.licdn.com/dms/image/C4D03AQHirapDum_ZbC/profile-displayphoto-shrink_100_100/0?e=1611792000&v=beta&t=ijlJxIZEMFJDUhnJNrsoWX2vCBIUOXWv4eYCTlPOw-c',
       );
       expect(linkedInUserModel.userId, 'dwe_Pcc0k3');
@@ -270,9 +238,9 @@ void main() {
       expect(linkedInUserModel, isA<LinkedInUserModel>());
       expect(linkedInUserModel.localizedLastName, 'Doe');
       expect(linkedInUserModel.localizedFirstName, 'John');
-      expect(linkedInUserModel.lastName.localized.label, 'Doe');
-      expect(linkedInUserModel.firstName.localized.label, 'John');
-      expect(linkedInUserModel?.profilePicture, isNull);
+      expect(linkedInUserModel.lastName!.localized!.label, 'Doe');
+      expect(linkedInUserModel.firstName!.localized!.label, 'John');
+      expect(linkedInUserModel.profilePicture, isNull);
       expect(linkedInUserModel.userId, 'dwe_Pcc0k3');
       expect(linkedInUserModel.email, isNull);
     });
@@ -296,12 +264,12 @@ void main() {
       expect(linkedInUserModel, isA<LinkedInUserModel>());
       expect(linkedInUserModel.localizedLastName, 'Doe');
       expect(linkedInUserModel.localizedFirstName, 'John');
-      expect(linkedInUserModel.lastName.localized.label, 'Doe');
-      expect(linkedInUserModel.firstName.localized.label, 'John');
+      expect(linkedInUserModel.lastName!.localized!.label, 'Doe');
+      expect(linkedInUserModel.firstName!.localized!.label, 'John');
       expect(linkedInUserModel.userId, isNull);
       expect(
-        linkedInUserModel.profilePicture.displayImageContent.elements[0]
-            .identifiers[0].identifier,
+        linkedInUserModel.profilePicture!.displayImageContent!.elements![0]
+            .identifiers![0].identifier,
         'https://media-exp1.licdn.com/dms/image/C4D03AQHirapDum_ZbC/profile-displayphoto-shrink_100_100/0?e=1611792000&v=beta&t=ijlJxIZEMFJDUhnJNrsoWX2vCBIUOXWv4eYCTlPOw-c',
       );
       expect(linkedInUserModel.email, isNull);
@@ -341,19 +309,7 @@ void main() {
       );
 
       expect(userEmail, isA<LinkedInProfileEmail>());
-      expect(userEmail.elements[0]?.handleDeep?.emailAddress, 'xxx@xxx.xxx');
-    });
-
-    test('throws exception if token is null', () async {
-      final api = LinkedInApi.test(Endpoint(Environment.vm));
-
-      expect(
-        () async => api.fetchEmail(
-          token: null,
-          client: httpClient,
-        ),
-        throwsAssertionError,
-      );
+      expect(userEmail.elements![0].handleDeep?.emailAddress, 'xxx@xxx.xxx');
     });
 
     test('with 401 HTTP code', () async {
@@ -406,9 +362,8 @@ void main() {
 class _ArrangeBuilder {
   _ArrangeBuilder(
     this.graph,
-    this.store,
     this.api, {
-    MockClient client,
+    MockClient? client,
   }) : _client = client ?? MockClient() {
     when(graph.api).thenReturn(api);
     when(graph.httpClient).thenReturn(_client);
@@ -417,7 +372,6 @@ class _ArrangeBuilder {
   final Graph graph;
   final LinkedInApi api;
   final http.Client _client;
-  final EpicStore<AppState> store;
 
   Future<String> getResponseFileContent(String pathToFile) async {
     final file = File(pathToFile);
