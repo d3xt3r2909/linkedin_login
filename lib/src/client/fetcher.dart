@@ -14,7 +14,7 @@ class ClientFetcher {
   Future<LinkedInUserModel> fetchUser() async {
     try {
       final token = await _fetchAccessTokenUser();
-      final user = await _fetchLinkedInProfile(token.accessToken!);
+      final user = await _fetchLinkedInProfile(token.accessToken);
 
       return user;
     } on Exception catch (_) {
@@ -29,7 +29,7 @@ class ClientFetcher {
       final response = await graph.authorizationRepository.fetchAccessTokenCode(
         redirectedUrl: url,
         clientId: graph.linkedInConfiguration.clientId,
-        clientSecret: graph.linkedInConfiguration.clientSecret!,
+        clientSecret: graph.linkedInConfiguration.clientSecret,
         clientState: graph.linkedInConfiguration.state,
         client: graph.httpClient,
       );
@@ -54,7 +54,7 @@ class ClientFetcher {
 
       final user = await graph.userRepository.fetchFullProfile(
         token: tokenObject,
-        projection: graph.linkedInConfiguration.projection!,
+        projection: graph.linkedInConfiguration.projection,
         client: graph.httpClient,
       );
 

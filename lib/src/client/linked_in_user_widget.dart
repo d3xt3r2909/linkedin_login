@@ -14,10 +14,10 @@ import 'package:uuid/uuid.dart';
 class LinkedInUserWidget extends StatefulWidget {
   /// Client state parameter needs to be unique range of characters - random one
   LinkedInUserWidget({
-    required this.onGetUserProfile,
-    required this.redirectUrl,
-    required this.clientId,
-    required this.clientSecret,
+    @required this.onGetUserProfile,
+    @required this.redirectUrl,
+    @required this.clientId,
+    @required this.clientSecret,
     this.destroySession = false,
     this.appBar,
     this.projection = const [
@@ -27,12 +27,17 @@ class LinkedInUserWidget extends StatefulWidget {
       ProjectionParameters.firstName,
       ProjectionParameters.lastName,
     ],
-  }) : assert(projection.isNotEmpty);
+  })  : assert(onGetUserProfile != null),
+        assert(redirectUrl != null),
+        assert(clientId != null),
+        assert(clientSecret != null),
+        assert(destroySession != null),
+        assert(projection != null && projection.isNotEmpty);
 
   final Function(LinkedInUserModel) onGetUserProfile;
   final String redirectUrl;
   final String clientId, clientSecret;
-  final PreferredSizeWidget? appBar;
+  final PreferredSizeWidget appBar;
   final bool destroySession;
   final List<String> projection;
 
@@ -44,7 +49,7 @@ class LinkedInUserWidget extends StatefulWidget {
 /// which will have as result user profile on the end
 class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
   String profileProjection = '';
-  late Graph graph;
+  Graph graph;
 
   @override
   void initState() {
@@ -71,9 +76,11 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
         appBar: widget.appBar,
         destroySession: widget.destroySession,
         onUrlMatch: (config) {
-          ClientFetcher(graph, config.url).fetchUser().then((user) {
-            widget.onGetUserProfile(user);
-          });
+          ClientFetcher(graph, config.url).fetchUser().then(
+            (user) {
+              widget.onGetUserProfile(user);
+            },
+          );
         },
       ),
     );

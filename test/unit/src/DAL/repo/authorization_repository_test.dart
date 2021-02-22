@@ -10,11 +10,11 @@ import 'package:http/http.dart' as http;
 import '../../../utils/mocks.dart';
 
 void main() {
-  late Graph graph;
-  late LinkedInApi api;
-  late AuthorizationRepository repository;
+  Graph graph;
+  LinkedInApi api;
+  AuthorizationRepository repository;
 
-  late _ArrangeBuilder builder;
+  _ArrangeBuilder builder;
 
   setUp(() {
     graph = MockGraph();
@@ -153,8 +153,8 @@ void main() {
       client: graph.httpClient,
     );
 
-    expect(response.accessToken!.accessToken, 'accessToken');
-    expect(response.accessToken!.expiresIn, 1234);
+    expect(response.accessToken.accessToken, 'accessToken');
+    expect(response.accessToken.expiresIn, 1234);
   });
 
   test('Return AuthorizationCodeResponse object for fetchAuthorizationCode',
@@ -173,7 +173,7 @@ class _ArrangeBuilder {
   _ArrangeBuilder(
     this.graph,
     this.api, {
-    MockClient? client,
+    MockClient client,
   }) : _client = client ?? MockClient() {
     when(graph.api).thenReturn(api);
     when(graph.httpClient).thenReturn(_client);

@@ -22,7 +22,7 @@ void main() {
     expect(graph.linkedInConfiguration.redirectUrl, 'redirectUrlParam');
     expect(graph.linkedInConfiguration.frontendRedirectUrl, isNull);
     expect(graph.linkedInConfiguration.state, 'urlState');
-    expect(graph.linkedInConfiguration.projection!.length, 5);
+    expect(graph.linkedInConfiguration.projection.length, 5);
   });
 
   test('is graph created with init for AuthCodeConfig', () async {

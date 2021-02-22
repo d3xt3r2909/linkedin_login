@@ -6,6 +6,6 @@ class LinkedInTokenObject {
     this.expiresIn,
   });
 
-  String? accessToken;
-  int? expiresIn;
+  String accessToken;
+  int expiresIn;
 }

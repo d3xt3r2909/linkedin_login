@@ -9,8 +9,8 @@ import '../../../unit/utils/mocks.dart';
 import '../../widget_test_utils.dart';
 
 void main() {
-  late Graph graph;
-  late WidgetTestbed testbed;
+  Graph graph;
+  WidgetTestbed testbed;
 
   setUp(() {
     graph = MockGraph();
@@ -21,13 +21,13 @@ void main() {
   });
 
   LinkedInUserWidget linkedInUserWidget({
-    Function(LinkedInUserModel)? onGetUserProfile,
+    Function(LinkedInUserModel) onGetUserProfile,
     String redirectUrl = 'https://www.app.dexter.com',
     String clientId = '12345',
     String clientSecret = '56789',
-    String? frontendRedirectUrl,
+    String frontendRedirectUrl,
     bool destroySession = false,
-    AppBar? appBar,
+    AppBar appBar,
     List<String> projection = const [
       ProjectionParameters.id,
       ProjectionParameters.localizedFirstName,
@@ -51,6 +51,50 @@ void main() {
     linkedInUserWidget();
   });
 
+  testWidgets('is not created when onGetUserProfile callback is null',
+      (WidgetTester tester) async {
+    expect(
+      () => LinkedInUserWidget(
+        onGetUserProfile: null,
+        redirectUrl: 'redirectUrl',
+        clientId: 'clientId',
+        clientSecret: 'clientSecret',
+      ),
+      throwsAssertionError,
+    );
+  });
+
+  testWidgets('is not created when redirectUrl is null',
+      (WidgetTester tester) async {
+    expect(
+      () => linkedInUserWidget(redirectUrl: null),
+      throwsAssertionError,
+    );
+  });
+
+  testWidgets('is not created when clientId is null',
+      (WidgetTester tester) async {
+    expect(
+      () => linkedInUserWidget(clientId: null),
+      throwsAssertionError,
+    );
+  });
+
+  testWidgets('is not created when destroySession is null',
+      (WidgetTester tester) async {
+    expect(
+      () => linkedInUserWidget(destroySession: null),
+      throwsAssertionError,
+    );
+  });
+
+  testWidgets('is not created when clientSecret is null',
+      (WidgetTester tester) async {
+    expect(
+      () => linkedInUserWidget(clientSecret: null),
+      throwsAssertionError,
+    );
+  });
 
   testWidgets('App bar is not shown if not provided',
       (WidgetTester tester) async {

@@ -12,29 +12,32 @@ import 'package:uuid/uuid.dart';
 /// token and code from LinkedIn
 class LinkedInAuthCodeWidget extends StatefulWidget {
   const LinkedInAuthCodeWidget({
-    required this.onGetAuthCode,
-    required this.redirectUrl,
-    required this.clientId,
+    @required this.onGetAuthCode,
+    @required this.redirectUrl,
+    @required this.clientId,
     this.destroySession = false,
     this.frontendRedirectUrl,
     this.appBar,
-  });
+  })  : assert(onGetAuthCode != null),
+        assert(redirectUrl != null),
+        assert(clientId != null),
+        assert(destroySession != null);
 
   final Function(AuthorizationCodeResponse) onGetAuthCode;
   final String redirectUrl;
   final String clientId;
-  final AppBar? appBar;
+  final AppBar appBar;
   final bool destroySession;
 
   // just in case that frontend in your team has changed redirect url
-  final String? frontendRedirectUrl;
+  final String frontendRedirectUrl;
 
   @override
   State createState() => _LinkedInAuthCodeWidgetState();
 }
 
 class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
-  late Graph graph;
+  Graph graph;
 
   @override
   void initState() {
@@ -58,9 +61,11 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
         appBar: widget.appBar,
         destroySession: widget.destroySession,
         onUrlMatch: (config) {
-          ServerFetcher(graph, config.url).fetchAuthToken().then((code) {
-            widget.onGetAuthCode(code);
-          });
+          ServerFetcher(graph, config.url).fetchAuthToken().then(
+            (code) {
+              widget.onGetAuthCode(code);
+            },
+          );
         },
       ),
     );

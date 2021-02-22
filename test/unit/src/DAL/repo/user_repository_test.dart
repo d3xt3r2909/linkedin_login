@@ -8,11 +8,11 @@ import 'package:mockito/mockito.dart';
 import '../../../utils/mocks.dart';
 
 void main() {
-  late Graph graph;
-  late LinkedInApi api;
-  late UserRepository repository;
+  Graph graph;
+  LinkedInApi api;
+  UserRepository repository;
 
-  late _ArrangeBuilder builder;
+  _ArrangeBuilder builder;
 
   setUpAll(() {});
 
@@ -41,11 +41,11 @@ void main() {
       client: graph.httpClient,
     );
 
-    expect(response.email!.elements![0].handleDeep!.emailAddress,
+    expect(response.email.elements[0].handleDeep.emailAddress,
         'dexter@dexter.com');
-    expect(response.token!.accessToken, 'accessToken');
-    expect(response.firstName!.localized!.label, 'DexterFirst');
-    expect(response.lastName!.localized!.label, 'DexterLast');
+    expect(response.token.accessToken, 'accessToken');
+    expect(response.firstName.localized.label, 'DexterFirst');
+    expect(response.lastName.localized.label, 'DexterLast');
     expect(response.userId, 'id');
   });
 }

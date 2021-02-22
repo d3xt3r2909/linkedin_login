@@ -1,11 +1,13 @@
-abstract class Config {
-  String? get clientSecret;
+import 'package:flutter/material.dart';
 
-  List<String>? get projection;
+abstract class Config {
+  String get clientSecret;
+
+  List<String> get projection;
 
   String get redirectUrl;
 
-  String? get frontendRedirectUrl;
+  String get frontendRedirectUrl;
 
   String get clientId;
 
@@ -13,17 +15,21 @@ abstract class Config {
 
   String get initialUrl;
 
-  bool isCurrentUrlMatchToRedirection(String? url);
+  bool isCurrentUrlMatchToRedirection(String url);
 }
 
 class AccessCodeConfiguration implements Config {
   AccessCodeConfiguration({
-    required this.redirectUrlParam,
-    required this.clientIdParam,
-    required this.clientSecretParam,
-    required this.projectionParam,
-    required this.urlState,
-  });
+    @required this.redirectUrlParam,
+    @required this.clientIdParam,
+    @required this.clientSecretParam,
+    @required this.projectionParam,
+    @required this.urlState,
+  })  : assert(redirectUrlParam != null),
+        assert(clientIdParam != null),
+        assert(clientSecretParam != null),
+        assert(projectionParam != null),
+        assert(urlState != null);
 
   final String clientSecretParam;
   final List<String> projectionParam;
@@ -38,7 +44,7 @@ class AccessCodeConfiguration implements Config {
   String get clientSecret => clientSecretParam;
 
   @override
-  String? get frontendRedirectUrl => null;
+  String get frontendRedirectUrl => null;
 
   @override
   List<String> get projection => projectionParam;
@@ -58,10 +64,10 @@ class AccessCodeConfiguration implements Config {
       '&scope=r_liteprofile%20r_emailaddress';
 
   @override
-  bool isCurrentUrlMatchToRedirection(String? url) => _isRedirectionUrl(url);
+  bool isCurrentUrlMatchToRedirection(String url) => _isRedirectionUrl(url);
 
-  bool _isRedirectionUrl(String? url) {
-    return url != null && url.startsWith(redirectUrl);
+  bool _isRedirectionUrl(String url) {
+    return url.startsWith(redirectUrl);
   }
 
   @override
@@ -72,28 +78,30 @@ class AccessCodeConfiguration implements Config {
 
 class AuthCodeConfig implements Config {
   AuthCodeConfig({
-    required this.redirectUrlParam,
-    required this.clientIdParam,
-    required this.urlState,
+    @required this.redirectUrlParam,
+    @required this.clientIdParam,
+    @required this.urlState,
     this.frontendRedirectUrlParam,
-  });
+  })  : assert(redirectUrlParam != null),
+        assert(clientIdParam != null),
+        assert(urlState != null);
 
   final String redirectUrlParam;
   final String clientIdParam;
-  final String? frontendRedirectUrlParam;
+  final String frontendRedirectUrlParam;
   final String urlState;
 
   @override
   String get clientId => clientIdParam;
 
   @override
-  String? get clientSecret => null;
+  String get clientSecret => null;
 
   @override
-  String? get frontendRedirectUrl => frontendRedirectUrlParam;
+  String get frontendRedirectUrl => frontendRedirectUrlParam;
 
   @override
-  List<String>? get projection => null;
+  List<String> get projection => null;
 
   @override
   String get redirectUrl => redirectUrlParam;
@@ -110,15 +118,14 @@ class AuthCodeConfig implements Config {
       '&scope=r_liteprofile%20r_emailaddress';
 
   @override
-  bool isCurrentUrlMatchToRedirection(String? url) =>
-      url != null && (_isRedirectionUrl(url) || _isFrontendRedirectionUrl(url));
+  bool isCurrentUrlMatchToRedirection(String url) =>
+      _isRedirectionUrl(url) || _isFrontendRedirectionUrl(url);
 
-  bool _isRedirectionUrl(String? url) {
-    return url != null && url.startsWith(redirectUrl);
+  bool _isRedirectionUrl(String url) {
+    return url.startsWith(redirectUrl);
   }
 
   bool _isFrontendRedirectionUrl(String url) {
-    return frontendRedirectUrl != null &&
-        url.startsWith(frontendRedirectUrl ?? '');
+    return frontendRedirectUrl != null && url.startsWith(frontendRedirectUrl);
   }
 }

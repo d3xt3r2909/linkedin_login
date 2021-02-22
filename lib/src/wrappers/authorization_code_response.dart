@@ -12,7 +12,7 @@ class AuthorizationCodeResponse {
     this.accessToken,
   });
 
-  String? state;
-  String? code;
-  LinkedInTokenObject? accessToken;
+  String state;
+  String code;
+  LinkedInTokenObject accessToken;
 }

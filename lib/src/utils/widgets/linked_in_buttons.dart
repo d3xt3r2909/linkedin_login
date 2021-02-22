@@ -8,7 +8,7 @@ class LinkedInButtonStandardWidget extends StatelessWidget {
   /// Create button with some default values, which you can of course change
   /// whenever you want
   const LinkedInButtonStandardWidget({
-    required this.onTap,
+    @required this.onTap,
     this.iconHeight = 30,
     this.iconWeight = 30,
     this.iconAssetPath = 'assets/linked_in_logo.png',
@@ -27,7 +27,7 @@ class LinkedInButtonStandardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Material(
         child: InkWell(
-          onTap: (){onTap();},
+          onTap: onTap,
           child: Container(
             color: Colors.blue,
             child: Row(

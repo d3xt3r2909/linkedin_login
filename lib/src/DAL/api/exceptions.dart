@@ -1,12 +1,15 @@
+import 'package:flutter/foundation.dart';
+
 class HttpResponseException implements Exception {
   HttpResponseException({
-    required this.url,
-    required this.statusCode,
+    @required this.url,
+    @required this.statusCode,
     this.body,
-  });
+  })  : assert(url != null),
+        assert(statusCode != null);
 
   final Uri url;
-  final String? body;
+  final String body;
   final int statusCode;
 
   @override
@@ -16,9 +19,10 @@ class HttpResponseException implements Exception {
 
 class AuthCodeException implements Exception {
   AuthCodeException({
-    required this.authCode,
-    required this.description,
-  });
+    @required this.authCode,
+    @required this.description,
+  })  : assert(authCode != null),
+        assert(description != null);
 
   final String authCode;
   final String description;
