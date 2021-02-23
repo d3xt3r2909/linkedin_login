@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:linkedin_login/src/actions.dart';
 import 'package:linkedin_login/src/server/fetcher.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/initializer.dart';
 import 'package:linkedin_login/src/utils/startup/injector.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
-import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 import 'package:uuid/uuid.dart';
 
 /// This class is responsible to fetch all information for user after we get
@@ -15,6 +15,7 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
     @required this.onGetAuthCode,
     @required this.redirectUrl,
     @required this.clientId,
+    @required this.onError,
     this.destroySession = false,
     this.frontendRedirectUrl,
     this.appBar,
@@ -23,7 +24,8 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
         assert(clientId != null),
         assert(destroySession != null);
 
-  final Function(AuthorizationCodeResponse) onGetAuthCode;
+  final Function(AuthorizationSucceededAction) onGetAuthCode;
+  final Function(AuthorizationFailedAction) onError;
   final String redirectUrl;
   final String clientId;
   final AppBar appBar;
@@ -44,7 +46,7 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
     super.initState();
 
     graph = Initializer().initialise(
-      AuthCodeConfig(
+      AuthCodeConfiguration(
         urlState: Uuid().v4(),
         redirectUrlParam: widget.redirectUrl,
         clientIdParam: widget.clientId,
@@ -61,11 +63,15 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
         appBar: widget.appBar,
         destroySession: widget.destroySession,
         onUrlMatch: (config) {
-          ServerFetcher(graph, config.url).fetchAuthToken().then(
-            (code) {
-              widget.onGetAuthCode(code);
-            },
-          );
+          ServerFetcher(graph, config.url).fetchAuthToken().then((action) {
+            if (action is AuthorizationSucceededAction) {
+              widget.onGetAuthCode?.call(action);
+            }
+
+            if (action is AuthorizationFailedAction) {
+              widget.onError?.call(action);
+            }
+          });
         },
       ),
     );

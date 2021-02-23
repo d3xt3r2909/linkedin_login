@@ -1,4 +1,5 @@
 import 'package:linkedin_login/linkedin_login.dart';
+import 'package:linkedin_login/src/actions.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/logger.dart';
 
@@ -11,14 +12,15 @@ class ClientFetcher {
   final Graph graph;
   final String url;
 
-  Future<LinkedInUserModel> fetchUser() async {
+  Future<LinkedAction> fetchUser() async {
     try {
       final token = await _fetchAccessTokenUser();
       final user = await _fetchLinkedInProfile(token.accessToken);
 
-      return user;
-    } on Exception catch (_) {
-      rethrow;
+      return UserSucceededAction(user);
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e, s) {
+      return UserFailedAction(exception: e, stackTrace: s);
     }
   }
 
@@ -40,7 +42,8 @@ class ClientFetcher {
       );
 
       return response;
-    } on Exception catch (e, s) {
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e, s) {
       logError('Unable to fetch access token code', error: e, stackTrace: s);
       rethrow;
     }
@@ -61,7 +64,8 @@ class ClientFetcher {
       log('LinkedInAuth-steps: Fetching full profile... DONE');
 
       return user;
-    } on Exception catch (e, s) {
+      // ignore: avoid_catches_without_on_clauses
+    } catch (e, s) {
       logError('Unable to fetch LinkedIn profile', error: e, stackTrace: s);
       rethrow;
     }

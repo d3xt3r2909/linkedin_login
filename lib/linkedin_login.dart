@@ -8,3 +8,4 @@ export 'package:linkedin_login/src/wrappers/linked_in_token_object.dart';
 export 'package:linkedin_login/src/client/linked_in_user_widget.dart';
 export 'package:linkedin_login/src/server/linked_in_auth_code_widget.dart';
 export 'package:linkedin_login/src/utils/constants.dart';
+export 'package:linkedin_login/src/actions.dart';

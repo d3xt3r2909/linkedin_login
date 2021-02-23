@@ -86,19 +86,29 @@ class _LinkedInProfileExamplePageState
                       ProjectionParameters.lastName,
                       ProjectionParameters.profilePicture,
                     ],
-                    onGetUserProfile: (LinkedInUserModel linkedInUser) {
+                    onError: (UserFailedAction e) {
                       // ignore: avoid_print
-                      print('Access token ${linkedInUser.token.accessToken}');
+                      print('Error: ${e.toString()}');
+                      // ignore: avoid_print
+                      print('Error: ${e.stackTrace.toString()}');
+                    },
+                    onGetUserProfile: (UserSucceededAction linkedInUser) {
+                      // ignore: avoid_print
+                      print(
+                          'Access token ${linkedInUser.user.token.accessToken}');
 
                       // ignore: avoid_print
-                      print('User id: ${linkedInUser.userId}');
+                      print('User id: ${linkedInUser.user.userId}');
 
                       user = UserObject(
-                        firstName: linkedInUser?.firstName?.localized?.label,
-                        lastName: linkedInUser?.lastName?.localized?.label,
-                        email: linkedInUser
-                            ?.email?.elements[0]?.handleDeep?.emailAddress,
+                        firstName:
+                            linkedInUser?.user?.firstName?.localized?.label,
+                        lastName:
+                            linkedInUser?.user?.lastName?.localized?.label,
+                        email: linkedInUser?.user?.email?.elements[0]
+                            ?.handleDeep?.emailAddress,
                         profileImageUrl: linkedInUser
+                            ?.user
                             ?.profilePicture
                             ?.displayImageContent
                             ?.elements[0]
@@ -169,16 +179,21 @@ class _LinkedInAuthCodeExamplePageState
                   destroySession: logoutUser,
                   redirectUrl: redirectUrl,
                   clientId: clientId,
-                  onGetAuthCode: (AuthorizationCodeResponse response) {
+                  onError: (AuthorizationFailedAction e) {
                     // ignore: avoid_print
-                    print('Auth code ${response.code}');
+                    print('Error: ${e.toString()}');
+                    print('Error: ${e.stackTrace.toString()}');
+                  },
+                  onGetAuthCode: (AuthorizationSucceededAction response) {
+                    // ignore: avoid_print
+                    print('Auth code ${response.codeResponse.code}');
 
                     // ignore: avoid_print
-                    print('State: ${response.state}');
+                    print('State: ${response.codeResponse.state}');
 
                     authorizationCode = AuthCodeObject(
-                      code: response.code,
-                      state: response.state,
+                      code: response.codeResponse.code,
+                      state: response.codeResponse.state,
                     );
                     setState(() {});
 

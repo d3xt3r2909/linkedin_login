@@ -63,7 +63,7 @@ void main() {
 
   group('AuthCodeConfig class', () {
     test('frontendRedirectUrl can be null', () {
-      final config = AuthCodeConfig(
+      final config = AuthCodeConfiguration(
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
@@ -73,7 +73,7 @@ void main() {
     });
 
     test('frontendRedirectUrl can have an value', () {
-      final config = AuthCodeConfig(
+      final config = AuthCodeConfiguration(
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
@@ -84,7 +84,7 @@ void main() {
     });
 
     test('clientSecret for this class is not existing', () {
-      final config = AuthCodeConfig(
+      final config = AuthCodeConfiguration(
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
@@ -94,7 +94,7 @@ void main() {
     });
 
     test('projection for this class is not existing', () {
-      final config = AuthCodeConfig(
+      final config = AuthCodeConfiguration(
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
@@ -104,7 +104,7 @@ void main() {
     });
 
     test('initial URL should use parameters from config', () {
-      final config = AuthCodeConfig(
+      final config = AuthCodeConfiguration(
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
@@ -117,7 +117,7 @@ void main() {
     test(
         'redirection url starts with redirected parameter, frontend redirection not exists',
         () {
-      final config = AuthCodeConfig(
+      final config = AuthCodeConfiguration(
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
@@ -133,7 +133,7 @@ void main() {
     test(
         'redirection url is not starting with redirected parameter but frontend redirection does',
         () {
-      final config = AuthCodeConfig(
+      final config = AuthCodeConfiguration(
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
@@ -149,7 +149,7 @@ void main() {
     test(
         'redirection url is not starting with redirected parameter neither with frontend redirection parameter',
         () {
-      final config = AuthCodeConfig(
+      final config = AuthCodeConfiguration(
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
@@ -157,7 +157,8 @@ void main() {
       );
 
       expect(
-        config.isCurrentUrlMatchToRedirection('https://www.something.com?code=xxx'),
+        config.isCurrentUrlMatchToRedirection(
+            'https://www.something.com?code=xxx'),
         isFalse,
       );
     });

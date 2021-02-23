@@ -76,8 +76,8 @@ class AccessCodeConfiguration implements Config {
   }
 }
 
-class AuthCodeConfig implements Config {
-  AuthCodeConfig({
+class AuthCodeConfiguration implements Config {
+  AuthCodeConfiguration({
     @required this.redirectUrlParam,
     @required this.clientIdParam,
     @required this.urlState,

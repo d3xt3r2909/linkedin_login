@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:linkedin_login/src/actions.dart';
 import 'package:linkedin_login/src/client/linked_in_user_widget.dart';
-import 'package:linkedin_login/src/model/linked_in_user_model.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 
@@ -21,7 +21,7 @@ void main() {
   });
 
   LinkedInUserWidget linkedInUserWidget({
-    Function(LinkedInUserModel) onGetUserProfile,
+    Function(UserSucceededAction) onGetUserProfile,
     String redirectUrl = 'https://www.app.dexter.com',
     String clientId = '12345',
     String clientSecret = '56789',
@@ -37,13 +37,14 @@ void main() {
     ],
   }) {
     return LinkedInUserWidget(
-      onGetUserProfile: onGetUserProfile ?? (LinkedInUserModel response) {},
+      onGetUserProfile: onGetUserProfile ?? (UserSucceededAction response) {},
       redirectUrl: redirectUrl,
       clientId: clientId,
       destroySession: destroySession,
       appBar: appBar,
       clientSecret: clientSecret,
       projection: projection,
+      onError: (UserFailedAction e) {},
     );
   }
 
@@ -59,6 +60,7 @@ void main() {
         redirectUrl: 'redirectUrl',
         clientId: 'clientId',
         clientSecret: 'clientSecret',
+        onError: (UserFailedAction e) {},
       ),
       throwsAssertionError,
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:linkedin_login/src/actions.dart';
 import 'package:linkedin_login/src/client/fetcher.dart';
-import 'package:linkedin_login/src/model/linked_in_user_model.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
@@ -18,6 +18,7 @@ class LinkedInUserWidget extends StatefulWidget {
     @required this.redirectUrl,
     @required this.clientId,
     @required this.clientSecret,
+    @required this.onError,
     this.destroySession = false,
     this.appBar,
     this.projection = const [
@@ -34,7 +35,8 @@ class LinkedInUserWidget extends StatefulWidget {
         assert(destroySession != null),
         assert(projection != null && projection.isNotEmpty);
 
-  final Function(LinkedInUserModel) onGetUserProfile;
+  final Function(UserSucceededAction) onGetUserProfile;
+  final Function(UserFailedAction) onError;
   final String redirectUrl;
   final String clientId, clientSecret;
   final PreferredSizeWidget appBar;
@@ -76,11 +78,15 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
         appBar: widget.appBar,
         destroySession: widget.destroySession,
         onUrlMatch: (config) {
-          ClientFetcher(graph, config.url).fetchUser().then(
-            (user) {
-              widget.onGetUserProfile(user);
-            },
-          );
+          ClientFetcher(graph, config.url).fetchUser().then((action) {
+            if (action is UserSucceededAction) {
+              widget.onGetUserProfile?.call(action);
+            }
+
+            if (action is UserFailedAction) {
+              widget.onError?.call(action);
+            }
+          });
         },
       ),
     );

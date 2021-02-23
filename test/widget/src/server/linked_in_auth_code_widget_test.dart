@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:linkedin_login/src/actions.dart';
 import 'package:linkedin_login/src/server/linked_in_auth_code_widget.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
-import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 
 import '../../../unit/utils/mocks.dart';
 import '../../widget_test_utils.dart';
@@ -20,7 +20,7 @@ void main() {
   });
 
   LinkedInAuthCodeWidget linkedInAuthCodeWidget({
-    Function(AuthorizationCodeResponse) onGetAuthCode,
+    Function(AuthorizationSucceededAction) onGetAuthCode,
     String redirectUrl = 'https://www.app.dexter.com',
     String clientId = '12345',
     String frontendRedirectUrl,
@@ -28,12 +28,14 @@ void main() {
     AppBar appBar,
   }) {
     return LinkedInAuthCodeWidget(
-      onGetAuthCode: onGetAuthCode ?? (AuthorizationCodeResponse response) {},
+      onGetAuthCode:
+          onGetAuthCode ?? (AuthorizationSucceededAction response) {},
       redirectUrl: redirectUrl,
       clientId: clientId,
       frontendRedirectUrl: frontendRedirectUrl,
       destroySession: destroySession,
       appBar: appBar,
+      onError: (AuthorizationFailedAction e) {},
     );
   }
 
@@ -48,6 +50,7 @@ void main() {
         onGetAuthCode: null,
         redirectUrl: '',
         clientId: '',
+        onError: (AuthorizationFailedAction e) {},
       ),
       throwsAssertionError,
     );
@@ -105,4 +108,3 @@ void main() {
     expect(find.text('AppBar title'), findsOneWidget);
   });
 }
-

@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.0.0-dev.3 - 2020-02-22
+### Library refactor
+
+-   remove redux, there is no so much contributors for this package anymore
+-   *BREAKING CHANGE*: callbacks now have different types, please see readme file
+-   *BREAKING CHANGE*: catchError is replaced by onError property, method will give you any exception or error which happened deep down in plugin with complete stacktrace
+
 ## 2.0.0-dev.2 - 2020-12-03
 ### Library refactor
 
