@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:linkedin_login/linkedin_login.dart';
 
+// ignore_for_file: avoid_print
 void main() => runApp(MyApp());
 
 // @TODO IMPORTANT - you need to change variable values below
@@ -87,17 +88,13 @@ class _LinkedInProfileExamplePageState
                       ProjectionParameters.profilePicture,
                     ],
                     onError: (UserFailedAction e) {
-                      // ignore: avoid_print
                       print('Error: ${e.toString()}');
-                      // ignore: avoid_print
                       print('Error: ${e.stackTrace.toString()}');
                     },
                     onGetUserProfile: (UserSucceededAction linkedInUser) {
-                      // ignore: avoid_print
                       print(
                           'Access token ${linkedInUser.user.token.accessToken}');
 
-                      // ignore: avoid_print
                       print('User id: ${linkedInUser.user.userId}');
 
                       user = UserObject(
@@ -180,15 +177,12 @@ class _LinkedInAuthCodeExamplePageState
                   redirectUrl: redirectUrl,
                   clientId: clientId,
                   onError: (AuthorizationFailedAction e) {
-                    // ignore: avoid_print
                     print('Error: ${e.toString()}');
                     print('Error: ${e.stackTrace.toString()}');
                   },
                   onGetAuthCode: (AuthorizationSucceededAction response) {
-                    // ignore: avoid_print
                     print('Auth code ${response.codeResponse.code}');
 
-                    // ignore: avoid_print
                     print('State: ${response.codeResponse.state}');
 
                     authorizationCode = AuthCodeObject(
