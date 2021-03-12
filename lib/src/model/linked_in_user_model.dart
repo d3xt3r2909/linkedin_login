@@ -50,6 +50,11 @@ class LinkedInUserModel {
   final String localizedFirstName, localizedLastName;
   LinkedInProfileEmail email;
   LinkedInTokenObject token;
+
+  @override
+  String toString() {
+    return 'LinkedInUserModel{firstName: $firstName, lastName: $lastName, profilePicture: $profilePicture, userId: $userId, localizedFirstName: $localizedFirstName, localizedLastName: $localizedLastName, email: $email, token: $token}';
+  }
 }
 
 /// Helper children subclass

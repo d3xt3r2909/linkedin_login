@@ -27,7 +27,7 @@ void main() {
 
   test('is graph created with init for AuthCodeConfig', () async {
     final graph = Initializer().initialise(
-      AuthCodeConfig(
+      AuthCodeConfiguration(
         urlState: 'urlState',
         clientIdParam: 'clientIdParam',
         redirectUrlParam: 'redirectUrlParam',
@@ -39,7 +39,8 @@ void main() {
     expect(graph.linkedInConfiguration.state, 'urlState');
     expect(graph.linkedInConfiguration.redirectUrl, 'redirectUrlParam');
     expect(graph.linkedInConfiguration.state, 'urlState');
-    expect(graph.linkedInConfiguration.frontendRedirectUrl, 'frontendRedirectUrlParam');
+    expect(graph.linkedInConfiguration.frontendRedirectUrl,
+        'frontendRedirectUrlParam');
     expect(graph.linkedInConfiguration.projection, isNull);
     expect(graph.linkedInConfiguration.clientSecret, isNull);
   });

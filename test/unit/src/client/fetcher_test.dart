@@ -1,76 +1,65 @@
 import 'package:linkedin_login/linkedin_login.dart';
-import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/DAL/repo/authorization_repository.dart';
 import 'package:linkedin_login/src/DAL/repo/user_repository.dart';
-import 'package:linkedin_login/src/client/actions.dart';
-import 'package:linkedin_login/src/client/epic.dart';
+import 'package:linkedin_login/src/client/fetcher.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:mockito/mockito.dart';
-import 'package:redux_epics/redux_epics.dart';
 import 'package:test/test.dart';
 
 import '../../utils/mocks.dart';
-import '../../utils/stream_utils.dart';
 
 void main() {
-  EpicStore<AppState> store;
   Graph graph;
   _ArrangeBuilder builder;
 
   setUp(() {
     graph = MockGraph();
-    final mockStore = MockStore();
-    store = EpicStore(mockStore);
     final authorizationRepository = MockAuthorizationRepository();
     final userRepository = MockUserRepository();
     final configuration = MockConfiguration();
 
     builder = _ArrangeBuilder(
-        graph, store, authorizationRepository, userRepository, configuration);
+        graph, authorizationRepository, userRepository, configuration);
   });
 
   const urlAfterSuccessfulLogin =
       'https://www.app.dexter.com/?code=AQQTwafddqnG27k6XUWiK0ONMAXKXPietjbeNtDeQGZnBVVM8vHlyrWFHysjGVCFfCAtNw0ajFCitY8fGMm53e7Had8ug0MO62quDLefdSZwNgOFzs6B5jdXgqUg_zad998th7ug4nAzXB71kD4EsYmqjhpUuCDjRNxu3FmRlGzMVOVHQhmEQwjitt0pBA';
 
-  test('Emits FetchAccessCodeFailedAction if state code is not valid',
-      () async {
-    final exception = Exception();
+  test('Emits UserFailedAction if state code is not valid', () async {
+    final exception = Exception('invalid-access-code');
     builder.withAccessCodeError(exception);
 
-    final events = clientEpics(graph)(
-      toStream(
-        FetchAccessCode('$urlAfterSuccessfulLogin&state=null'),
-      ),
-      store,
-    );
-
     expect(
-      events,
-      emits(
-        FetchAccessCodeFailedAction(exception),
+      await ClientFetcher(
+        graph,
+        '$urlAfterSuccessfulLogin&state=state',
+      ).fetchUser(),
+      isA<UserFailedAction>().having(
+        (e) => e.exception,
+        'exception',
+        exception,
       ),
     );
   });
 
-  test('Emits FetchAccessCodeSucceededAction on success', () async {
-    builder.withAccessCode();
-    final events = clientEpics(graph)(
-      toStream(
-        FetchAccessCode(
-          '$urlAfterSuccessfulLogin&state=state',
-        ),
-      ),
-      store,
-    );
+  test('Emits UserSucceededAction on success', () async {
+    builder
+      ..withAccessCode()
+      ..withFullProfile();
+
+    final user = await ClientFetcher(
+      graph,
+      '$urlAfterSuccessfulLogin&state=state',
+    ).fetchUser();
 
     expect(
-      events,
-      emits(
-        FetchAccessCodeSucceededAction(
-          LinkedInTokenObject(accessToken: 'accessToken'),
-        ),
+      user,
+      isA<UserSucceededAction>().having(
+        (u) => u.user.userId,
+        'userId',
+        'id_d3xt3r',
       ),
     );
   });
@@ -78,46 +67,20 @@ void main() {
   test(
       'Emits FetchLinkedInUserFailedAction if fetchFullProfile throws exception',
       () async {
-    final exception = Exception();
-    builder.withFullProfileError();
-
-    final action = FetchLinkedInUser(
-      LinkedInTokenObject(accessToken: 'accessToken'),
-    );
-
-    // ignore: avoid_print
-    print(action.toString());
-
-    final events = clientEpics(graph)(
-      toStream(action),
-      store,
-    );
+    final exception = Exception('invalid-full-profile');
+    builder
+      ..withAccessCode()
+      ..withFullProfileError(exception);
 
     expect(
-      events,
-      emits(
-        FetchLinkedInUserFailedAction(exception),
-      ),
-    );
-  });
-
-  test('Emits FetchLinkedInUserSucceededAction on success', () async {
-    builder.withFullProfile();
-    final events = clientEpics(graph)(
-      toStream(
-        FetchLinkedInUser(
-          LinkedInTokenObject(accessToken: 'accessToken'),
-        ),
-      ),
-      store,
-    );
-
-    expect(
-      events,
-      emits(
-        FetchLinkedInUserSucceededAction(
-          LinkedInUserModel(),
-        ),
+      await ClientFetcher(
+        graph,
+        '$urlAfterSuccessfulLogin&state=state',
+      ).fetchUser(),
+      isA<UserFailedAction>().having(
+        (e) => e.exception,
+        'exception',
+        exception,
       ),
     );
   });
@@ -126,7 +89,6 @@ void main() {
 class _ArrangeBuilder {
   _ArrangeBuilder(
     this.graph,
-    this.store,
     this.authorizationRepository,
     this.userRepository,
     this.configuration,
@@ -144,7 +106,6 @@ class _ArrangeBuilder {
   final AuthorizationRepository authorizationRepository;
   final UserRepository userRepository;
   final Config configuration;
-  final EpicStore<AppState> store;
 
   void withAccessCode() {
     when(authorizationRepository.fetchAccessTokenCode(
@@ -188,7 +149,11 @@ class _ArrangeBuilder {
       token: anyNamed('token'),
       projection: anyNamed('projection'),
       client: anyNamed('client'),
-    )).thenAnswer((_) async => LinkedInUserModel());
+    )).thenAnswer(
+      (_) async => LinkedInUserModel(
+        userId: 'id_d3xt3r',
+      ),
+    );
   }
 
   void withConfiguration() {

@@ -2,20 +2,17 @@ import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:linkedin_login/linkedin_login.dart';
-import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/DAL/api/endpoint.dart';
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:mockito/mockito.dart';
-import 'package:redux_epics/redux_epics.dart';
 import 'package:http/http.dart' as http;
 import '../../../utils/mocks.dart';
 
 void main() {
-  EpicStore<AppState> store;
   Graph graph;
   LinkedInApi api;
-  http.Client httpClient;
+  MockClient httpClient;
   String localHostUrlMeProfile;
   String localHostUrlLogin;
   String localHostUrlEmail;
@@ -29,15 +26,12 @@ void main() {
   });
 
   setUp(() {
-    final mockStore = MockStore();
     graph = MockGraph();
-    store = EpicStore(mockStore);
     api = MockApi();
     httpClient = MockClient();
 
     builder = _ArrangeBuilder(
       graph,
-      store,
       api,
       client: httpClient,
     );
@@ -130,32 +124,6 @@ void main() {
       );
       expect(linkedInUserModel.userId, 'dwe_Pcc0k3');
       expect(linkedInUserModel.email, isNull);
-    });
-
-    test('throws exception if client is null for fetching profile', () async {
-      final api = LinkedInApi.test(Endpoint(Environment.vm));
-
-      expect(
-        () async => api.fetchProfile(
-          token: 'accessToken',
-          projection: ProjectionParameters.projectionWithoutPicture,
-          client: null,
-        ),
-        throwsAssertionError,
-      );
-    });
-
-    test('throws exception if client is null for fetching profile', () async {
-      final api = LinkedInApi.test(Endpoint(Environment.vm));
-
-      expect(
-        () async => api.fetchProfile(
-          token: 'accessToken',
-          projection: ProjectionParameters.projectionWithoutPicture,
-          client: null,
-        ),
-        throwsAssertionError,
-      );
     });
 
     test(
@@ -406,7 +374,6 @@ void main() {
 class _ArrangeBuilder {
   _ArrangeBuilder(
     this.graph,
-    this.store,
     this.api, {
     MockClient client,
   }) : _client = client ?? MockClient() {
@@ -417,7 +384,6 @@ class _ArrangeBuilder {
   final Graph graph;
   final LinkedInApi api;
   final http.Client _client;
-  final EpicStore<AppState> store;
 
   Future<String> getResponseFileContent(String pathToFile) async {
     final file = File(pathToFile);

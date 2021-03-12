@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_redux/flutter_redux.dart';
-import 'package:linkedin_login/redux/app_state.dart';
-import 'package:linkedin_login/redux/core.dart';
-import 'package:linkedin_login/src/client/state.dart';
-import 'package:linkedin_login/src/model/linked_in_user_model.dart';
+import 'package:linkedin_login/src/actions.dart';
+import 'package:linkedin_login/src/client/fetcher.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/initializer.dart';
 import 'package:linkedin_login/src/utils/startup/injector.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
-import 'package:redux/redux.dart';
 import 'package:uuid/uuid.dart';
 
 /// This class is responsible to fetch all information for user after we get
@@ -22,6 +18,7 @@ class LinkedInUserWidget extends StatefulWidget {
     @required this.redirectUrl,
     @required this.clientId,
     @required this.clientSecret,
+    @required this.onError,
     this.destroySession = false,
     this.appBar,
     this.projection = const [
@@ -38,7 +35,8 @@ class LinkedInUserWidget extends StatefulWidget {
         assert(destroySession != null),
         assert(projection != null && projection.isNotEmpty);
 
-  final Function(LinkedInUserModel) onGetUserProfile;
+  final Function(UserSucceededAction) onGetUserProfile;
+  final Function(UserFailedAction) onError;
   final String redirectUrl;
   final String clientId, clientSecret;
   final PreferredSizeWidget appBar;
@@ -76,50 +74,21 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
   Widget build(BuildContext context) {
     return InjectorWidget(
       graph: graph,
-      child: StoreProvider<AppState>(
-        store: LinkedInStore.inject(graph).store,
-        child: StoreConnector<AppState, _ViewModel>(
-          distinct: true,
-          converter: (store) => _ViewModel.from(store),
-          onDidChange: (viewModel) => widget.onGetUserProfile(
-            viewModel.user.linkedInUser,
-          ),
-          builder: (context, viewModel) {
-            return LinkedInWebViewHandler(
-              appBar: widget.appBar,
-              destroySession: widget.destroySession,
-            );
-          },
-        ),
+      child: LinkedInWebViewHandler(
+        appBar: widget.appBar,
+        destroySession: widget.destroySession,
+        onUrlMatch: (config) {
+          ClientFetcher(graph, config.url).fetchUser().then((action) {
+            if (action is UserSucceededAction) {
+              widget.onGetUserProfile?.call(action);
+            }
+
+            if (action is UserFailedAction) {
+              widget.onError?.call(action);
+            }
+          });
+        },
       ),
     );
   }
-}
-
-@immutable
-class _ViewModel {
-  const _ViewModel({
-    @required this.onDispatch,
-    @required this.user,
-  }) : assert(onDispatch != null);
-
-  factory _ViewModel.from(Store<AppState> store) {
-    return _ViewModel(
-      user: store.state.linkedInUserState,
-      onDispatch: (action) => store.dispatch(action),
-    );
-  }
-
-  final LinkedInUserState user;
-  final Function(dynamic) onDispatch;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is _ViewModel &&
-          runtimeType == other.runtimeType &&
-          user == other.user;
-
-  @override
-  int get hashCode => user.hashCode;
 }

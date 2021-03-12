@@ -34,10 +34,13 @@ Call LinkedIn authorization and get user object:
        clientId: clientId,
        clientSecret: clientSecret,
        onGetUserProfile:
-           (LinkedInUserModel linkedInUser) {
-                print('Access token ${linkedInUser.token.accessToken}');
-                print('First name: ${linkedInUser.firstName.localized.label}');
-                print('Last name: ${linkedInUser.lastName.localized.label}');
+           (UserSucceededAction linkedInUser) {
+                print('Access token ${linkedInUser.user.token.accessToken}');
+                print('First name: ${linkedInUser.user.firstName.localized.label}');
+                print('Last name: ${linkedInUser.user.lastName.localized.label}');
+       },
+       onError: (UserFailedAction e) {
+                print('Error: ${e.toString()}');
        },
     )
 ```
@@ -48,10 +51,13 @@ Or you can just fetch authorization code (clientSecret is not required in this w
         redirectUrl: redirectUrl,
         clientId: clientId,
         onGetAuthCode:
-            (AuthorizationCodeResponse response) {
-                print('Auth code ${response.code}');
-                print('State: ${response.state}');
+            (AuthorizationSucceededAction response) {
+                print('Auth code ${response.codeResponse.code}');
+                print('State: ${response.codeResponse.state}');
             },
+        onError: (AuthorizationFailedAction e) {
+                print('Error: ${e.toString()}');
+             },
     ),
 ```
 

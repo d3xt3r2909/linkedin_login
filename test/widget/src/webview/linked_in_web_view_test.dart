@@ -5,19 +5,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:linkedin_login/redux/app_state.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
 import 'package:mockito/mockito.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:redux/redux.dart';
 import '../../../unit/utils/mocks.dart';
 import '../../widget_test_utils.dart';
 
 void main() {
-  Store<AppState> store;
   Graph graph;
   List actions;
   WidgetTestbed testbed;
@@ -36,24 +33,23 @@ void main() {
   });
 
   setUp(() {
-    store = MockStore();
     graph = MockGraph();
     actions = [];
 
     fakePlatformViewsController.reset();
     _fakeCookieManager.reset();
 
-    builder = _ArrangeBuilder(store, graph, actions);
+    builder = _ArrangeBuilder(graph, actions);
 
     testbed = WidgetTestbed(
       graph: graph,
-      store: store,
-      onReduction: builder.onReduction,
     );
   });
 
   testWidgets('is created', (WidgetTester tester) async {
-    LinkedInWebViewHandler();
+    LinkedInWebViewHandler(
+      onUrlMatch: (_) {},
+    );
   });
 
   testWidgets('is not created when destroy session parameter is null',
@@ -61,17 +57,19 @@ void main() {
     expect(
       () => LinkedInWebViewHandler(
         destroySession: null,
+        onUrlMatch: (_) {},
       ),
       throwsAssertionError,
     );
   });
 
   testWidgets('with app bar', (WidgetTester tester) async {
-    final testWidget = testbed.reduxWrap(
+    final testWidget = testbed.injectWrap(
       child: LinkedInWebViewHandler(
         appBar: AppBar(
           title: Text('Title'),
         ),
+        onUrlMatch: (_) {},
       ),
     );
 
@@ -83,11 +81,12 @@ void main() {
 
   testWidgets('test with initial url', (WidgetTester tester) async {
     WebViewController controller;
-    final testWidget = testbed.reduxWrap(
+    final testWidget = testbed.injectWrap(
       child: LinkedInWebViewHandler(
         onWebViewCreated: (webViewController) {
           controller = webViewController;
         },
+        onUrlMatch: (_) {},
       ),
     );
 
@@ -100,8 +99,10 @@ void main() {
   testWidgets('test changing url if url does not match url',
       (WidgetTester tester) async {
     builder.withUrlNotMatch();
-    final testWidget = testbed.reduxWrap(
-      child: LinkedInWebViewHandler(),
+    final testWidget = testbed.injectWrap(
+      child: LinkedInWebViewHandler(
+        onUrlMatch: (_) {},
+      ),
     );
 
     await tester.pumpWidget(testWidget);
@@ -115,30 +116,15 @@ void main() {
     expect(actions.whereType<DirectionUrlMatch>(), hasLength(0));
   });
 
-  testWidgets('emit proper action if url is matching if redirection',
-      (WidgetTester tester) async {
-    builder.withUrlMatch();
-    final testWidget = testbed.reduxWrap(
-      child: LinkedInWebViewHandler(),
-    );
-
-    await tester.pumpWidget(testWidget);
-    await tester.pumpAndSettle();
-    fakePlatformViewsController.lastCreatedView
-        .fakeNavigate(urlAfterSuccessfulLogin);
-    await tester.pumpAndSettle();
-
-    expect(actions.whereType<DirectionUrlMatch>(), hasLength(1));
-  });
-
   testWidgets(
       'callback for cookie clear is called when destroying session is active',
       (WidgetTester tester) async {
     var isCleared = false;
-    final testWidget = testbed.reduxWrap(
+    final testWidget = testbed.injectWrap(
       child: LinkedInWebViewHandler(
         destroySession: true,
         onCookieClear: (value) => isCleared = value,
+        onUrlMatch: (_) {},
       ),
     );
 
@@ -152,10 +138,11 @@ void main() {
       'callback for cookie clearing is not called when destroying session is inactive',
       (WidgetTester tester) async {
     var isCleared = false;
-    final testWidget = testbed.reduxWrap(
+    final testWidget = testbed.injectWrap(
       child: LinkedInWebViewHandler(
         destroySession: false,
         onCookieClear: (value) => isCleared = value,
+        onUrlMatch: (_) {},
       ),
     );
 
@@ -174,30 +161,18 @@ const urlAfterSuccessfulLogin =
 
 class _ArrangeBuilder {
   _ArrangeBuilder(
-    this.store,
     this.graph,
     this.actions, {
     Config configuration,
   }) : _configuration = configuration ?? MockConfiguration() {
-    state = AppState.initialState();
-    when(store.state).thenAnswer((_) => state);
     when(graph.linkedInConfiguration).thenAnswer((_) => _configuration);
 
     withConfiguration();
   }
 
-  final Store<AppState> store;
   final List<dynamic> actions;
   final Graph graph;
   final Config _configuration;
-
-  AppState state;
-
-  AppState onReduction(dynamic event) {
-    actions.add(event);
-
-    return state;
-  }
 
   void withConfiguration() {
     when(_configuration.initialUrl).thenAnswer((_) =>
@@ -323,8 +298,7 @@ class FakePlatformWebView {
         break;
       case 'removeJavascriptChannels':
         final List<String> channelNames = List<String>.from(call.arguments);
-        javascriptChannelNames
-            .removeWhere(channelNames.contains);
+        javascriptChannelNames.removeWhere(channelNames.contains);
         break;
       case 'clearCache':
         hasCache = false;
@@ -430,7 +404,7 @@ class _FakeCookieManager {
         });
         break;
     }
-    return Future<bool>.sync(() => null);
+    return Future<bool>.sync(() => false);
   }
 
   void reset() {
