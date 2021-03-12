@@ -16,8 +16,11 @@ jobs:
 
       - uses: subosito/flutter-action@v1
         with:
-          flutter-version: '1.23.0-18.1.pre'
+          flutter-version: '1.26.0-17.6.pre'
           channel: 'beta'
+
+      - name: Info
+        run: flutter doctor -v
 
       - name: Get dependencies
         run: flutter pub get
