@@ -94,7 +94,14 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.0.0-dev.2"
+    version: "2.0.0-dev.3"
+  logging:
+    dependency: transitive
+    description:
+      name: logging
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.11.4"
   matcher:
     dependency: transitive
     description:
@@ -123,6 +130,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.11.0"
+  redux:
+    dependency: transitive
+    description:
+      name: redux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0+3"
+  redux_logging:
+    dependency: transitive
+    description:
+      name: redux_logging
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   rxdart:
     dependency: transitive
     description:

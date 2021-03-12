@@ -112,7 +112,7 @@ packages:
       name: coverage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.1"
+    version: "0.15.2"
   crypto:
     dependency: transitive
     description:
@@ -206,7 +206,7 @@ packages:
       name: logging
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "0.11.4"
   matcher:
     dependency: transitive
     description:
@@ -277,6 +277,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.0"
+  redux:
+    dependency: transitive
+    description:
+      name: redux
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.0+3"
+  redux_logging:
+    dependency: "direct main"
+    description:
+      name: redux_logging
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   rxdart:
     dependency: "direct main"
     description:
@@ -442,7 +456,7 @@ packages:
       name: webkit_inspection_protocol
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "0.7.5"
   webview_flutter:
     dependency: "direct main"
     description:
