@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 -   remove redux, there is no so much contributors for this package anymore
 -   *BREAKING CHANGE*: callbacks now have different types, please see readme file
 -   *BREAKING CHANGE*: catchError is replaced by onError property, method will give you any exception or error which happened deep down in plugin with complete stacktrace
+-   update dependencies
 
 ## 2.0.0-dev.2 - 2020-12-03
 ### Library refactor
