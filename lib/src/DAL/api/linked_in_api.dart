@@ -26,7 +26,7 @@ class LinkedInApi {
   Uri _generateEndpoint(
     EnvironmentAccess setup,
     String path, [
-    Map<String, String> queryParameters,
+    Map<String, String>? queryParameters,
   ]) =>
       _endpoint.generate(
         setup,
@@ -35,11 +35,11 @@ class LinkedInApi {
       );
 
   Future<LinkedInTokenObject> login({
-    @required String redirectUrl,
-    @required String authCode,
-    @required String clientSecret,
-    @required String clientId,
-    @required http.Client client,
+    required String redirectUrl,
+    required String? authCode,
+    required String? clientSecret,
+    required String? clientId,
+    required http.Client client,
   }) async {
     log('LinkedInAuth-steps: trying to login...');
 
@@ -74,12 +74,11 @@ class LinkedInApi {
   }
 
   Future<LinkedInUserModel> fetchProfile({
-    @required String token,
-    @required List<String> projection,
-    @required http.Client client,
+    required String? token,
+    required List<String> projection,
+    required http.Client client,
   }) async {
-    assert(client != null);
-
+    assert(token != null);
     log('LinkedInAuth-steps: trying to fetchProfile...');
 
     final projectionParameter = 'projection=(${projection.join(",")})';
@@ -90,7 +89,7 @@ class LinkedInApi {
 
     log('LinkedInAuth-steps: trying to fetchProfile on ${endpoint.toString()}');
 
-    final response = await _get(endpoint, token, client);
+    final response = await _get(endpoint, token!, client);
 
     log('LinkedInAuth-steps: trying to fetchProfile DONE');
 
@@ -98,8 +97,8 @@ class LinkedInApi {
   }
 
   Future<LinkedInProfileEmail> fetchEmail({
-    @required String token,
-    @required http.Client client,
+    required String? token,
+    required http.Client client,
   }) async {
     assert(token != null);
     log('LinkedInAuth-steps: trying to fetchEmail...');
@@ -111,7 +110,7 @@ class LinkedInApi {
 
     log('LinkedInAuth-steps: trying to fetchEmail on ${endpoint.toString()}');
 
-    final response = await _get(endpoint, token, client);
+    final response = await _get(endpoint, token!, client);
 
     log('LinkedInAuth-steps: trying to fetchEmail DONE');
 
@@ -123,10 +122,6 @@ class LinkedInApi {
     String token,
     http.Client client,
   ) async {
-    assert(url != null);
-    assert(token != null);
-    assert(token.isNotEmpty);
-
     final headers = {
       HttpHeaders.acceptHeader: 'application/json',
       HttpHeaders.authorizationHeader: 'Bearer $token',
@@ -174,8 +169,6 @@ class LinkedInApi {
     http.Client client,
     dynamic body,
   ) async {
-    assert(url != null);
-
     final headers = {
       HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
       HttpHeaders.acceptHeader: 'application/json',

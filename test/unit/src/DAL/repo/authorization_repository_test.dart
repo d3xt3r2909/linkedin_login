@@ -7,18 +7,18 @@ import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 import 'package:http/http.dart' as http;
 
-import '../../../utils/mocks.dart';
+import '../../../utils/shared_mocks.mocks.dart';
 
 void main() {
-  Graph graph;
+  late Graph graph;
   LinkedInApi api;
-  AuthorizationRepository repository;
+  late AuthorizationRepository repository;
 
-  _ArrangeBuilder builder;
+  late _ArrangeBuilder builder;
 
   setUp(() {
     graph = MockGraph();
-    api = MockApi();
+    api = MockLinkedInApi();
     repository = AuthorizationRepository(api: api);
 
     builder = _ArrangeBuilder(
@@ -143,7 +143,7 @@ void main() {
 
   test('Return AuthorizationCodeResponse object for fetchAccessTokenCode',
       () async {
-    builder.withApiLogin();
+    builder.withApiLogin(graph.httpClient);
 
     final response = await repository.fetchAccessTokenCode(
       redirectedUrl: 'https://www.app.dexter.com/?code=aaa&state=bbb',
@@ -153,8 +153,8 @@ void main() {
       client: graph.httpClient,
     );
 
-    expect(response.accessToken.accessToken, 'accessToken');
-    expect(response.accessToken.expiresIn, 1234);
+    expect(response.accessToken!.accessToken, 'accessToken');
+    expect(response.accessToken!.expiresIn, 1234);
   });
 
   test('Return AuthorizationCodeResponse object for fetchAuthorizationCode',
@@ -173,7 +173,7 @@ class _ArrangeBuilder {
   _ArrangeBuilder(
     this.graph,
     this.api, {
-    MockClient client,
+    MockClient? client,
   }) : _client = client ?? MockClient() {
     when(graph.api).thenReturn(api);
     when(graph.httpClient).thenReturn(_client);
@@ -183,13 +183,13 @@ class _ArrangeBuilder {
   final LinkedInApi api;
   final http.Client _client;
 
-  void withApiLogin() {
+  void withApiLogin(http.Client client) {
     when(api.login(
       redirectUrl: 'https://www.app.dexter.com/',
       authCode: 'aaa',
       clientSecret: 'clientSecret',
       clientId: 'clientId',
-      client: anyNamed('client'),
+      client: client,
     )).thenAnswer(
       (_) async => LinkedInTokenObject(
         accessToken: 'accessToken',

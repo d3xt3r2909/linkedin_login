@@ -23,12 +23,12 @@ analyzer:
   enable-experiment:
     - extension-methods
   language:
-    # To be enforced:
-#     strict-inference: true
-#     strict-raw-types: true
-    # To be enforced:
-    # strong-mode:
-    # implicit-dynamic: false
+  # To be enforced:
+  #     strict-inference: true
+  #     strict-raw-types: true
+  # To be enforced:
+  # strong-mode:
+  # implicit-dynamic: false
   errors:
     # treat missing required parameters as a warning (not a hint)
     missing_required_param: warning
@@ -51,7 +51,6 @@ linter:
     # the Dart Lint rules page to make maintenance easier
     # https://github.com/dart-lang/linter/blob/master/example/all.yaml
 
-    - avoid_as
     - avoid_equals_and_hash_code_on_mutable_classes
     - prefer_final_locals
     - unnecessary_await_in_return

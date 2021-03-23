@@ -4,7 +4,7 @@ import '../linkedin_login.dart';
 
 @immutable
 class UserSucceededAction extends LinkedAction {
-  const UserSucceededAction(this.user) : assert(user != null);
+  const UserSucceededAction(this.user);
 
   final LinkedInUserModel user;
 
@@ -17,8 +17,8 @@ class UserSucceededAction extends LinkedAction {
 @immutable
 class UserFailedAction extends ExceptionAction {
   const UserFailedAction({
-    @required Object exception,
-    StackTrace stackTrace,
+    required Object exception,
+    StackTrace? stackTrace,
   }) : super(exception, stackTrace);
 
   @override
@@ -29,8 +29,7 @@ class UserFailedAction extends ExceptionAction {
 
 @immutable
 class AuthorizationSucceededAction extends LinkedAction {
-  const AuthorizationSucceededAction(this.codeResponse)
-      : assert(codeResponse != null);
+  const AuthorizationSucceededAction(this.codeResponse);
 
   final AuthorizationCodeResponse codeResponse;
 
@@ -43,8 +42,8 @@ class AuthorizationSucceededAction extends LinkedAction {
 @immutable
 class AuthorizationFailedAction extends ExceptionAction {
   const AuthorizationFailedAction({
-    @required Object exception,
-    StackTrace stackTrace,
+    required Object exception,
+    StackTrace? stackTrace,
   }) : super(exception, stackTrace);
 
   @override
@@ -58,7 +57,7 @@ abstract class ExceptionAction extends LinkedAction {
   const ExceptionAction(this.exception, [this.stackTrace]);
 
   final Object exception;
-  final StackTrace stackTrace;
+  final StackTrace? stackTrace;
 
   @override
   String toString() {

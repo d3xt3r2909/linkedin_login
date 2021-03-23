@@ -4,18 +4,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/injector.dart';
 
-import '../unit/utils/mocks.dart';
+import '../unit/utils/shared_mocks.mocks.dart';
 
 class WidgetTestbed {
   WidgetTestbed({
     this.graph,
   });
 
-  final Graph graph;
+  final Graph? graph;
 
   Widget injectWrap({
-    Widget child,
-    RouteFactory routeFactory,
+    Widget? child,
+    RouteFactory? routeFactory,
     Brightness brightness = Brightness.light,
     bool autoRoute = true,
   }) {
@@ -26,13 +26,13 @@ class WidgetTestbed {
               child: child,
               routeFactory: routeFactory,
             )
-          : child,
+          : child!,
     );
   }
 
   Widget simpleWrap({
-    Widget child,
-    RouteFactory routeFactory,
+    Widget? child,
+    RouteFactory? routeFactory,
     Brightness brightness = Brightness.light,
   }) {
     return MaterialApp(

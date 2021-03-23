@@ -1,16 +1,16 @@
 enum WidgetType { fullProfile, authCode }
 
 class DirectionUrlMatch {
-  const DirectionUrlMatch(
-    this.url,
-    this.widgetType,
-  );
+  const DirectionUrlMatch({
+    required this.url,
+    required this.type,
+  });
 
   final String url;
-  final WidgetType widgetType;
+  final WidgetType type;
 
   @override
   String toString() {
-    return 'DirectionUrlMatch{url: $url, widgetType: $widgetType}';
+    return 'DirectionUrlMatch{url: $url, type: $type}';
   }
 }

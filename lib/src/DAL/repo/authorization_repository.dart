@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:linkedin_login/src/DAL/api/exceptions.dart';
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/utils/logger.dart';
@@ -6,16 +5,16 @@ import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
 import 'package:http/http.dart' as http;
 
 class AuthorizationRepository {
-  AuthorizationRepository({@required this.api}) : assert(api != null);
+  AuthorizationRepository({required this.api});
 
   final LinkedInApi api;
 
   Future<AuthorizationCodeResponse> fetchAccessTokenCode({
-    @required String redirectedUrl,
-    @required String clientSecret,
-    @required String clientId,
-    @required String clientState,
-    @required http.Client client,
+    required String redirectedUrl,
+    required String? clientSecret,
+    required String? clientId,
+    required String clientState,
+    required http.Client client,
   }) async {
     log('LinkedInAuth-steps:fetchAccessTokenCode: parsing authorization code... ');
     final authorizationCode = _getAuthorizationCode(
@@ -24,7 +23,7 @@ class AuthorizationRepository {
     );
     log(
       'LinkedInAuth-steps:fetchAccessTokenCode: parsing authorization code... '
-      'DONE, isEmpty: ${authorizationCode.code.isEmpty}'
+      'DONE, isEmpty: ${authorizationCode.code!.isEmpty}'
       ' \n LinkedInAuth-steps:fetchAccessTokenCode: fetching access token...',
     );
 
@@ -44,8 +43,8 @@ class AuthorizationRepository {
   }
 
   AuthorizationCodeResponse fetchAuthorizationCode({
-    @required String redirectedUrl,
-    @required String clientState,
+    required String redirectedUrl,
+    required String clientState,
   }) {
     return _getAuthorizationCode(redirectedUrl, clientState);
   }
@@ -74,7 +73,6 @@ class AuthorizationRepository {
         }
 
         if (statePart[1] == clientState) {
-
           final test = AuthorizationCodeResponse(
             code: codePart[1],
             state: statePart[1],

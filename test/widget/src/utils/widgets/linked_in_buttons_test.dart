@@ -4,7 +4,7 @@ import 'package:linkedin_login/src/utils/widgets/linked_in_buttons.dart';
 import '../../../widget_test_utils.dart';
 
 void main() {
-  WidgetTestbed testbed;
+  late WidgetTestbed testbed;
 
   setUp(() {
     testbed = WidgetTestbed();

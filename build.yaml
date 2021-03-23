@@ -1,0 +1,9 @@
+targets:
+  $default:
+    builders:
+      linkedin_login|built_value:
+        enabled: true
+        generate_for:
+          - lib/**/*.dart
+      json_serializable:
+        enabled: true

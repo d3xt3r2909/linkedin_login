@@ -14,7 +14,9 @@ const Map<EnvironmentAccess, String> _kEmulator = {
 };
 
 class Endpoint {
-  Endpoint([this.environment = Environment.production]);
+  Endpoint([
+    this.environment = Environment.production,
+  ]);
 
   final Environment environment;
 
@@ -24,7 +26,7 @@ class Endpoint {
   Uri generate(
     EnvironmentAccess envSetup,
     String path, [
-    Map<String, String> queryParameters,
+    Map<String, String>? queryParameters,
   ]) {
     return Uri.parse('${_host[envSetup]}/v2/$path')
         .replace(queryParameters: queryParameters);

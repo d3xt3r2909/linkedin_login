@@ -11,35 +11,35 @@ import 'package:webview_flutter/webview_flutter.dart';
 @immutable
 class LinkedInWebViewHandler extends StatefulWidget {
   const LinkedInWebViewHandler({
-    @required this.onUrlMatch,
+    required this.onUrlMatch,
     this.appBar,
     this.destroySession = false,
     this.onCookieClear,
     this.onWebViewCreated, // this is just for testing purpose
-  }) : assert(destroySession != null);
+  });
 
-  final bool destroySession;
-  final PreferredSizeWidget appBar;
-  final Function(WebViewController) onWebViewCreated;
+  final bool? destroySession;
+  final PreferredSizeWidget? appBar;
+  final Function(WebViewController)? onWebViewCreated;
   final Function(DirectionUrlMatch) onUrlMatch;
-  final Function(bool) onCookieClear;
+  final Function(bool)? onCookieClear;
 
   @override
   State createState() => _LinkedInWebViewHandlerState();
 }
 
 class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
-  WebViewController webViewController;
+  WebViewController? webViewController;
   final CookieManager cookieManager = CookieManager();
 
   @override
   void initState() {
     super.initState();
 
-    if (widget.destroySession) {
+    if (widget.destroySession!) {
       log('LinkedInAuth-steps: cache clearing... ');
       cookieManager.clearCookies().then((value) {
-        widget?.onCookieClear?.call(true);
+        widget.onCookieClear?.call(true);
         log('LinkedInAuth-steps: cache clearing... DONE');
       });
     }
@@ -58,9 +58,7 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
             onWebViewCreated: (WebViewController webViewController) async {
               log('LinkedInAuth-steps: onWebViewCreated ... ');
 
-                  if (widget.onWebViewCreated != null) {
-                    widget.onWebViewCreated(webViewController);
-                  }
+              widget.onWebViewCreated?.call(webViewController);
 
               log('LinkedInAuth-steps: onWebViewCreated ... DONE');
             },
@@ -94,25 +92,25 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
 @immutable
 class _ViewModel {
   const _ViewModel._({
-    @required this.graph,
+    required this.graph,
   });
 
   factory _ViewModel.from(BuildContext context) => _ViewModel._(
         graph: InjectorWidget.of(context),
       );
 
-  final Graph graph;
+  final Graph? graph;
 
   DirectionUrlMatch getUrlConfiguration(String url) {
-    final type = graph.linkedInConfiguration is AccessCodeConfiguration
+    final type = graph!.linkedInConfiguration is AccessCodeConfiguration
         ? WidgetType.fullProfile
         : WidgetType.authCode;
-    return DirectionUrlMatch(url, type);
+    return DirectionUrlMatch(url: url, type: type);
   }
 
-  String initialUrl() => graph.linkedInConfiguration.initialUrl;
+  String initialUrl() => graph!.linkedInConfiguration.initialUrl;
 
   bool isUrlMatchingToRedirection(BuildContext context, String url) {
-    return graph.linkedInConfiguration.isCurrentUrlMatchToRedirection(url);
+    return graph!.linkedInConfiguration.isCurrentUrlMatchToRedirection(url);
   }
 }

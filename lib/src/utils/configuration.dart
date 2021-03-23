@@ -1,15 +1,13 @@
-import 'package:flutter/material.dart';
-
 abstract class Config {
-  String get clientSecret;
+  String? get clientSecret;
 
-  List<String> get projection;
+  List<String>? get projection;
 
-  String get redirectUrl;
+  String? get redirectUrl;
 
-  String get frontendRedirectUrl;
+  String? get frontendRedirectUrl;
 
-  String get clientId;
+  String? get clientId;
 
   String get state;
 
@@ -20,37 +18,33 @@ abstract class Config {
 
 class AccessCodeConfiguration implements Config {
   AccessCodeConfiguration({
-    @required this.redirectUrlParam,
-    @required this.clientIdParam,
-    @required this.clientSecretParam,
-    @required this.projectionParam,
-    @required this.urlState,
-  })  : assert(redirectUrlParam != null),
-        assert(clientIdParam != null),
-        assert(clientSecretParam != null),
-        assert(projectionParam != null),
-        assert(urlState != null);
+    required this.redirectUrlParam,
+    required this.clientIdParam,
+    required this.clientSecretParam,
+    required this.projectionParam,
+    required this.urlState,
+  });
 
-  final String clientSecretParam;
+  final String? clientSecretParam;
   final List<String> projectionParam;
-  final String redirectUrlParam;
-  final String clientIdParam;
+  final String? redirectUrlParam;
+  final String? clientIdParam;
   final String urlState;
 
   @override
-  String get clientId => clientIdParam;
+  String? get clientId => clientIdParam;
 
   @override
-  String get clientSecret => clientSecretParam;
+  String? get clientSecret => clientSecretParam;
 
   @override
-  String get frontendRedirectUrl => null;
+  String? get frontendRedirectUrl => null;
 
   @override
   List<String> get projection => projectionParam;
 
   @override
-  String get redirectUrl => redirectUrlParam;
+  String? get redirectUrl => redirectUrlParam;
 
   @override
   String get state => urlState;
@@ -67,44 +61,42 @@ class AccessCodeConfiguration implements Config {
   bool isCurrentUrlMatchToRedirection(String url) => _isRedirectionUrl(url);
 
   bool _isRedirectionUrl(String url) {
-    return url.startsWith(redirectUrl);
+    return url.startsWith(redirectUrl!);
   }
 
   @override
   String toString() {
-    return 'AccessCodeConfiguration{clientSecretParam: ${clientSecretParam.isNotEmpty ? 'XXX' : 'INVALID'}, projectionParam: $projectionParam, redirectUrlParam: $redirectUrlParam, clientIdParam: $clientIdParam, urlState: $urlState}';
+    return 'AccessCodeConfiguration{clientSecretParam: ${clientSecretParam!.isNotEmpty ? 'XXX' : 'INVALID'}, projectionParam: $projectionParam, redirectUrlParam: $redirectUrlParam, clientIdParam: $clientIdParam, urlState: $urlState}';
   }
 }
 
 class AuthCodeConfiguration implements Config {
   AuthCodeConfiguration({
-    @required this.redirectUrlParam,
-    @required this.clientIdParam,
-    @required this.urlState,
+    required this.redirectUrlParam,
+    required this.clientIdParam,
+    required this.urlState,
     this.frontendRedirectUrlParam,
-  })  : assert(redirectUrlParam != null),
-        assert(clientIdParam != null),
-        assert(urlState != null);
+  });
 
-  final String redirectUrlParam;
-  final String clientIdParam;
-  final String frontendRedirectUrlParam;
+  final String? redirectUrlParam;
+  final String? clientIdParam;
+  final String? frontendRedirectUrlParam;
   final String urlState;
 
   @override
-  String get clientId => clientIdParam;
+  String? get clientId => clientIdParam;
 
   @override
-  String get clientSecret => null;
+  String? get clientSecret => null;
 
   @override
-  String get frontendRedirectUrl => frontendRedirectUrlParam;
+  String? get frontendRedirectUrl => frontendRedirectUrlParam;
 
   @override
-  List<String> get projection => null;
+  List<String>? get projection => null;
 
   @override
-  String get redirectUrl => redirectUrlParam;
+  String? get redirectUrl => redirectUrlParam;
 
   @override
   String get state => urlState;
@@ -122,10 +114,10 @@ class AuthCodeConfiguration implements Config {
       _isRedirectionUrl(url) || _isFrontendRedirectionUrl(url);
 
   bool _isRedirectionUrl(String url) {
-    return url.startsWith(redirectUrl);
+    return url.startsWith(redirectUrl!);
   }
 
   bool _isFrontendRedirectionUrl(String url) {
-    return frontendRedirectUrl != null && url.startsWith(frontendRedirectUrl);
+    return frontendRedirectUrl != null && url.startsWith(frontendRedirectUrl!);
   }
 }

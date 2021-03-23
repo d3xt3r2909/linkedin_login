@@ -11,14 +11,14 @@ import 'package:linkedin_login/src/webview/actions.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
 import 'package:mockito/mockito.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import '../../../unit/utils/mocks.dart';
+import '../../../unit/utils/shared_mocks.mocks.dart';
 import '../../widget_test_utils.dart';
 
 void main() {
   Graph graph;
-  List actions;
-  WidgetTestbed testbed;
-  _ArrangeBuilder builder;
+  List? actions;
+  late WidgetTestbed testbed;
+  late _ArrangeBuilder builder;
 
   TestWidgetsFlutterBinding.ensureInitialized();
   final _FakeCookieManager _fakeCookieManager = _FakeCookieManager();
@@ -52,17 +52,6 @@ void main() {
     );
   });
 
-  testWidgets('is not created when destroy session parameter is null',
-      (WidgetTester tester) async {
-    expect(
-      () => LinkedInWebViewHandler(
-        destroySession: null,
-        onUrlMatch: (_) {},
-      ),
-      throwsAssertionError,
-    );
-  });
-
   testWidgets('with app bar', (WidgetTester tester) async {
     final testWidget = testbed.injectWrap(
       child: LinkedInWebViewHandler(
@@ -80,7 +69,7 @@ void main() {
   });
 
   testWidgets('test with initial url', (WidgetTester tester) async {
-    WebViewController controller;
+    late WebViewController controller;
     final testWidget = testbed.injectWrap(
       child: LinkedInWebViewHandler(
         onWebViewCreated: (webViewController) {
@@ -98,7 +87,7 @@ void main() {
 
   testWidgets('test changing url if url does not match url',
       (WidgetTester tester) async {
-    builder.withUrlNotMatch();
+    builder.withUrlNotMatch('https://www.google.com');
     final testWidget = testbed.injectWrap(
       child: LinkedInWebViewHandler(
         onUrlMatch: (_) {},
@@ -107,13 +96,13 @@ void main() {
 
     await tester.pumpWidget(testWidget);
     await tester.pumpAndSettle();
-    final platformWebView = (fakePlatformViewsController.lastCreatedView)
+    final platformWebView = fakePlatformViewsController.lastCreatedView!
       ..fakeNavigate('https://www.google.com');
     await tester.pump();
 
     expect(platformWebView.hasNavigationDelegate, true);
     expect(platformWebView.currentUrl, 'https://www.google.com');
-    expect(actions.whereType<DirectionUrlMatch>(), hasLength(0));
+    expect(actions!.whereType<DirectionUrlMatch>(), hasLength(0));
   });
 
   testWidgets(
@@ -163,14 +152,14 @@ class _ArrangeBuilder {
   _ArrangeBuilder(
     this.graph,
     this.actions, {
-    Config configuration,
-  }) : _configuration = configuration ?? MockConfiguration() {
+    Config? configuration,
+  }) : _configuration = configuration ?? MockConfig() {
     when(graph.linkedInConfiguration).thenAnswer((_) => _configuration);
 
     withConfiguration();
   }
 
-  final List<dynamic> actions;
+  final List<dynamic>? actions;
   final Graph graph;
   final Config _configuration;
 
@@ -179,25 +168,25 @@ class _ArrangeBuilder {
         'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=12345&state=null&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress');
   }
 
-  void withUrlNotMatch() {
-    when(_configuration.isCurrentUrlMatchToRedirection(any))
+  void withUrlNotMatch(String url) {
+    when(_configuration.isCurrentUrlMatchToRedirection(url))
         .thenAnswer((_) => false);
   }
 
-  void withUrlMatch() {
-    when(_configuration.isCurrentUrlMatchToRedirection(any))
+  void withUrlMatch(String url) {
+    when(_configuration.isCurrentUrlMatchToRedirection(url))
         .thenAnswer((_) => true);
   }
 }
 
 class _FakePlatformViewsController {
-  FakePlatformWebView lastCreatedView;
+  FakePlatformWebView? lastCreatedView;
 
   Future<dynamic> fakePlatformViewsMethodHandler(MethodCall call) {
     switch (call.method) {
       case 'create':
         final Map<dynamic, dynamic> args = call.arguments;
-        final Map<dynamic, dynamic> params = _decodeParams(args['params']);
+        final Map<dynamic, dynamic> params = _decodeParams(args['params'])!;
         lastCreatedView = FakePlatformWebView(
           args['id'],
           params,
@@ -214,9 +203,9 @@ class _FakePlatformViewsController {
 }
 
 class FakePlatformWebView {
-  FakePlatformWebView(int id, Map<dynamic, dynamic> params) {
+  FakePlatformWebView(int? id, Map<dynamic, dynamic> params) {
     if (params.containsKey('initialUrl')) {
-      final String initialUrl = params['initialUrl'];
+      final String? initialUrl = params['initialUrl'];
       if (initialUrl != null) {
         history.add(initialUrl);
         currentPosition++;
@@ -236,20 +225,20 @@ class FakePlatformWebView {
       ..setMockMethodCallHandler(onMethodCall);
   }
 
-  MethodChannel channel;
+  late MethodChannel channel;
 
-  List<String> history = <String>[];
+  List<String?> history = <String?>[];
   int currentPosition = -1;
   int amountOfReloadsOnCurrentUrl = 0;
   bool hasCache = true;
 
-  String get currentUrl => history.isEmpty ? null : history[currentPosition];
-  JavascriptMode javascriptMode;
-  List<String> javascriptChannelNames;
+  String? get currentUrl => history.isEmpty ? null : history[currentPosition];
+  JavascriptMode? javascriptMode;
+  late List<String> javascriptChannelNames;
 
-  bool hasNavigationDelegate;
-  bool debuggingEnabled;
-  String userAgent;
+  bool? hasNavigationDelegate;
+  bool? debuggingEnabled;
+  String? userAgent;
 
   Future<dynamic> onMethodCall(MethodCall call) {
     switch (call.method) {
@@ -278,20 +267,16 @@ class FakePlatformWebView {
       case 'goBack':
         currentPosition = max(-1, currentPosition - 1);
         return Future<void>.sync(() {});
-        break;
       case 'goForward':
         currentPosition = min(history.length - 1, currentPosition + 1);
         return Future<void>.sync(() {});
       case 'reload':
         amountOfReloadsOnCurrentUrl++;
         return Future<void>.sync(() {});
-        break;
       case 'currentUrl':
         return Future<String>.value(currentUrl);
-        break;
       case 'evaluateJavascript':
         return Future<dynamic>.value(call.arguments);
-        break;
       case 'addJavascriptChannels':
         final List<String> channelNames = List<String>.from(call.arguments);
         javascriptChannelNames.addAll(channelNames);
@@ -315,14 +300,14 @@ class FakePlatformWebView {
     };
     final data = codec
         .encodeMethodCall(MethodCall('javascriptChannelMessage', arguments));
-    ServicesBinding.instance.defaultBinaryMessenger
-        .handlePlatformMessage(channel.name, data, (ByteData data) {});
+    ServicesBinding.instance!.defaultBinaryMessenger
+        .handlePlatformMessage(channel.name, data, (ByteData? data) {});
   }
 
   // Fakes a main frame navigation that was initiated by the webview, e.g when
   // the user clicks a link in the currently loaded page.
   void fakeNavigate(String url) {
-    if (!hasNavigationDelegate) {
+    if (!hasNavigationDelegate!) {
       _loadUrl(url);
       return;
     }
@@ -333,9 +318,9 @@ class FakePlatformWebView {
     };
     final ByteData data =
         codec.encodeMethodCall(MethodCall('navigationRequest', arguments));
-    ServicesBinding.instance.defaultBinaryMessenger
-        .handlePlatformMessage(channel.name, data, (ByteData data) {
-      final bool allow = codec.decodeEnvelope(data);
+    ServicesBinding.instance!.defaultBinaryMessenger
+        .handlePlatformMessage(channel.name, data, (ByteData? data) {
+      final bool allow = codec.decodeEnvelope(data!);
       if (allow) {
         _loadUrl(url);
       }
@@ -350,10 +335,10 @@ class FakePlatformWebView {
       <dynamic, dynamic>{'url': currentUrl},
     ));
 
-    ServicesBinding.instance.defaultBinaryMessenger.handlePlatformMessage(
+    ServicesBinding.instance!.defaultBinaryMessenger.handlePlatformMessage(
       channel.name,
       data,
-      (ByteData data) {},
+      (ByteData? data) {},
     );
   }
 
@@ -365,14 +350,14 @@ class FakePlatformWebView {
       <dynamic, dynamic>{'url': currentUrl},
     ));
 
-    ServicesBinding.instance.defaultBinaryMessenger.handlePlatformMessage(
+    ServicesBinding.instance!.defaultBinaryMessenger.handlePlatformMessage(
       channel.name,
       data,
-      (ByteData data) {},
+      (ByteData? data) {},
     );
   }
 
-  void _loadUrl(String url) {
+  void _loadUrl(String? url) {
     history = history
       ..sublist(0, currentPosition + 1)
       ..add(url);
@@ -402,7 +387,6 @@ class _FakeCookieManager {
         return Future<bool>.sync(() {
           return hadCookies;
         });
-        break;
     }
     return Future<bool>.sync(() => false);
   }
@@ -412,7 +396,7 @@ class _FakeCookieManager {
   }
 }
 
-Map<dynamic, dynamic> _decodeParams(Uint8List paramsMessage) {
+Map<dynamic, dynamic>? _decodeParams(Uint8List paramsMessage) {
   final ByteBuffer buffer = paramsMessage.buffer;
   final ByteData messageBytes = buffer.asByteData(
     paramsMessage.offsetInBytes,
