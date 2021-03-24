@@ -4,10 +4,10 @@ import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/logger.dart';
 
 class ClientFetcher {
-  ClientFetcher(
-    this.graph,
-    this.url,
-  );
+  ClientFetcher({
+    required this.graph,
+    required this.url,
+  });
 
   final Graph graph;
   final String url;
@@ -15,7 +15,7 @@ class ClientFetcher {
   Future<LinkedAction> fetchUser() async {
     try {
       final token = await _fetchAccessTokenUser();
-      final user = await _fetchLinkedInProfile(token.accessToken);
+      final user = await _fetchLinkedInProfile(token.accessToken!);
 
       return UserSucceededAction(user);
       // ignore: avoid_catches_without_on_clauses
@@ -57,7 +57,7 @@ class ClientFetcher {
 
       final user = await graph.userRepository.fetchFullProfile(
         token: tokenObject,
-        projection: graph.linkedInConfiguration.projection,
+        projection: graph.linkedInConfiguration.projection!,
         client: graph.httpClient,
       );
 

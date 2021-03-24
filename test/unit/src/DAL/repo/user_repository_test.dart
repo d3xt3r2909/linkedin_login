@@ -4,33 +4,34 @@ import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/DAL/repo/user_repository.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:mockito/mockito.dart';
+import 'package:http/http.dart' as http;
 
-import '../../../utils/mocks.dart';
+import '../../../utils/shared_mocks.mocks.dart';
 
 void main() {
-  Graph graph;
-  LinkedInApi api;
-  UserRepository repository;
-
-  _ArrangeBuilder builder;
+  late Graph graph;
+  late LinkedInApi api;
+  late UserRepository repository;
+  late _ArrangeBuilder builder;
 
   setUpAll(() {});
 
   setUp(() {
     graph = MockGraph();
-    api = MockApi();
+    api = MockLinkedInApi();
     repository = UserRepository(api: api);
+    when(graph.api).thenAnswer((e) => api);
 
-    builder = _ArrangeBuilder(
-      graph,
-      api,
-    );
+    builder = _ArrangeBuilder(graph, api);
   });
 
   test('Throw AuthCodeException if state is null', () async {
     builder
-      ..withBasicProfile()
-      ..withUserEmail();
+      ..withBasicProfile(
+        graph.httpClient,
+        ['projection1'],
+      )
+      ..withUserEmail(graph.httpClient);
 
     final response = await repository.fetchFullProfile(
       token: LinkedInTokenObject(
@@ -41,11 +42,11 @@ void main() {
       client: graph.httpClient,
     );
 
-    expect(response.email.elements[0].handleDeep.emailAddress,
+    expect(response.email!.elements![0].handleDeep!.emailAddress,
         'dexter@dexter.com');
     expect(response.token.accessToken, 'accessToken');
-    expect(response.firstName.localized.label, 'DexterFirst');
-    expect(response.lastName.localized.label, 'DexterLast');
+    expect(response.firstName!.localized!.label, 'DexterFirst');
+    expect(response.lastName!.localized!.label, 'DexterLast');
     expect(response.userId, 'id');
   });
 }
@@ -53,28 +54,31 @@ void main() {
 class _ArrangeBuilder {
   _ArrangeBuilder(
     this.graph,
-    this.api,
-  ) {
+    this.api, {
+    MockClient? client,
+  }) : _client = client ?? MockClient() {
     when(graph.api).thenReturn(api);
+    when(graph.httpClient).thenReturn(_client);
   }
 
   final Graph graph;
   final LinkedInApi api;
+  final http.Client _client;
 
-  void withBasicProfile() {
+  void withBasicProfile(http.Client client, List<String> projection) {
     when(api.fetchProfile(
       token: 'accessToken',
-      projection: anyNamed('projection'),
-      client: anyNamed('client'),
+      projection: projection,
+      client: client,
     )).thenAnswer(
       (_) async => _generateUser(),
     );
   }
 
-  void withUserEmail() {
+  void withUserEmail(http.Client client) {
     when(api.fetchEmail(
       token: 'accessToken',
-      client: anyNamed('client'),
+      client: client,
     )).thenAnswer(
       (_) async => _generateUserEmail(),
     );

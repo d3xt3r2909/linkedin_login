@@ -14,11 +14,11 @@ import 'package:uuid/uuid.dart';
 class LinkedInUserWidget extends StatefulWidget {
   /// Client state parameter needs to be unique range of characters - random one
   LinkedInUserWidget({
-    @required this.onGetUserProfile,
-    @required this.redirectUrl,
-    @required this.clientId,
-    @required this.clientSecret,
-    @required this.onError,
+    required this.onGetUserProfile,
+    required this.redirectUrl,
+    required this.clientId,
+    required this.clientSecret,
+    this.onError,
     this.destroySession = false,
     this.appBar,
     this.projection = const [
@@ -28,19 +28,14 @@ class LinkedInUserWidget extends StatefulWidget {
       ProjectionParameters.firstName,
       ProjectionParameters.lastName,
     ],
-  })  : assert(onGetUserProfile != null),
-        assert(redirectUrl != null),
-        assert(clientId != null),
-        assert(clientSecret != null),
-        assert(destroySession != null),
-        assert(projection != null && projection.isNotEmpty);
+  }) : assert(projection.isNotEmpty);
 
-  final Function(UserSucceededAction) onGetUserProfile;
-  final Function(UserFailedAction) onError;
-  final String redirectUrl;
-  final String clientId, clientSecret;
-  final PreferredSizeWidget appBar;
-  final bool destroySession;
+  final Function(UserSucceededAction)? onGetUserProfile;
+  final Function(UserFailedAction)? onError;
+  final String? redirectUrl;
+  final String? clientId, clientSecret;
+  final PreferredSizeWidget? appBar;
+  final bool? destroySession;
   final List<String> projection;
 
   @override
@@ -51,7 +46,7 @@ class LinkedInUserWidget extends StatefulWidget {
 /// which will have as result user profile on the end
 class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
   String profileProjection = '';
-  Graph graph;
+  late Graph graph;
 
   @override
   void initState() {
@@ -78,7 +73,9 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
         appBar: widget.appBar,
         destroySession: widget.destroySession,
         onUrlMatch: (config) {
-          ClientFetcher(graph, config.url).fetchUser().then((action) {
+          ClientFetcher(graph: graph, url: config.url)
+              .fetchUser()
+              .then((action) {
             if (action is UserSucceededAction) {
               widget.onGetUserProfile?.call(action);
             }

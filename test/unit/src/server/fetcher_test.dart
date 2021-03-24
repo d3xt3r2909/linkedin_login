@@ -8,17 +8,17 @@ import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
 
-import '../../utils/mocks.dart';
+import '../../utils/shared_mocks.mocks.dart';
 
 void main() {
-  Graph graph;
-  _ArrangeBuilder builder;
+  late Graph graph;
+  late _ArrangeBuilder builder;
 
   setUp(() {
     graph = MockGraph();
     final authorizationRepository = MockAuthorizationRepository();
     final userRepository = MockUserRepository();
-    final configuration = MockConfiguration();
+    final configuration = MockConfig();
 
     builder = _ArrangeBuilder(
       graph,
@@ -33,12 +33,16 @@ void main() {
 
   test('Emits AuthorizationFailedAction if state code is not valid', () async {
     final exception = Exception('error-auth-token');
-    builder.withAuthCodeError(exception);
+    builder.withAuthCodeError(
+      url: '$urlAfterSuccessfulLogin&state=state',
+      state: 'state',
+      exception: exception,
+    );
 
     expect(
       await ServerFetcher(
-        graph,
-        '$urlAfterSuccessfulLogin&state=state',
+        graph: graph,
+        url: '$urlAfterSuccessfulLogin&state=state',
       ).fetchAuthToken(),
       isA<AuthorizationFailedAction>().having(
         (e) => e.exception,
@@ -49,11 +53,14 @@ void main() {
   });
 
   test('Emits AuthorizationSucceededAction on success', () async {
-    builder.withAuthCode();
+    builder.withAuthCode(
+      url: '$urlAfterSuccessfulLogin&state=state',
+      state: 'state',
+    );
 
     final user = await ServerFetcher(
-      graph,
-      '$urlAfterSuccessfulLogin&state=state',
+      graph: graph,
+      url: '$urlAfterSuccessfulLogin&state=state',
     ).fetchAuthToken();
 
     expect(
@@ -73,7 +80,7 @@ class _ArrangeBuilder {
     this.authorizationRepository,
     this.userRepository,
     this.configuration,
-  ) : api = MockApi() {
+  ) : api = MockLinkedInApi() {
     when(graph.api).thenReturn(api);
     when(graph.authorizationRepository).thenReturn(authorizationRepository);
     when(graph.userRepository).thenReturn(userRepository);
@@ -88,10 +95,13 @@ class _ArrangeBuilder {
   final UserRepository userRepository;
   final Config configuration;
 
-  void withAuthCode() {
+  void withAuthCode({
+    required String url,
+    required String state,
+  }) {
     when(authorizationRepository.fetchAuthorizationCode(
-      redirectedUrl: anyNamed('redirectedUrl'),
-      clientState: anyNamed('clientState'),
+      redirectedUrl: url,
+      clientState: state,
     )).thenAnswer(
       (_) => AuthorizationCodeResponse(
         state: 'state',
@@ -100,11 +110,15 @@ class _ArrangeBuilder {
     );
   }
 
-  void withAuthCodeError([Exception exception]) {
+  void withAuthCodeError({
+    required String url,
+    required String state,
+    required Exception exception,
+  }) {
     when(authorizationRepository.fetchAuthorizationCode(
-      redirectedUrl: anyNamed('redirectedUrl'),
-      clientState: anyNamed('clientState'),
-    )).thenThrow(exception ?? Exception());
+      redirectedUrl: url,
+      clientState: state,
+    )).thenThrow(exception);
   }
 
   void withConfiguration() {

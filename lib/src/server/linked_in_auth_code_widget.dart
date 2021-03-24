@@ -12,34 +12,31 @@ import 'package:uuid/uuid.dart';
 /// token and code from LinkedIn
 class LinkedInAuthCodeWidget extends StatefulWidget {
   const LinkedInAuthCodeWidget({
-    @required this.onGetAuthCode,
-    @required this.redirectUrl,
-    @required this.clientId,
-    @required this.onError,
+    required this.onGetAuthCode,
+    required this.redirectUrl,
+    required this.clientId,
+    required this.onError,
     this.destroySession = false,
     this.frontendRedirectUrl,
     this.appBar,
-  })  : assert(onGetAuthCode != null),
-        assert(redirectUrl != null),
-        assert(clientId != null),
-        assert(destroySession != null);
+  });
 
-  final Function(AuthorizationSucceededAction) onGetAuthCode;
+  final Function(AuthorizationSucceededAction)? onGetAuthCode;
   final Function(AuthorizationFailedAction) onError;
-  final String redirectUrl;
-  final String clientId;
-  final AppBar appBar;
-  final bool destroySession;
+  final String? redirectUrl;
+  final String? clientId;
+  final AppBar? appBar;
+  final bool? destroySession;
 
   // just in case that frontend in your team has changed redirect url
-  final String frontendRedirectUrl;
+  final String? frontendRedirectUrl;
 
   @override
   State createState() => _LinkedInAuthCodeWidgetState();
 }
 
 class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
-  Graph graph;
+  Graph? graph;
 
   @override
   void initState() {
@@ -63,13 +60,15 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
         appBar: widget.appBar,
         destroySession: widget.destroySession,
         onUrlMatch: (config) {
-          ServerFetcher(graph, config.url).fetchAuthToken().then((action) {
+          ServerFetcher(graph: graph, url: config.url)
+              .fetchAuthToken()
+              .then((action) {
             if (action is AuthorizationSucceededAction) {
               widget.onGetAuthCode?.call(action);
             }
 
             if (action is AuthorizationFailedAction) {
-              widget.onError?.call(action);
+              widget.onError.call(action);
             }
           });
         },
