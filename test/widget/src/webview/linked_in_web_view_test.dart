@@ -260,10 +260,8 @@ class FakePlatformWebView {
         break;
       case 'canGoBack':
         return Future<bool>.sync(() => currentPosition > 0);
-        break;
       case 'canGoForward':
         return Future<bool>.sync(() => currentPosition < history.length - 1);
-        break;
       case 'goBack':
         currentPosition = max(-1, currentPosition - 1);
         return Future<void>.sync(() {});
