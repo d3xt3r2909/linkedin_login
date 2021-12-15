@@ -6,7 +6,7 @@ repository: https://github.com/d3xt3r2909/linkedin_login
 documentation:
 
 environment:
-  sdk: '>=2.13.3 <3.0.0'
+  sdk: '>=2.12.3 <3.0.0'
   flutter: ">=1.24.0-6.0.pre"
 
 dependencies:
@@ -29,4 +29,4 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
   assets:
-    - assets/linked_in_logo.png
+    - assets/

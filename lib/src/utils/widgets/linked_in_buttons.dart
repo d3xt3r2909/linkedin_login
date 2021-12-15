@@ -11,45 +11,45 @@ class LinkedInButtonStandardWidget extends StatelessWidget {
     required this.onTap,
     this.iconHeight = 30,
     this.iconWeight = 30,
-    this.iconAssetPath = 'assets/linked_in_logo.png',
-    this.buttonText = 'Sign in with LinkedIn',
-    this.buttonColor = Colors.white,
-    this.textPadding = const EdgeInsets.all(4),
+    this.buttonText = '',
+    this.textStyle,
+    this.textPadding = const EdgeInsets.symmetric(horizontal: 4),
+    this.iconPath,
+    this.backgroundColor,
   });
 
   final Function onTap;
   final double iconHeight, iconWeight;
-  final String iconAssetPath;
   final String buttonText;
-  final Color buttonColor;
   final EdgeInsets textPadding;
+  final TextStyle? textStyle;
+  final String? iconPath;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) => Material(
         child: InkWell(
           onTap: onTap as void Function()?,
           child: Container(
-            color: Colors.blue,
+            color: backgroundColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Image.asset(
-                  iconAssetPath,
-                  package: 'linkedin_login',
+                  iconPath ?? 'assets/linked_in_logo.png',
+                  package: iconPath == null ? 'linkedin_login' : null,
                   width: iconWeight,
                   height: iconHeight,
                 ),
-                Container(
-                  padding: textPadding,
-                  color: Colors.blue,
-                  child: Text(
-                    buttonText,
-                    style: TextStyle(
-                      color: buttonColor,
+                if (buttonText.isNotEmpty)
+                  Container(
+                    padding: textPadding,
+                    child: Text(
+                      buttonText,
+                      style: textStyle,
                     ),
                   ),
-                ),
               ],
             ),
           ),

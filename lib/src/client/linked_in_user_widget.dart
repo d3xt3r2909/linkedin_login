@@ -61,7 +61,6 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
         urlState: Uuid().v4(),
       ),
     );
-
     profileProjection = 'projection=(${widget.projection.join(",")})';
   }
 

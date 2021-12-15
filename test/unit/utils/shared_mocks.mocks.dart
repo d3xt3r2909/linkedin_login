@@ -4,7 +4,6 @@
 
 import 'dart:async' as _i14;
 import 'dart:convert' as _i15;
-import 'dart:typed_data' as _i11;
 
 import 'package:http/src/base_request.dart' as _i16;
 import 'package:http/src/client.dart' as _i6;
@@ -50,7 +49,7 @@ class _FakeLinkedInProfileEmail extends _i1.Fake
 
 class _FakeResponse extends _i1.Fake implements _i10.Response {}
 
-class _FakeUint8List extends _i1.Fake implements _i11.Uint8List {}
+// class _FakeUint8List extends _i1.Fake implements _i11.Uint8List {}
 
 class _FakeStreamedResponse extends _i1.Fake implements _i12.StreamedResponse {}
 
@@ -278,13 +277,13 @@ class MockClient extends _i1.Mock implements _i6.Client {
   _i14.Future<String> read(Uri? url, {Map<String, String>? headers}) =>
       (super.noSuchMethod(Invocation.method(#read, [url], {#headers: headers}),
           returnValue: Future.value('')) as _i14.Future<String>);
-  @override
-  _i14.Future<_i11.Uint8List> readBytes(Uri? url,
-          {Map<String, String>? headers}) =>
-      (super.noSuchMethod(
-              Invocation.method(#readBytes, [url], {#headers: headers}),
-              returnValue: Future.value(_FakeUint8List()))
-          as _i14.Future<_i11.Uint8List>);
+  // @override
+  // _i14.Future<_i11.Uint8List> readBytes(Uri? url,
+  //         {Map<String, String>? headers}) =>
+  //     (super.noSuchMethod(
+  //             Invocation.method(#readBytes, [url], {#headers: headers}),
+  //             returnValue: Future.value(_FakeUint8List()))
+  //         as _i14.Future<_i11.Uint8List>);
   @override
   _i14.Future<_i12.StreamedResponse> send(_i16.BaseRequest? request) =>
       (super.noSuchMethod(Invocation.method(#send, [request]),

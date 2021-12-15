@@ -1,12 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
 import 'package:linkedin_login/linkedin_login.dart';
 import 'package:linkedin_login/src/DAL/api/endpoint.dart';
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:mockito/mockito.dart';
-import 'package:http/http.dart' as http;
 
 import '../../../utils/shared_mocks.mocks.dart';
 

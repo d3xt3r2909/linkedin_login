@@ -73,7 +73,7 @@ to property ```destroySession```  in ```LinkedInUserWidget``` or ```LinkedInAuth
   int expiresIn;
   String profilePicture;
   String email;
-  String userId; (from version 0.1.)
+  String userId;
 ```
 ## Projection - which properties of user account will be accessible via LinkedIn API
 ### Available from version 1.2.x
