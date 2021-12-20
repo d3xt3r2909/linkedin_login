@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/logger.dart';
@@ -8,6 +10,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 /// Class will fetch code and access token from the user
 /// It will show web view so that we can access to linked in auth page
+/// Please take into consideration to use [onWebViewCreated] only in testing
+/// purposes
 @immutable
 class LinkedInWebViewHandler extends StatefulWidget {
   const LinkedInWebViewHandler({
@@ -15,7 +19,8 @@ class LinkedInWebViewHandler extends StatefulWidget {
     this.appBar,
     this.destroySession = false,
     this.onCookieClear,
-    this.onWebViewCreated, // this is just for testing purpose
+    this.onWebViewCreated,
+    this.useVirtualDisplay = false,
   });
 
   final bool? destroySession;
@@ -23,6 +28,7 @@ class LinkedInWebViewHandler extends StatefulWidget {
   final Function(WebViewController)? onWebViewCreated;
   final Function(DirectionUrlMatch) onUrlMatch;
   final Function(bool)? onCookieClear;
+  final bool useVirtualDisplay;
 
   @override
   State createState() => _LinkedInWebViewHandlerState();
@@ -35,6 +41,9 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
   @override
   void initState() {
     super.initState();
+    if (Platform.isAndroid && widget.useVirtualDisplay && false) {
+      WebView.platform = AndroidWebView();
+    }
 
     if (widget.destroySession!) {
       log('LinkedInAuth-steps: cache clearing... ');

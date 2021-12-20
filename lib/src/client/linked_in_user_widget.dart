@@ -11,6 +11,8 @@ import 'package:uuid/uuid.dart';
 
 /// This class is responsible to fetch all information for user after we get
 /// token and code from LinkedIn
+/// Please look at documentation for minimum SDK version if you are using [useVirtualDisplay]
+/// by default library is using `Hybrid Composition` which requires minSdkVersion to be 19
 class LinkedInUserWidget extends StatefulWidget {
   /// Client state parameter needs to be unique range of characters - random one
   LinkedInUserWidget({
@@ -28,6 +30,7 @@ class LinkedInUserWidget extends StatefulWidget {
       ProjectionParameters.firstName,
       ProjectionParameters.lastName,
     ],
+    this.useVirtualDisplay = false,
   }) : assert(projection.isNotEmpty);
 
   final Function(UserSucceededAction)? onGetUserProfile;
@@ -37,6 +40,7 @@ class LinkedInUserWidget extends StatefulWidget {
   final PreferredSizeWidget? appBar;
   final bool? destroySession;
   final List<String> projection;
+  final bool useVirtualDisplay;
 
   @override
   State createState() => _LinkedInUserWidgetState();
@@ -72,18 +76,22 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
       child: LinkedInWebViewHandler(
         appBar: widget.appBar,
         destroySession: widget.destroySession,
+        useVirtualDisplay: widget.useVirtualDisplay,
         onUrlMatch: (config) {
-          ClientFetcher(graph: graph, url: config.url)
-              .fetchUser()
-              .then((action) {
-            if (action is UserSucceededAction) {
-              widget.onGetUserProfile?.call(action);
-            }
+          ClientFetcher(
+            graph: graph,
+            url: config.url,
+          ).fetchUser().then(
+            (action) {
+              if (action is UserSucceededAction) {
+                widget.onGetUserProfile?.call(action);
+              }
 
-            if (action is UserFailedAction) {
-              widget.onError?.call(action);
-            }
-          });
+              if (action is UserFailedAction) {
+                widget.onError?.call(action);
+              }
+            },
+          );
         },
       ),
     );

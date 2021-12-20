@@ -1,8 +1,8 @@
+import 'package:http/http.dart' as http;
 import 'package:linkedin_login/src/DAL/api/exceptions.dart';
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/wrappers/authorization_code_response.dart';
-import 'package:http/http.dart' as http;
 
 class AuthorizationRepository {
   AuthorizationRepository({required this.api});

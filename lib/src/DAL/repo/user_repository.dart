@@ -1,8 +1,8 @@
+import 'package:http/http.dart' as http;
 import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/model/linked_in_user_model.dart';
 import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/wrappers/linked_in_token_object.dart';
-import 'package:http/http.dart' as http;
 
 class UserRepository {
   UserRepository({

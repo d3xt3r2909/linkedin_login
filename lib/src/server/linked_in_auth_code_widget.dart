@@ -10,6 +10,8 @@ import 'package:uuid/uuid.dart';
 
 /// This class is responsible to fetch all information for user after we get
 /// token and code from LinkedIn
+/// Please look at documentation for minimum SDK version if you are using [useVirtualDisplay]
+/// by default library is using `Hybrid Composition` which requires minSdkVersion to be 19
 class LinkedInAuthCodeWidget extends StatefulWidget {
   const LinkedInAuthCodeWidget({
     required this.onGetAuthCode,
@@ -19,6 +21,7 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
     this.destroySession = false,
     this.frontendRedirectUrl,
     this.appBar,
+    this.useVirtualDisplay = false,
   });
 
   final Function(AuthorizationSucceededAction)? onGetAuthCode;
@@ -27,6 +30,7 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
   final String? clientId;
   final AppBar? appBar;
   final bool? destroySession;
+  final bool useVirtualDisplay;
 
   // just in case that frontend in your team has changed redirect url
   final String? frontendRedirectUrl;
@@ -59,18 +63,22 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
       child: LinkedInWebViewHandler(
         appBar: widget.appBar,
         destroySession: widget.destroySession,
+        useVirtualDisplay: widget.useVirtualDisplay,
         onUrlMatch: (config) {
-          ServerFetcher(graph: graph, url: config.url)
-              .fetchAuthToken()
-              .then((action) {
-            if (action is AuthorizationSucceededAction) {
-              widget.onGetAuthCode?.call(action);
-            }
+          ServerFetcher(
+            graph: graph,
+            url: config.url,
+          ).fetchAuthToken().then(
+            (action) {
+              if (action is AuthorizationSucceededAction) {
+                widget.onGetAuthCode?.call(action);
+              }
 
-            if (action is AuthorizationFailedAction) {
-              widget.onError.call(action);
-            }
-          });
+              if (action is AuthorizationFailedAction) {
+                widget.onError.call(action);
+              }
+            },
+          );
         },
       ),
     );
