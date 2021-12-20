@@ -42,9 +42,9 @@ analyzer:
     - lib/l10n/*.dart
     - lib/**/*.g.dart
     - test/**/*.g.dart
-    - test/**/**/*.mocks.dart
     - publish.dart
     - lib/experimental/chromecast/proto/**
+    - test/**/*.mocks.dart
 
 linter:
   rules:
