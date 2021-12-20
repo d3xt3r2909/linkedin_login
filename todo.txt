@@ -1,10 +1,7 @@
 Todo:
 
-Fix:
-
--> add possibility to have loading widget, introduce datastate
-
 Next:
 
--> new version of flutter null safety - new dev after this reconstruction => dev.2
--> remove  final LinkedInUserState user; expose properties
+-> new plugin architecture
+-> webview test and see hibrid
+-> update readme

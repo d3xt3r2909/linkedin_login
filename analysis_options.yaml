@@ -44,6 +44,7 @@ analyzer:
     - test/**/*.g.dart
     - publish.dart
     - lib/experimental/chromecast/proto/**
+    - test/**/*.mocks.dart
 
 linter:
   rules:

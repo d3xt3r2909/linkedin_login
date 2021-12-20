@@ -1,7 +1,7 @@
 import 'package:linkedin_login/linkedin_login.dart';
 import 'package:linkedin_login/src/actions.dart';
-import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/logger.dart';
+import 'package:linkedin_login/src/utils/startup/graph.dart';
 
 class ServerFetcher {
   ServerFetcher({
