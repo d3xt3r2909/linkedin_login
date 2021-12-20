@@ -41,7 +41,7 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid && widget.useVirtualDisplay && false) {
+    if (Platform.isAndroid && widget.useVirtualDisplay) {
       WebView.platform = AndroidWebView();
     }
 
