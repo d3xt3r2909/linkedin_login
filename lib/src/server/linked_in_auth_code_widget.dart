@@ -24,11 +24,11 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
     this.useVirtualDisplay = false,
   });
 
-  final Function(AuthorizationSucceededAction)? onGetAuthCode;
-  final Function(AuthorizationFailedAction) onError;
+  final ValueChanged<AuthorizationSucceededAction>? onGetAuthCode;
+  final ValueChanged<AuthorizationFailedAction> onError;
   final String? redirectUrl;
   final String? clientId;
-  final AppBar? appBar;
+  final PreferredSizeWidget? appBar;
   final bool? destroySession;
   final bool useVirtualDisplay;
 
