@@ -37,14 +37,14 @@ void main() {
       context: anyNamed('context'),
       creationParams: anyNamed('creationParams'),
       webViewPlatformCallbacksHandler:
-      anyNamed('webViewPlatformCallbacksHandler'),
+          anyNamed('webViewPlatformCallbacksHandler'),
       javascriptChannelRegistry: anyNamed('javascriptChannelRegistry'),
       onWebViewPlatformCreated: anyNamed('onWebViewPlatformCreated'),
       gestureRecognizers: anyNamed('gestureRecognizers'),
     )).thenAnswer((Invocation invocation) {
       final WebViewPlatformCreatedCallback onWebViewPlatformCreated =
-      invocation.namedArguments[const Symbol('onWebViewPlatformCreated')]
-      as WebViewPlatformCreatedCallback;
+          invocation.namedArguments[const Symbol('onWebViewPlatformCreated')]
+              as WebViewPlatformCreatedCallback;
       return TestPlatformWebView(
         mockWebViewPlatformController: mockWebViewPlatformController,
         onWebViewPlatformCreated: onWebViewPlatformCreated,
@@ -114,5 +114,38 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('AppBar title'), findsOneWidget);
+  });
+
+  testWidgets('has PreferredSizeWidget type, if App Bar is provided', (
+    WidgetTester tester,
+  ) async {
+    final testWidget = testbed.simpleWrap(
+      child: linkedInAuthCodeWidget(
+        appBar: AppBar(),
+      ),
+    );
+
+    await tester.pumpWidget(testWidget);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byWidgetPredicate((widget) => widget is PreferredSizeWidget),
+      findsOneWidget,
+    );
+  });
+  testWidgets('has no PreferredSizeWidget if App Bar is not provided', (
+    WidgetTester tester,
+  ) async {
+    final testWidget = testbed.simpleWrap(
+      child: linkedInAuthCodeWidget(),
+    );
+
+    await tester.pumpWidget(testWidget);
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byWidgetPredicate((widget) => widget is PreferredSizeWidget),
+      findsNothing,
+    );
   });
 }
