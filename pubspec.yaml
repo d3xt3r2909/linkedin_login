@@ -10,7 +10,7 @@ environment:
   flutter: ">=1.24.0-6.0.pre"
 
 dependencies:
-  analyzer: ^2.1.0
+  analyzer: ^3.0.0
   flutter:
     sdk: flutter
   http: ^0.13.4
