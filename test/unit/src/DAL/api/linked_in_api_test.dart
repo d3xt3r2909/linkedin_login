@@ -99,8 +99,7 @@ void main() {
 
   group('Fetching user profile API', () {
     test('with 200 HTTP code', () async {
-      final url =
-          '$localHostUrlMeProfile('
+      final url = '$localHostUrlMeProfile('
           '${ProjectionParameters.projectionWithoutPicture.join(",")})';
       final responsePath = '${builder.testPath}full_user_profile.json';
       final response = await builder.buildResponse(responsePath, 200);
