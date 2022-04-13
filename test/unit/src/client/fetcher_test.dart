@@ -49,7 +49,7 @@ void main() {
         url: '$urlAfterSuccessfulLogin&state=state',
       ).fetchUser(),
       isA<UserFailedAction>().having(
-        (e) => e.exception,
+        (final e) => e.exception,
         'exception',
         exception,
       ),
@@ -84,7 +84,7 @@ void main() {
     expect(
       user,
       isA<UserSucceededAction>().having(
-        (u) => u.user.userId,
+        (final u) => u.user.userId,
         'userId',
         'id_d3xt3r',
       ),
@@ -92,8 +92,8 @@ void main() {
   });
 
   test(
-      'Emits FetchLinkedInUserFailedAction if fetchFullProfile throws exception',
-      () async {
+      'Emits FetchLinkedInUserFailedAction if fetchFullProfile'
+      ' throws exception', () async {
     final exception = Exception('invalid-full-profile');
     final token = LinkedInTokenObject(
       accessToken: 'accessToken',
@@ -121,7 +121,7 @@ void main() {
         url: '$urlAfterSuccessfulLogin&state=state',
       ).fetchUser(),
       isA<UserFailedAction>().having(
-        (e) => e.exception,
+        (final e) => e.exception,
         'exception',
         exception,
       ),
@@ -135,7 +135,7 @@ class _ArrangeBuilder {
     this.authorizationRepository,
     this.userRepository,
     this.configuration, {
-    MockClient? client,
+    final MockClient? client,
   })  : api = MockLinkedInApi(),
         _client = client ?? MockClient() {
     when(graph.api).thenReturn(api);
@@ -155,21 +155,23 @@ class _ArrangeBuilder {
   final http.Client _client;
 
   void withAccessCode({
-    required String redirectUrl,
-    required String secret,
-    required String clientId,
-    required String state,
-    required http.Client client,
-    required LinkedInTokenObject token,
+    required final String redirectUrl,
+    required final String secret,
+    required final String clientId,
+    required final String state,
+    required final http.Client client,
+    required final LinkedInTokenObject token,
   }) {
-    when(authorizationRepository.fetchAccessTokenCode(
-      redirectedUrl: redirectUrl,
-      clientSecret: secret,
-      clientId: clientId,
-      clientState: state,
-      client: client,
-    )).thenAnswer(
-      (_) async => AuthorizationCodeResponse(
+    when(
+      authorizationRepository.fetchAccessTokenCode(
+        redirectedUrl: redirectUrl,
+        clientSecret: secret,
+        clientId: clientId,
+        clientState: state,
+        client: client,
+      ),
+    ).thenAnswer(
+      (final _) async => AuthorizationCodeResponse(
         state: state,
         code: 'code',
         accessToken: token,
@@ -178,60 +180,66 @@ class _ArrangeBuilder {
   }
 
   void withAccessCodeError({
-    required String redirectUrl,
-    required String secret,
-    required String clientId,
-    required String state,
-    required http.Client client,
-    required Exception exception,
+    required final String redirectUrl,
+    required final String secret,
+    required final String clientId,
+    required final String state,
+    required final http.Client client,
+    required final Exception exception,
   }) {
-    when(authorizationRepository.fetchAccessTokenCode(
-      redirectedUrl: redirectUrl,
-      clientSecret: secret,
-      clientId: clientId,
-      clientState: state,
-      client: client,
-    )).thenThrow(exception);
+    when(
+      authorizationRepository.fetchAccessTokenCode(
+        redirectedUrl: redirectUrl,
+        clientSecret: secret,
+        clientId: clientId,
+        clientState: state,
+        client: client,
+      ),
+    ).thenThrow(exception);
   }
 
   void withFullProfileError({
-    required LinkedInTokenObject token,
-    required List<String> projection,
-    required http.Client client,
-    required Exception exception,
+    required final LinkedInTokenObject token,
+    required final List<String> projection,
+    required final http.Client client,
+    required final Exception exception,
   }) {
-    when(userRepository.fetchFullProfile(
-      token: token,
-      projection: projection,
-      client: client,
-    )).thenThrow(exception);
+    when(
+      userRepository.fetchFullProfile(
+        token: token,
+        projection: projection,
+        client: client,
+      ),
+    ).thenThrow(exception);
   }
 
   void withFullProfile({
-    required LinkedInTokenObject token,
-    required List<String> projection,
-    required http.Client client,
+    required final LinkedInTokenObject token,
+    required final List<String> projection,
+    required final http.Client client,
   }) {
-    when(userRepository.fetchFullProfile(
-      token: token,
-      projection: projection,
-      client: client,
-    )).thenAnswer(
-      (_) async => LinkedInUserModel(
+    when(
+      userRepository.fetchFullProfile(
+        token: token,
+        projection: projection,
+        client: client,
+      ),
+    ).thenAnswer(
+      (final _) async => LinkedInUserModel(
         userId: 'id_d3xt3r',
       ),
     );
   }
 
   void withConfiguration() {
-    when(configuration.clientSecret).thenAnswer((_) => 'clientSecret');
-    when(configuration.projection).thenAnswer((_) => ['projection1']);
+    when(configuration.clientSecret).thenAnswer((final _) => 'clientSecret');
+    when(configuration.projection).thenAnswer((final _) => ['projection1']);
     when(configuration.redirectUrl)
-        .thenAnswer((_) => 'https://redirectUrl.com');
+        .thenAnswer((final _) => 'https://redirectUrl.com');
     when(configuration.frontendRedirectUrl)
-        .thenAnswer((_) => 'https://frontendRedirectUrl.com');
-    when(configuration.clientId).thenAnswer((_) => 'clientId');
-    when(configuration.state).thenAnswer((_) => 'state');
-    when(configuration.initialUrl).thenAnswer((_) => 'initialUrl');
+        .thenAnswer((final _) => 'https://frontendRedirectUrl.com');
+    when(configuration.clientId).thenAnswer((final _) => 'clientId');
+    when(configuration.state).thenAnswer((final _) => 'state');
+    when(configuration.initialUrl).thenAnswer((final _) => 'initialUrl');
   }
 }

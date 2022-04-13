@@ -9,7 +9,8 @@ void main() {
       expect(
         exception.toString(),
         equals(
-          'AuthCodeException:: for authCode: authCode with description: description',
+          'AuthCodeException:: for authCode: authCode with description:'
+          ' description',
         ),
       );
     });

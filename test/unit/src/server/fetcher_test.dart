@@ -45,7 +45,7 @@ void main() {
         url: '$urlAfterSuccessfulLogin&state=state',
       ).fetchAuthToken(),
       isA<AuthorizationFailedAction>().having(
-        (e) => e.exception,
+        (final e) => e.exception,
         'exception',
         exception,
       ),
@@ -66,7 +66,7 @@ void main() {
     expect(
       user,
       isA<AuthorizationSucceededAction>().having(
-        (u) => u.codeResponse.code,
+        (final u) => u.codeResponse.code,
         'code',
         'code-d3xt3r',
       ),
@@ -96,14 +96,16 @@ class _ArrangeBuilder {
   final Config configuration;
 
   void withAuthCode({
-    required String url,
-    required String state,
+    required final String url,
+    required final String state,
   }) {
-    when(authorizationRepository.fetchAuthorizationCode(
-      redirectedUrl: url,
-      clientState: state,
-    )).thenAnswer(
-      (_) => AuthorizationCodeResponse(
+    when(
+      authorizationRepository.fetchAuthorizationCode(
+        redirectedUrl: url,
+        clientState: state,
+      ),
+    ).thenAnswer(
+      (final _) => AuthorizationCodeResponse(
         state: 'state',
         code: 'code-d3xt3r',
       ),
@@ -111,25 +113,27 @@ class _ArrangeBuilder {
   }
 
   void withAuthCodeError({
-    required String url,
-    required String state,
-    required Exception exception,
+    required final String url,
+    required final String state,
+    required final Exception exception,
   }) {
-    when(authorizationRepository.fetchAuthorizationCode(
-      redirectedUrl: url,
-      clientState: state,
-    )).thenThrow(exception);
+    when(
+      authorizationRepository.fetchAuthorizationCode(
+        redirectedUrl: url,
+        clientState: state,
+      ),
+    ).thenThrow(exception);
   }
 
   void withConfiguration() {
-    when(configuration.clientSecret).thenAnswer((_) => 'clientSecret');
-    when(configuration.projection).thenAnswer((_) => ['projection1']);
+    when(configuration.clientSecret).thenAnswer((final _) => 'clientSecret');
+    when(configuration.projection).thenAnswer((final _) => ['projection1']);
     when(configuration.redirectUrl)
-        .thenAnswer((_) => 'https://redirectUrl.com');
+        .thenAnswer((final _) => 'https://redirectUrl.com');
     when(configuration.frontendRedirectUrl)
-        .thenAnswer((_) => 'https://frontendRedirectUrl.com');
-    when(configuration.clientId).thenAnswer((_) => 'clientId');
-    when(configuration.state).thenAnswer((_) => 'state');
-    when(configuration.initialUrl).thenAnswer((_) => 'initialUrl');
+        .thenAnswer((final _) => 'https://frontendRedirectUrl.com');
+    when(configuration.clientId).thenAnswer((final _) => 'clientId');
+    when(configuration.state).thenAnswer((final _) => 'state');
+    when(configuration.initialUrl).thenAnswer((final _) => 'initialUrl');
   }
 }

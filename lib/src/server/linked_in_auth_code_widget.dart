@@ -10,8 +10,9 @@ import 'package:uuid/uuid.dart';
 
 /// This class is responsible to fetch all information for user after we get
 /// token and code from LinkedIn
-/// Please look at documentation for minimum SDK version if you are using [useVirtualDisplay]
-/// by default library is using `Hybrid Composition` which requires minSdkVersion to be 19
+/// Please look at documentation for minimum SDK version if you are using
+/// [useVirtualDisplay] by default library is using `Hybrid Composition` which
+/// requires minSdkVersion to be 19
 class LinkedInAuthCodeWidget extends StatefulWidget {
   const LinkedInAuthCodeWidget({
     required this.onGetAuthCode,
@@ -22,10 +23,11 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
     this.frontendRedirectUrl,
     this.appBar,
     this.useVirtualDisplay = false,
-  });
+    final Key? key,
+  }) : super(key: key);
 
-  final Function(AuthorizationSucceededAction)? onGetAuthCode;
-  final Function(AuthorizationFailedAction) onError;
+  final ValueChanged<AuthorizationSucceededAction>? onGetAuthCode;
+  final ValueChanged<AuthorizationFailedAction> onError;
   final String? redirectUrl;
   final String? clientId;
   final AppBar? appBar;
@@ -48,7 +50,7 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
 
     graph = Initializer().initialise(
       AuthCodeConfiguration(
-        urlState: Uuid().v4(),
+        urlState: const Uuid().v4(),
         redirectUrlParam: widget.redirectUrl,
         clientIdParam: widget.clientId,
         frontendRedirectUrlParam: widget.frontendRedirectUrl,
@@ -57,19 +59,19 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return InjectorWidget(
       graph: graph,
       child: LinkedInWebViewHandler(
         appBar: widget.appBar,
         destroySession: widget.destroySession,
         useVirtualDisplay: widget.useVirtualDisplay,
-        onUrlMatch: (config) {
+        onUrlMatch: (final config) {
           ServerFetcher(
             graph: graph,
             url: config.url,
           ).fetchAuthToken().then(
-            (action) {
+            (final action) {
               if (action is AuthorizationSucceededAction) {
                 widget.onGetAuthCode?.call(action);
               }

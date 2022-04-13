@@ -13,7 +13,7 @@ abstract class Config {
 
   String get initialUrl;
 
-  bool isCurrentUrlMatchToRedirection(String url);
+  bool isCurrentUrlMatchToRedirection(final String url);
 }
 
 class AccessCodeConfiguration implements Config {
@@ -58,15 +58,20 @@ class AccessCodeConfiguration implements Config {
       '&scope=r_liteprofile%20r_emailaddress';
 
   @override
-  bool isCurrentUrlMatchToRedirection(String url) => _isRedirectionUrl(url);
+  bool isCurrentUrlMatchToRedirection(final String url) =>
+      _isRedirectionUrl(url);
 
-  bool _isRedirectionUrl(String url) {
+  bool _isRedirectionUrl(final String url) {
     return url.startsWith(redirectUrl!);
   }
 
   @override
   String toString() {
-    return 'AccessCodeConfiguration{clientSecretParam: ${clientSecretParam!.isNotEmpty ? 'XXX' : 'INVALID'}, projectionParam: $projectionParam, redirectUrlParam: $redirectUrlParam, clientIdParam: $clientIdParam, urlState: $urlState}';
+    return 'AccessCodeConfiguration{clientSecretParam: '
+        '${clientSecretParam!.isNotEmpty ? 'XXX' : 'INVALID'}, '
+        'projectionParam: $projectionParam,'
+        ' redirectUrlParam: $redirectUrlParam,'
+        ' clientIdParam: $clientIdParam, urlState: $urlState}';
   }
 }
 
@@ -110,14 +115,14 @@ class AuthCodeConfiguration implements Config {
       '&scope=r_liteprofile%20r_emailaddress';
 
   @override
-  bool isCurrentUrlMatchToRedirection(String url) =>
+  bool isCurrentUrlMatchToRedirection(final String url) =>
       _isRedirectionUrl(url) || _isFrontendRedirectionUrl(url);
 
-  bool _isRedirectionUrl(String url) {
+  bool _isRedirectionUrl(final String url) {
     return url.startsWith(redirectUrl!);
   }
 
-  bool _isFrontendRedirectionUrl(String url) {
+  bool _isFrontendRedirectionUrl(final String url) {
     return frontendRedirectUrl != null && url.startsWith(frontendRedirectUrl!);
   }
 }

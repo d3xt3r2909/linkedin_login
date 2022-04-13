@@ -8,7 +8,7 @@ import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 
 class Initializer {
-  Graph initialise(Config configuration) {
+  Graph initialise(final Config configuration) {
     log('Initializing...');
 
     final graph = _GraphBuilder().initialise(configuration);
@@ -20,7 +20,7 @@ class Initializer {
 }
 
 class _GraphBuilder {
-  Graph initialise(Config configuration) {
+  Graph initialise(final Config configuration) {
     final api = _networking();
     final authRepository = AuthorizationRepository(api: api);
     final userRepository = UserRepository(api: api);
@@ -37,7 +37,7 @@ class _GraphBuilder {
   LinkedInApi _networking() {
     log('Netwoking...');
 
-    final endpoint = Endpoint(Environment.production);
+    final endpoint = Endpoint();
 
     final api = LinkedInApi(endpoint);
 

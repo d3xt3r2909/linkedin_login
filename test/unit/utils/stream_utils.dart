@@ -1,13 +1,13 @@
 import 'dart:async';
 
-Stream<dynamic> toStream(dynamic action) {
+Stream<dynamic> toStream(final dynamic action) {
   if (action is Iterable) {
     return Stream.fromIterable(action).asBroadcastStream();
   }
   return Future.value(action).asStream().asBroadcastStream();
 }
 
-List<dynamic> toUnsafeList(Stream<dynamic> stream) {
+List<dynamic> toUnsafeList(final Stream<dynamic> stream) {
   final events = <dynamic>[];
 
   stream.listen(events.add);
@@ -18,13 +18,16 @@ List<dynamic> toUnsafeList(Stream<dynamic> stream) {
   return events;
 }
 
-Future<void> awaitTerminalValue(Stream<dynamic> stream) {
+Future<void> awaitTerminalValue(final Stream<dynamic> stream) {
   final completer = Completer<void>();
 
   stream
-      .timeout(Duration(milliseconds: 10), onTimeout: (it) => it.close())
+      .timeout(
+        const Duration(milliseconds: 10),
+        onTimeout: (final it) => it.close(),
+      )
       .listen(
-        (_) => {},
+        (final _) => {},
         onError: completer.completeError,
         onDone: completer.complete,
         cancelOnError: true,

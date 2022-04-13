@@ -36,11 +36,13 @@ void main() {
         clientState: 'clientState',
         client: graph.httpClient,
       ),
-      throwsA(isA<AuthCodeException>().having(
-        (a) => a.description,
-        'Description',
-        contains('Cannot parse url: invalidUrL'),
-      )),
+      throwsA(
+        isA<AuthCodeException>().having(
+          (final a) => a.description,
+          'Description',
+          contains('Cannot parse url: invalidUrL'),
+        ),
+      ),
     );
   });
 
@@ -57,12 +59,12 @@ void main() {
       throwsA(
         isA<AuthCodeException>()
             .having(
-              (a) => a.description,
+              (final a) => a.description,
               'Description',
               contains('errorDescription'),
             )
             .having(
-              (a) => a.authCode,
+              (final a) => a.authCode,
               'authCode',
               contains('aaaa'),
             ),
@@ -80,16 +82,18 @@ void main() {
         clientState: 'clientState',
         client: graph.httpClient,
       ),
-      throwsA(isA<AuthCodeException>().having(
-        (a) => a.description,
-        'Description',
-        contains('errorDescription'),
-      )),
+      throwsA(
+        isA<AuthCodeException>().having(
+          (final a) => a.description,
+          'Description',
+          contains('errorDescription'),
+        ),
+      ),
     );
   });
 
   test(
-      'Throw AuthCodeException when url state code does not match with param one',
+      'Throw AuthCodeException if url state code does not match with param one',
       () async {
     expect(
       () async => repository.fetchAccessTokenCode(
@@ -102,12 +106,12 @@ void main() {
       throwsA(
         isA<AuthCodeException>()
             .having(
-              (a) => a.description,
+              (final a) => a.description,
               'Description',
               contains('Current auth code is different from initial one: CCC'),
             )
             .having(
-              (b) => b.authCode,
+              (final b) => b.authCode,
               'authCode',
               contains('BBB'),
             ),
@@ -128,12 +132,12 @@ void main() {
       throwsA(
         isA<AuthCodeException>()
             .having(
-              (a) => a.description,
+              (final a) => a.description,
               'Description',
               contains('Cannot parse code ('),
             )
             .having(
-              (b) => b.authCode,
+              (final b) => b.authCode,
               'authCode',
               contains('N/A'),
             ),
@@ -173,7 +177,7 @@ class _ArrangeBuilder {
   _ArrangeBuilder(
     this.graph,
     this.api, {
-    MockClient? client,
+    final MockClient? client,
   }) : _client = client ?? MockClient() {
     when(graph.api).thenReturn(api);
     when(graph.httpClient).thenReturn(_client);
@@ -183,15 +187,17 @@ class _ArrangeBuilder {
   final LinkedInApi api;
   final http.Client _client;
 
-  void withApiLogin(http.Client client) {
-    when(api.login(
-      redirectUrl: 'https://www.app.dexter.com/',
-      authCode: 'aaa',
-      clientSecret: 'clientSecret',
-      clientId: 'clientId',
-      client: client,
-    )).thenAnswer(
-      (_) async => LinkedInTokenObject(
+  void withApiLogin(final http.Client client) {
+    when(
+      api.login(
+        redirectUrl: 'https://www.app.dexter.com/',
+        authCode: 'aaa',
+        clientSecret: 'clientSecret',
+        clientId: 'clientId',
+        client: client,
+      ),
+    ).thenAnswer(
+      (final _) async => LinkedInTokenObject(
         accessToken: 'accessToken',
         expiresIn: 1234,
       ),

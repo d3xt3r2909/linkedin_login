@@ -49,7 +49,7 @@ class ClientFetcher {
   }
 
   Future<LinkedInUserModel> _fetchLinkedInProfile(
-    LinkedInTokenObject tokenObject,
+    final LinkedInTokenObject tokenObject,
   ) async {
     try {
       log('LinkedInAuth-steps: Fetching full profile...');

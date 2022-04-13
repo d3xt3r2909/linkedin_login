@@ -24,15 +24,17 @@ class Endpoint {
       _authority(overrides.environment ?? environment);
 
   Uri generate(
-    EnvironmentAccess envSetup,
-    String path, [
-    Map<String, String>? queryParameters,
+    final EnvironmentAccess envSetup,
+    final String path, [
+    final Map<String, String>? queryParameters,
   ]) {
     return Uri.parse('${_host[envSetup]}/v2/$path')
         .replace(queryParameters: queryParameters);
   }
 
-  static Map<EnvironmentAccess, String> _authority(Environment environment) {
+  static Map<EnvironmentAccess, String> _authority(
+    final Environment environment,
+  ) {
     switch (environment) {
       case Environment.production:
         return _kProduction;

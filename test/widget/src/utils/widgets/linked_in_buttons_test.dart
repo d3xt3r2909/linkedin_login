@@ -10,7 +10,7 @@ void main() {
     testbed = WidgetTestbed();
   });
 
-  testWidgets('is created', (WidgetTester tester) async {
+  testWidgets('is created', (final WidgetTester tester) async {
     final testWidget = testbed.simpleWrap(
       child: LinkedInButtonStandardWidget(
         onTap: () {},
@@ -21,7 +21,7 @@ void main() {
     await tester.pump();
   });
 
-  testWidgets('is created', (WidgetTester tester) async {
+  testWidgets('is created', (final WidgetTester tester) async {
     final testWidget = testbed.simpleWrap(
       child: LinkedInButtonStandardWidget(
         onTap: () {},
@@ -32,7 +32,7 @@ void main() {
     await tester.pump();
   });
 
-  testWidgets('on tap button is tapped', (WidgetTester tester) async {
+  testWidgets('on tap button is tapped', (final WidgetTester tester) async {
     var isTaped = false;
     final testWidget = testbed.simpleWrap(
       child: LinkedInButtonStandardWidget(

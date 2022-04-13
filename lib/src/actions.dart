@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import '../linkedin_login.dart';
+import 'package:linkedin_login/linkedin_login.dart';
 
 @immutable
 class UserSucceededAction extends LinkedAction {
@@ -17,8 +16,8 @@ class UserSucceededAction extends LinkedAction {
 @immutable
 class UserFailedAction extends ExceptionAction {
   const UserFailedAction({
-    required Object exception,
-    StackTrace? stackTrace,
+    required final Object exception,
+    final StackTrace? stackTrace,
   }) : super(exception, stackTrace);
 
   @override
@@ -42,8 +41,8 @@ class AuthorizationSucceededAction extends LinkedAction {
 @immutable
 class AuthorizationFailedAction extends ExceptionAction {
   const AuthorizationFailedAction({
-    required Object exception,
-    StackTrace? stackTrace,
+    required final Object exception,
+    final StackTrace? stackTrace,
   }) : super(exception, stackTrace);
 
   @override
@@ -65,7 +64,7 @@ abstract class ExceptionAction extends LinkedAction {
   }
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is ExceptionAction && runtimeType == other.runtimeType;
 
@@ -83,7 +82,7 @@ abstract class LinkedAction {
   }
 
   @override
-  bool operator ==(Object other) =>
+  bool operator ==(final Object other) =>
       identical(this, other) ||
       other is LinkedAction && runtimeType == other.runtimeType;
 

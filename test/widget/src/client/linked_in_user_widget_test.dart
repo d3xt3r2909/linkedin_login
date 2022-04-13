@@ -26,15 +26,17 @@ void main() {
     mockWebViewPlatform = MockWebViewPlatform();
     mockWebViewCookieManagerPlatform = MockWebViewCookieManagerPlatform();
 
-    when(mockWebViewPlatform.build(
-      context: anyNamed('context'),
-      creationParams: anyNamed('creationParams'),
-      webViewPlatformCallbacksHandler:
-          anyNamed('webViewPlatformCallbacksHandler'),
-      javascriptChannelRegistry: anyNamed('javascriptChannelRegistry'),
-      onWebViewPlatformCreated: anyNamed('onWebViewPlatformCreated'),
-      gestureRecognizers: anyNamed('gestureRecognizers'),
-    )).thenAnswer((Invocation invocation) {
+    when(
+      mockWebViewPlatform.build(
+        context: anyNamed('context'),
+        creationParams: anyNamed('creationParams'),
+        webViewPlatformCallbacksHandler:
+            anyNamed('webViewPlatformCallbacksHandler'),
+        javascriptChannelRegistry: anyNamed('javascriptChannelRegistry'),
+        onWebViewPlatformCreated: anyNamed('onWebViewPlatformCreated'),
+        gestureRecognizers: anyNamed('gestureRecognizers'),
+      ),
+    ).thenAnswer((final Invocation invocation) {
       final WebViewPlatformCreatedCallback onWebViewPlatformCreated =
           invocation.namedArguments[const Symbol('onWebViewPlatformCreated')]
               as WebViewPlatformCreatedCallback;
@@ -45,7 +47,7 @@ void main() {
     });
 
     when(mockWebViewPlatformController.currentUrl())
-        .thenAnswer((realInvocation) => Future.value(initialUrl));
+        .thenAnswer((final realInvocation) => Future.value(initialUrl));
 
     WebView.platform = mockWebViewPlatform;
     WebViewCookieManagerPlatform.instance = mockWebViewCookieManagerPlatform;
@@ -58,14 +60,14 @@ void main() {
   });
 
   LinkedInUserWidget linkedInUserWidget({
-    Function(UserSucceededAction)? onGetUserProfile,
-    String? redirectUrl = 'https://www.app.dexter.com',
-    String? clientId = '12345',
-    String? clientSecret = '56789',
-    String? frontendRedirectUrl,
-    bool? destroySession = false,
-    AppBar? appBar,
-    List<String> projection = const [
+    final ValueChanged<UserSucceededAction>? onGetUserProfile,
+    final String? redirectUrl = 'https://www.app.dexter.com',
+    final String? clientId = '12345',
+    final String? clientSecret = '56789',
+    final String? frontendRedirectUrl,
+    final bool? destroySession = false,
+    final AppBar? appBar,
+    final List<String> projection = const [
       ProjectionParameters.id,
       ProjectionParameters.localizedFirstName,
       ProjectionParameters.localizedLastName,
@@ -74,23 +76,24 @@ void main() {
     ],
   }) {
     return LinkedInUserWidget(
-      onGetUserProfile: onGetUserProfile ?? (UserSucceededAction response) {},
+      onGetUserProfile:
+          onGetUserProfile ?? (final UserSucceededAction response) {},
       redirectUrl: redirectUrl,
       clientId: clientId,
       destroySession: destroySession,
       appBar: appBar,
       clientSecret: clientSecret,
       projection: projection,
-      onError: (UserFailedAction e) {},
+      onError: (final UserFailedAction e) {},
     );
   }
 
-  testWidgets('is created', (WidgetTester tester) async {
+  testWidgets('is created', (final WidgetTester tester) async {
     linkedInUserWidget();
   });
 
   testWidgets('App bar is not shown if not provided',
-      (WidgetTester tester) async {
+      (final WidgetTester tester) async {
     final testWidget = testbed.simpleWrap(
       child: linkedInUserWidget(),
     );
@@ -102,11 +105,11 @@ void main() {
   });
 
   testWidgets('App bar is shown if it is provided',
-      (WidgetTester tester) async {
+      (final WidgetTester tester) async {
     final testWidget = testbed.simpleWrap(
       child: linkedInUserWidget(
         appBar: AppBar(
-          title: Text('AppBar title'),
+          title: const Text('AppBar title'),
         ),
       ),
     );

@@ -20,7 +20,7 @@ void main() {
     graph = MockGraph();
     api = MockLinkedInApi();
     repository = UserRepository(api: api);
-    when(graph.api).thenAnswer((e) => api);
+    when(graph.api).thenAnswer((final e) => api);
 
     builder = _ArrangeBuilder(graph, api);
   });
@@ -42,8 +42,10 @@ void main() {
       client: graph.httpClient,
     );
 
-    expect(response.email!.elements![0].handleDeep!.emailAddress,
-        'dexter@dexter.com');
+    expect(
+      response.email!.elements![0].handleDeep!.emailAddress,
+      'dexter@dexter.com',
+    );
     expect(response.token.accessToken, 'accessToken');
     expect(response.firstName!.localized!.label, 'DexterFirst');
     expect(response.lastName!.localized!.label, 'DexterLast');
@@ -55,7 +57,7 @@ class _ArrangeBuilder {
   _ArrangeBuilder(
     this.graph,
     this.api, {
-    MockClient? client,
+    final MockClient? client,
   }) : _client = client ?? MockClient() {
     when(graph.api).thenReturn(api);
     when(graph.httpClient).thenReturn(_client);
@@ -65,28 +67,35 @@ class _ArrangeBuilder {
   final LinkedInApi api;
   final http.Client _client;
 
-  void withBasicProfile(http.Client client, List<String> projection) {
-    when(api.fetchProfile(
-      token: 'accessToken',
-      projection: projection,
-      client: client,
-    )).thenAnswer(
-      (_) async => _generateUser(),
+  void withBasicProfile(
+    final http.Client client,
+    final List<String> projection,
+  ) {
+    when(
+      api.fetchProfile(
+        token: 'accessToken',
+        projection: projection,
+        client: client,
+      ),
+    ).thenAnswer(
+      (final _) async => _generateUser(),
     );
   }
 
-  void withUserEmail(http.Client client) {
-    when(api.fetchEmail(
-      token: 'accessToken',
-      client: client,
-    )).thenAnswer(
-      (_) async => _generateUserEmail(),
+  void withUserEmail(final http.Client client) {
+    when(
+      api.fetchEmail(
+        token: 'accessToken',
+        client: client,
+      ),
+    ).thenAnswer(
+      (final _) async => _generateUserEmail(),
     );
   }
 
   LinkedInUserModel _generateUser({
-    String firstName = 'DexterFirst',
-    String lastName = 'DexterLast',
+    final String firstName = 'DexterFirst',
+    final String lastName = 'DexterLast',
   }) {
     return LinkedInUserModel(
       firstName: LinkedInPersonalInfo(
@@ -106,7 +115,7 @@ class _ArrangeBuilder {
   }
 
   LinkedInProfileEmail _generateUserEmail({
-    String email = 'dexter@dexter.com',
+    final String email = 'dexter@dexter.com',
   }) {
     return LinkedInProfileEmail(
       elements: [

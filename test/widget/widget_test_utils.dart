@@ -13,10 +13,10 @@ class WidgetTestbed {
   final Graph? graph;
 
   Widget injectWrap({
-    Widget? child,
-    RouteFactory? routeFactory,
-    Brightness brightness = Brightness.light,
-    bool autoRoute = true,
+    final Widget? child,
+    final RouteFactory? routeFactory,
+    final Brightness brightness = Brightness.light,
+    final bool autoRoute = true,
   }) {
     return InjectorWidget(
       graph: graph ?? MockGraph(),
@@ -30,19 +30,19 @@ class WidgetTestbed {
   }
 
   Widget simpleWrap({
-    Widget? child,
-    RouteFactory? routeFactory,
-    Brightness brightness = Brightness.light,
+    final Widget? child,
+    final RouteFactory? routeFactory,
+    final Brightness brightness = Brightness.light,
   }) {
     return MaterialApp(
       theme: ThemeData(brightness: brightness),
-      localizationsDelegates: [],
+      localizationsDelegates: const [],
       onGenerateRoute: routeFactory,
       home: child != null ? Material(child: child) : null,
     );
   }
 
-  void increaseScreenSize(WidgetTester tester) {
-    tester.binding.window.physicalSizeTestValue = Size(30000, 30000);
+  void increaseScreenSize(final WidgetTester tester) {
+    tester.binding.window.physicalSizeTestValue = const Size(30000, 30000);
   }
 }

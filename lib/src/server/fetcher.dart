@@ -22,8 +22,10 @@ class ServerFetcher {
         clientState: graph!.linkedInConfiguration.state,
       );
 
-      log('LinkedInAuth-steps: Fetching authorization code... DONE, isEmpty: '
-          '${authorizationCodeResponse.code?.isEmpty}');
+      log(
+        'LinkedInAuth-steps: Fetching authorization code... DONE, isEmpty: '
+        '${authorizationCodeResponse.code?.isEmpty}',
+      );
 
       return AuthorizationSucceededAction(authorizationCodeResponse);
     } on Exception catch (e, s) {

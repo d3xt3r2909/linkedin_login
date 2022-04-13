@@ -33,18 +33,20 @@ void main() {
     mockWebViewPlatform = MockWebViewPlatform();
     mockWebViewCookieManagerPlatform = MockWebViewCookieManagerPlatform();
 
-    when(mockWebViewPlatform.build(
-      context: anyNamed('context'),
-      creationParams: anyNamed('creationParams'),
-      webViewPlatformCallbacksHandler:
-      anyNamed('webViewPlatformCallbacksHandler'),
-      javascriptChannelRegistry: anyNamed('javascriptChannelRegistry'),
-      onWebViewPlatformCreated: anyNamed('onWebViewPlatformCreated'),
-      gestureRecognizers: anyNamed('gestureRecognizers'),
-    )).thenAnswer((Invocation invocation) {
+    when(
+      mockWebViewPlatform.build(
+        context: anyNamed('context'),
+        creationParams: anyNamed('creationParams'),
+        webViewPlatformCallbacksHandler:
+            anyNamed('webViewPlatformCallbacksHandler'),
+        javascriptChannelRegistry: anyNamed('javascriptChannelRegistry'),
+        onWebViewPlatformCreated: anyNamed('onWebViewPlatformCreated'),
+        gestureRecognizers: anyNamed('gestureRecognizers'),
+      ),
+    ).thenAnswer((final Invocation invocation) {
       final WebViewPlatformCreatedCallback onWebViewPlatformCreated =
-      invocation.namedArguments[const Symbol('onWebViewPlatformCreated')]
-      as WebViewPlatformCreatedCallback;
+          invocation.namedArguments[const Symbol('onWebViewPlatformCreated')]
+              as WebViewPlatformCreatedCallback;
       return TestPlatformWebView(
         mockWebViewPlatformController: mockWebViewPlatformController,
         onWebViewPlatformCreated: onWebViewPlatformCreated,
@@ -52,7 +54,7 @@ void main() {
     });
 
     when(mockWebViewPlatformController.currentUrl())
-        .thenAnswer((realInvocation) => Future.value(initialUrl));
+        .thenAnswer((final realInvocation) => Future.value(initialUrl));
 
     WebView.platform = mockWebViewPlatform;
     WebViewCookieManagerPlatform.instance = mockWebViewCookieManagerPlatform;
@@ -65,31 +67,31 @@ void main() {
   });
 
   LinkedInAuthCodeWidget linkedInAuthCodeWidget({
-    Function(AuthorizationSucceededAction)? onGetAuthCode,
-    String? redirectUrl = 'https://www.app.dexter.com',
-    String? clientId = '12345',
-    String? frontendRedirectUrl,
-    bool? destroySession = false,
-    AppBar? appBar,
+    final ValueChanged<AuthorizationSucceededAction>? onGetAuthCode,
+    final String? redirectUrl = 'https://www.app.dexter.com',
+    final String? clientId = '12345',
+    final String? frontendRedirectUrl,
+    final bool? destroySession = false,
+    final AppBar? appBar,
   }) {
     return LinkedInAuthCodeWidget(
       onGetAuthCode:
-          onGetAuthCode ?? (AuthorizationSucceededAction response) {},
+          onGetAuthCode ?? (final AuthorizationSucceededAction response) {},
       redirectUrl: redirectUrl,
       clientId: clientId,
       frontendRedirectUrl: frontendRedirectUrl,
       destroySession: destroySession,
       appBar: appBar,
-      onError: (AuthorizationFailedAction e) {},
+      onError: (final AuthorizationFailedAction e) {},
     );
   }
 
-  testWidgets('is created', (WidgetTester tester) async {
+  testWidgets('is created', (final WidgetTester tester) async {
     linkedInAuthCodeWidget();
   });
 
   testWidgets('App bar is not shown if not provided',
-      (WidgetTester tester) async {
+      (final WidgetTester tester) async {
     final testWidget = testbed.simpleWrap(
       child: linkedInAuthCodeWidget(),
     );
@@ -101,11 +103,11 @@ void main() {
   });
 
   testWidgets('App bar is shown if it is provided',
-      (WidgetTester tester) async {
+      (final WidgetTester tester) async {
     final testWidget = testbed.simpleWrap(
       child: linkedInAuthCodeWidget(
         appBar: AppBar(
-          title: Text('AppBar title'),
+          title: const Text('AppBar title'),
         ),
       ),
     );

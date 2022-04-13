@@ -19,12 +19,18 @@ void main() {
       expect(ProjectionParameters.lastName, 'lastName');
     });
 
-    test('localizedFirstName constant should have localizedFirstName value', () {
+    test('localizedFirstName constant should have localizedFirstName value',
+        () {
       expect(ProjectionParameters.localizedFirstName, 'localizedFirstName');
     });
 
-    test('profilePicture constant should have profilePicture(displayImage~:playableStreams) value', () {
-      expect(ProjectionParameters.profilePicture, 'profilePicture(displayImage~:playableStreams)');
+    test(
+        'profilePicture constant should have '
+        'profilePicture(displayImage~:playableStreams) value', () {
+      expect(
+        ProjectionParameters.profilePicture,
+        'profilePicture(displayImage~:playableStreams)',
+      );
     });
   });
 }
