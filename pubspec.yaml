@@ -1,6 +1,6 @@
 name: linkedin_login
 description: Library for login with LinkedIn OAuth V2 service. This library helps you to implement authorization with LinkedIn OAuth API's.
-version: 2.1.0
+version: 2.2.0
 homepage: https://github.com/d3xt3r2909/linkedin_login
 repository: https://github.com/d3xt3r2909/linkedin_login
 documentation:
@@ -10,7 +10,6 @@ environment:
   flutter: ">=1.24.0-6.0.pre"
 
 dependencies:
-  analyzer: ^2.1.0
   flutter:
     sdk: flutter
   http: ^0.13.4
@@ -25,6 +24,7 @@ dev_dependencies:
     sdk: flutter
   mockito: ^5.0.16
   test: ^1.19.5
+  flutter_lints: ^1.0.4
 
 # The following section is specific to Flutter.
 flutter:

@@ -4,14 +4,14 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 
 void log(
-  String message, {
-  DateTime? time,
-  int? sequenceNumber,
-  int level = 0,
-  String name = '',
-  Object? error,
-  Zone? zone,
-  StackTrace? stackTrace,
+  final String message, {
+  final DateTime? time,
+  final int? sequenceNumber,
+  final int level = 0,
+  final String name = '',
+  final Object? error,
+  final Zone? zone,
+  final StackTrace? stackTrace,
 }) =>
     SecretLogger().log(
       message,
@@ -25,14 +25,14 @@ void log(
     );
 
 void logError(
-  String message, {
-  DateTime? time,
-  int? sequenceNumber,
-  int level = 0,
-  String name = 'Logger',
-  Object? error,
-  Zone? zone,
-  StackTrace? stackTrace,
+  final String message, {
+  final DateTime? time,
+  final int? sequenceNumber,
+  final int level = 0,
+  final String name = 'Logger',
+  final Object? error,
+  final Zone? zone,
+  final StackTrace? stackTrace,
 }) =>
     SecretLogger().logError(
       message,
@@ -52,14 +52,14 @@ class SecretLogger {
   static final SecretLogger _instance = SecretLogger._();
 
   void log(
-    String message, {
-    DateTime? time,
-    int? sequenceNumber,
-    int level = 0,
-    String name = 'Logger',
-    Object? error,
-    Zone? zone,
-    StackTrace? stackTrace,
+    final String message, {
+    final DateTime? time,
+    final int? sequenceNumber,
+    final int level = 0,
+    final String name = 'Logger',
+    final Object? error,
+    final Zone? zone,
+    final StackTrace? stackTrace,
   }) {
     final msg = '$name: $message ${error ?? ''}';
 
@@ -69,13 +69,13 @@ class SecretLogger {
   }
 
   void logError(
-    String message, {
-    DateTime? time,
-    int? sequenceNumber,
-    String name = 'Logger',
-    Object? error,
-    Zone? zone,
-    StackTrace? stackTrace,
+    final String message, {
+    final DateTime? time,
+    final int? sequenceNumber,
+    final String name = 'Logger',
+    final Object? error,
+    final Zone? zone,
+    final StackTrace? stackTrace,
   }) {
     // ignore: avoid_print
     print('LinkedInLogin: $message ${error ?? ''}');
@@ -86,5 +86,6 @@ class SecretLogger {
 }
 
 class Debug {
-  bool get isRelease => bool.fromEnvironment('dart.vm.product');
+  // ignore: do_not_use_environment
+  bool get isRelease => const bool.fromEnvironment('dart.vm.product');
 }

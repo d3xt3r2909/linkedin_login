@@ -15,17 +15,19 @@ class LinkedInButtonStandardWidget extends StatelessWidget {
     this.buttonText = 'Sign in with LinkedIn',
     this.buttonColor = Colors.white,
     this.textPadding = const EdgeInsets.all(4),
-  });
+    final Key? key,
+  }) : super(key: key);
 
   final Function onTap;
-  final double iconHeight, iconWeight;
+  final double iconHeight;
+  final double iconWeight;
   final String iconAssetPath;
   final String buttonText;
   final Color buttonColor;
   final EdgeInsets textPadding;
 
   @override
-  Widget build(BuildContext context) => Material(
+  Widget build(final BuildContext context) => Material(
         child: InkWell(
           onTap: onTap as void Function()?,
           child: Container(

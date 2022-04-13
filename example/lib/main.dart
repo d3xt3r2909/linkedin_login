@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:linkedin_login/linkedin_login.dart';
 
 // ignore_for_file: avoid_print
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 // @TODO IMPORTANT - you need to change variable values below
 // You need to add your own data from LinkedIn application
@@ -13,9 +13,11 @@ const String clientId = '776rnw4e4izlvg';
 const String clientSecret = 'rQEgboUHMLcQi59v';
 
 class MyApp extends StatelessWidget {
+  const MyApp({final Key key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return MaterialApp(
       title: 'Flutter LinkedIn demo',
       theme: ThemeData(
@@ -25,7 +27,7 @@ class MyApp extends StatelessWidget {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            bottom: TabBar(
+            bottom: const TabBar(
               tabs: [
                 Tab(
                   icon: Icon(Icons.person),
@@ -34,9 +36,9 @@ class MyApp extends StatelessWidget {
                 Tab(icon: Icon(Icons.text_fields), text: 'Auth code')
               ],
             ),
-            title: Text('LinkedIn Authorization'),
+            title: const Text('LinkedIn Authorization'),
           ),
-          body: TabBarView(
+          body: const TabBarView(
             children: [
               LinkedInProfileExamplePage(),
               LinkedInAuthCodeExamplePage(),
@@ -49,6 +51,8 @@ class MyApp extends StatelessWidget {
 }
 
 class LinkedInProfileExamplePage extends StatefulWidget {
+  const LinkedInProfileExamplePage({final Key key}) : super(key: key);
+
   @override
   State createState() => _LinkedInProfileExamplePageState();
 }
@@ -59,27 +63,25 @@ class _LinkedInProfileExamplePageState
   bool logoutUser = false;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           LinkedInButtonStandardWidget(
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => LinkedInUserWidget(
+                MaterialPageRoute<void>(
+                  builder: (final BuildContext context) => LinkedInUserWidget(
                     appBar: AppBar(
-                      title: Text('OAuth User'),
+                      title: const Text('OAuth User'),
                     ),
                     destroySession: logoutUser,
                     redirectUrl: redirectUrl,
                     clientId: clientId,
                     clientSecret: clientSecret,
-                    projection: [
+                    projection: const [
                       ProjectionParameters.id,
                       ProjectionParameters.localizedFirstName,
                       ProjectionParameters.localizedLastName,
@@ -87,13 +89,14 @@ class _LinkedInProfileExamplePageState
                       ProjectionParameters.lastName,
                       ProjectionParameters.profilePicture,
                     ],
-                    onError: (UserFailedAction e) {
+                    onError: (final UserFailedAction e) {
                       print('Error: ${e.toString()}');
                       print('Error: ${e.stackTrace.toString()}');
                     },
-                    onGetUserProfile: (UserSucceededAction linkedInUser) {
+                    onGetUserProfile: (final UserSucceededAction linkedInUser) {
                       print(
-                          'Access token ${linkedInUser.user.token.accessToken}');
+                        'Access token ${linkedInUser.user.token.accessToken}',
+                      );
 
                       print('User id: ${linkedInUser.user.userId}');
 
@@ -135,7 +138,6 @@ class _LinkedInProfileExamplePageState
             buttonText: 'Logout',
           ),
           Column(
-            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text('First: ${user?.firstName} '),
@@ -151,6 +153,8 @@ class _LinkedInProfileExamplePageState
 }
 
 class LinkedInAuthCodeExamplePage extends StatefulWidget {
+  const LinkedInAuthCodeExamplePage({final Key key}) : super(key: key);
+
   @override
   State createState() => _LinkedInAuthCodeExamplePageState();
 }
@@ -161,26 +165,24 @@ class _LinkedInAuthCodeExamplePageState
   bool logoutUser = false;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         LinkedInButtonStandardWidget(
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (BuildContext context) => LinkedInAuthCodeWidget(
+              MaterialPageRoute<void>(
+                builder: (final BuildContext context) => LinkedInAuthCodeWidget(
                   destroySession: logoutUser,
                   redirectUrl: redirectUrl,
                   clientId: clientId,
-                  onError: (AuthorizationFailedAction e) {
+                  onError: (final AuthorizationFailedAction e) {
                     print('Error: ${e.toString()}');
                     print('Error: ${e.stackTrace.toString()}');
                   },
-                  onGetAuthCode: (AuthorizationSucceededAction response) {
+                  onGetAuthCode: (final AuthorizationSucceededAction response) {
                     print('Auth code ${response.codeResponse.code}');
 
                     print('State: ${response.codeResponse.state}');
@@ -209,9 +211,8 @@ class _LinkedInAuthCodeExamplePageState
           buttonText: 'Logout user',
         ),
         Container(
-          margin: EdgeInsets.symmetric(horizontal: 16),
+          margin: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
-            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text('Auth code: ${authorizationCode?.code} '),
@@ -227,11 +228,20 @@ class _LinkedInAuthCodeExamplePageState
 class AuthCodeObject {
   AuthCodeObject({this.code, this.state});
 
-  String code, state;
+  final String code;
+  final String state;
 }
 
 class UserObject {
-  UserObject({this.firstName, this.lastName, this.email, this.profileImageUrl});
+  UserObject({
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.profileImageUrl,
+  });
 
-  String firstName, lastName, email, profileImageUrl;
+  final String firstName;
+  final String lastName;
+  final String email;
+  final String profileImageUrl;
 }

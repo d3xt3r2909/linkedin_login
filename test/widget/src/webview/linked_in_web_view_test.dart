@@ -14,7 +14,7 @@ import '../../widget_test_utils.dart';
 
 void main() {
   Graph graph;
-  List? actions;
+  List<dynamic> actions;
   late WidgetTestbed testbed;
 
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -27,15 +27,17 @@ void main() {
     mockWebViewPlatform = MockWebViewPlatform();
     mockWebViewCookieManagerPlatform = MockWebViewCookieManagerPlatform();
 
-    when(mockWebViewPlatform.build(
-      context: anyNamed('context'),
-      creationParams: anyNamed('creationParams'),
-      webViewPlatformCallbacksHandler:
-          anyNamed('webViewPlatformCallbacksHandler'),
-      javascriptChannelRegistry: anyNamed('javascriptChannelRegistry'),
-      onWebViewPlatformCreated: anyNamed('onWebViewPlatformCreated'),
-      gestureRecognizers: anyNamed('gestureRecognizers'),
-    )).thenAnswer((Invocation invocation) {
+    when(
+      mockWebViewPlatform.build(
+        context: anyNamed('context'),
+        creationParams: anyNamed('creationParams'),
+        webViewPlatformCallbacksHandler:
+            anyNamed('webViewPlatformCallbacksHandler'),
+        javascriptChannelRegistry: anyNamed('javascriptChannelRegistry'),
+        onWebViewPlatformCreated: anyNamed('onWebViewPlatformCreated'),
+        gestureRecognizers: anyNamed('gestureRecognizers'),
+      ),
+    ).thenAnswer((final Invocation invocation) {
       final WebViewPlatformCreatedCallback onWebViewPlatformCreated =
           invocation.namedArguments[const Symbol('onWebViewPlatformCreated')]
               as WebViewPlatformCreatedCallback;
@@ -46,7 +48,7 @@ void main() {
     });
 
     when(mockWebViewPlatformController.currentUrl())
-        .thenAnswer((realInvocation) => Future.value(initialUrl));
+        .thenAnswer((final realInvocation) => Future.value(initialUrl));
 
     WebView.platform = mockWebViewPlatform;
     WebViewCookieManagerPlatform.instance = mockWebViewCookieManagerPlatform;
@@ -65,20 +67,21 @@ void main() {
     mockWebViewCookieManagerPlatform.reset();
   });
 
-  testWidgets('is created', (WidgetTester tester) async {
+  testWidgets('is created', (final WidgetTester tester) async {
     LinkedInWebViewHandler(
-      onUrlMatch: (_) {},
+      onUrlMatch: (final _) {},
     );
   });
 
-  testWidgets('with app bar', (WidgetTester tester) async {
+  testWidgets('with app bar', (final WidgetTester tester) async {
     final testWidget = testbed.injectWrap(
       child: LinkedInWebViewHandler(
+        // ignore: avoid_redundant_argument_values
         useVirtualDisplay: false,
         appBar: AppBar(
-          title: Text('Title'),
+          title: const Text('Title'),
         ),
-        onUrlMatch: (_) {},
+        onUrlMatch: (final _) {},
       ),
     );
 
@@ -88,15 +91,16 @@ void main() {
     expect(find.text('Title'), findsOneWidget);
   });
 
-  testWidgets('test with initial url', (WidgetTester tester) async {
+  testWidgets('test with initial url', (final WidgetTester tester) async {
     late WebViewController controller;
     final testWidget = testbed.injectWrap(
       child: LinkedInWebViewHandler(
+        // ignore: avoid_redundant_argument_values
         useVirtualDisplay: false,
-        onWebViewCreated: (webViewController) {
+        onWebViewCreated: (final webViewController) {
           controller = webViewController;
         },
-        onUrlMatch: (_) {},
+        onUrlMatch: (final _) {},
       ),
     );
 
@@ -108,13 +112,13 @@ void main() {
 
   testWidgets(
       'callback for cookie clear is called when destroying session is active',
-      (WidgetTester tester) async {
+      (final WidgetTester tester) async {
     var isCleared = false;
     final testWidget = testbed.injectWrap(
       child: LinkedInWebViewHandler(
         destroySession: true,
-        onCookieClear: (value) => isCleared = value,
-        onUrlMatch: (_) {},
+        onCookieClear: (final value) => isCleared = value,
+        onUrlMatch: (final _) {},
       ),
     );
 
@@ -125,14 +129,15 @@ void main() {
   });
 
   testWidgets(
-      'callback for cookie clearing is not called when destroying session is inactive',
-      (WidgetTester tester) async {
+      'callback for cookie clearing is not called when destroying session'
+      ' is inactive', (final WidgetTester tester) async {
     var isCleared = false;
     final testWidget = testbed.injectWrap(
       child: LinkedInWebViewHandler(
+        // ignore: avoid_redundant_argument_values
         destroySession: false,
-        onCookieClear: (value) => isCleared = value,
-        onUrlMatch: (_) {},
+        onCookieClear: (final value) => isCleared = value,
+        onUrlMatch: (final _) {},
       ),
     );
 
@@ -147,9 +152,9 @@ class _ArrangeBuilder {
   _ArrangeBuilder(
     this.graph,
     this.actions, {
-    Config? configuration,
+    final Config? configuration,
   }) : _configuration = configuration ?? MockConfig() {
-    when(graph.linkedInConfiguration).thenAnswer((_) => _configuration);
+    when(graph.linkedInConfiguration).thenAnswer((final _) => _configuration);
 
     withConfiguration();
   }
@@ -159,17 +164,19 @@ class _ArrangeBuilder {
   final Config _configuration;
 
   void withConfiguration() {
-    when(_configuration.initialUrl).thenAnswer((_) =>
-        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=12345&state=null&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress');
+    when(_configuration.initialUrl).thenAnswer(
+      (final _) =>
+          'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=12345&state=null&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress',
+    );
   }
 
-  void withUrlNotMatch(String url) {
+  void withUrlNotMatch(final String url) {
     when(_configuration.isCurrentUrlMatchToRedirection(url))
-        .thenAnswer((_) => false);
+        .thenAnswer((final _) => false);
   }
 
-  void withUrlMatch(String url) {
+  void withUrlMatch(final String url) {
     when(_configuration.isCurrentUrlMatchToRedirection(url))
-        .thenAnswer((_) => true);
+        .thenAnswer((final _) => true);
   }
 }

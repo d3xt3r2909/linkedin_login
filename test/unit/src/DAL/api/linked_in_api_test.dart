@@ -100,7 +100,8 @@ void main() {
   group('Fetching user profile API', () {
     test('with 200 HTTP code', () async {
       final url =
-          '$localHostUrlMeProfile(${ProjectionParameters.projectionWithoutPicture.join(",")})';
+          '$localHostUrlMeProfile('
+          '${ProjectionParameters.projectionWithoutPicture.join(",")})';
       final responsePath = '${builder.testPath}full_user_profile.json';
       final response = await builder.buildResponse(responsePath, 200);
       await builder.withFetchUrL(url, response);
@@ -128,7 +129,7 @@ void main() {
     });
 
     test(
-        'partially PROJECTION[(id, firstName,lastName,'
+        'partially PROJECTION[(id, firstName,lastName, '
         'profilePicture(displayImage~:playableStreams))]', () async {
       final projection = builder.projectionWithoutLocalized();
       final url = '$localHostUrlMeProfile(${projection.join(",")})';
@@ -159,7 +160,7 @@ void main() {
     });
 
     test(
-        'partially PROJECTION[((id,localizedFirstName,'
+        'partially PROJECTION[((id,localizedFirstName, '
         'localizedLastName,profilePicture(displayImage~:playableStreams))]',
         () async {
       final projection = builder.projectionWithoutNames();
@@ -190,7 +191,7 @@ void main() {
     });
 
     test(
-        'partially PROJECTION[((id,localizedFirstName,'
+        'partially PROJECTION[((id,localizedFirstName, '
         'localizedLastName,profilePicture(displayImage~:playableStreams))]',
         () async {
       final projection = builder.projectionWithoutNames();
@@ -221,7 +222,7 @@ void main() {
     });
 
     test(
-        'partially PROJECTION[((id,localizedFirstName,'
+        'partially PROJECTION[((id,localizedFirstName, '
         'localizedLastName,firstName,lastName)]', () async {
       final projection = builder.projectionWithoutProfilePicture();
       final url = '$localHostUrlMeProfile(${projection.join(",")})';
@@ -247,8 +248,8 @@ void main() {
     });
 
     test(
-        'partially PROJECTION[(localizedFirstName,localizedLastName,firstName,lastName,profilePicture(displayImage~:playableStreams))]',
-        () async {
+        'partially PROJECTION[(localizedFirstName,localizedLastName,firstName, '
+        'lastName,profilePicture(displayImage~:playableStreams))]', () async {
       final projection = builder.projectionWithoutId();
       final url = '$localHostUrlMeProfile(${projection.join(",")})';
       final responsePath = '${builder.testPath}user_profile_no_id.json';
@@ -277,8 +278,8 @@ void main() {
     });
 
     test('Failed - 401 Unauthorized Invalid access token', () async {
-      final url =
-          '$localHostUrlMeProfile(${ProjectionParameters.projectionWithoutPicture.join(",")})';
+      final url = '$localHostUrlMeProfile'
+          '(${ProjectionParameters.projectionWithoutPicture.join(",")})';
       final responsePath = '${builder.testPath}invalid_access_token.json';
       final response = await builder.buildResponse(responsePath, 401);
       await builder.withFetchUrL(url, response);
@@ -376,7 +377,7 @@ class _ArrangeBuilder {
   _ArrangeBuilder(
     this.graph,
     this.api, {
-    MockClient? client,
+    final MockClient? client,
   }) : _client = client ?? MockClient() {
     when(graph.api).thenReturn(api);
     when(graph.httpClient).thenReturn(_client);
@@ -386,12 +387,15 @@ class _ArrangeBuilder {
   final LinkedInApi api;
   final http.Client _client;
 
-  Future<String> getResponseFileContent(String pathToFile) async {
+  Future<String> getResponseFileContent(final String pathToFile) async {
     final file = File(pathToFile);
     return file.readAsString();
   }
 
-  Future<void> withFetchUrL(String url, http.Response response) async {
+  Future<void> withFetchUrL(
+    final String url,
+    final http.Response response,
+  ) async {
     final headers = {
       HttpHeaders.acceptHeader: 'application/json',
       HttpHeaders.authorizationHeader: 'Bearer accessToken',
@@ -403,16 +407,16 @@ class _ArrangeBuilder {
         headers: headers,
       ),
     ).thenAnswer(
-      (_) async {
+      (final _) async {
         return response;
       },
     );
   }
 
   Future<void> withPostLogin(
-    String url,
-    http.Response response,
-    Map<String, dynamic> body,
+    final String url,
+    final http.Response response,
+    final Map<String, dynamic> body,
   ) async {
     final headers = {
       HttpHeaders.acceptHeader: 'application/json',
@@ -426,7 +430,7 @@ class _ArrangeBuilder {
         headers: headers,
       ),
     ).thenAnswer(
-      (_) async {
+      (final _) async {
         return response;
       },
     );
@@ -474,8 +478,8 @@ class _ArrangeBuilder {
       '${Directory.current.path.endsWith('test') ? '.' : './test'}/unit/src/DAL/api/override/';
 
   Future<http.Response> buildResponse(
-    String responseContentPath,
-    int code,
+    final String responseContentPath,
+    final int code,
   ) async {
     final response = await getResponseFileContent(responseContentPath);
 

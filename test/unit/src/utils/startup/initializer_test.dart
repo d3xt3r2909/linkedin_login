@@ -39,8 +39,10 @@ void main() {
     expect(graph.linkedInConfiguration.state, 'urlState');
     expect(graph.linkedInConfiguration.redirectUrl, 'redirectUrlParam');
     expect(graph.linkedInConfiguration.state, 'urlState');
-    expect(graph.linkedInConfiguration.frontendRedirectUrl,
-        'frontendRedirectUrlParam');
+    expect(
+      graph.linkedInConfiguration.frontendRedirectUrl,
+      'frontendRedirectUrlParam',
+    );
     expect(graph.linkedInConfiguration.projection, isNull);
     expect(graph.linkedInConfiguration.clientSecret, isNull);
   });

@@ -24,8 +24,10 @@ void main() {
         projectionParam: const ['projection'],
       );
 
-      expect(config.initialUrl,
-          'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress');
+      expect(
+        config.initialUrl,
+        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress',
+      );
     });
 
     test('redirection url starts with redirected parameter', () {
@@ -39,7 +41,8 @@ void main() {
 
       expect(
         config.isCurrentUrlMatchToRedirection(
-            'https://www.app.dexter.com?code=xxx'),
+          'https://www.app.dexter.com?code=xxx',
+        ),
         isTrue,
       );
     });
@@ -55,7 +58,8 @@ void main() {
 
       expect(
         config.isCurrentUrlMatchToRedirection(
-            'https://www.something.com?code=xxx'),
+          'https://www.something.com?code=xxx',
+        ),
         isFalse,
       );
     });
@@ -110,13 +114,15 @@ void main() {
         urlState: 'urlState',
       );
 
-      expect(config.initialUrl,
-          'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress');
+      expect(
+        config.initialUrl,
+        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress',
+      );
     });
 
     test(
-        'redirection url starts with redirected parameter, frontend redirection not exists',
-        () {
+        'redirection url starts with redirected parameter, frontend '
+        'redirection not exists', () {
       final config = AuthCodeConfiguration(
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
@@ -125,14 +131,15 @@ void main() {
 
       expect(
         config.isCurrentUrlMatchToRedirection(
-            'https://www.app.dexter.com?code=xxx'),
+          'https://www.app.dexter.com?code=xxx',
+        ),
         isTrue,
       );
     });
 
     test(
-        'redirection url is not starting with redirected parameter but frontend redirection does',
-        () {
+        'redirection url is not starting with redirected parameter but '
+        'frontend redirection does', () {
       final config = AuthCodeConfiguration(
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
@@ -147,8 +154,8 @@ void main() {
     });
 
     test(
-        'redirection url is not starting with redirected parameter neither with frontend redirection parameter',
-        () {
+        'redirection url is not starting with redirected parameter neither '
+        'with frontend redirection parameter', () {
       final config = AuthCodeConfiguration(
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
@@ -158,7 +165,8 @@ void main() {
 
       expect(
         config.isCurrentUrlMatchToRedirection(
-            'https://www.something.com?code=xxx'),
+          'https://www.something.com?code=xxx',
+        ),
         isFalse,
       );
     });

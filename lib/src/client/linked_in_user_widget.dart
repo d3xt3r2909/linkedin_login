@@ -11,8 +11,9 @@ import 'package:uuid/uuid.dart';
 
 /// This class is responsible to fetch all information for user after we get
 /// token and code from LinkedIn
-/// Please look at documentation for minimum SDK version if you are using [useVirtualDisplay]
-/// by default library is using `Hybrid Composition` which requires minSdkVersion to be 19
+/// Please look at documentation for minimum SDK version if you are using
+/// [useVirtualDisplay] by default library is using `Hybrid Composition` which
+/// requires minSdkVersion to be 19
 class LinkedInUserWidget extends StatefulWidget {
   /// Client state parameter needs to be unique range of characters - random one
   LinkedInUserWidget({
@@ -31,12 +32,15 @@ class LinkedInUserWidget extends StatefulWidget {
       ProjectionParameters.lastName,
     ],
     this.useVirtualDisplay = false,
-  }) : assert(projection.isNotEmpty);
+    final Key? key,
+  })  : assert(projection.isNotEmpty),
+        super(key: key);
 
-  final Function(UserSucceededAction)? onGetUserProfile;
-  final Function(UserFailedAction)? onError;
+  final ValueChanged<UserSucceededAction>? onGetUserProfile;
+  final ValueChanged<UserFailedAction>? onError;
   final String? redirectUrl;
-  final String? clientId, clientSecret;
+  final String? clientId;
+  final String? clientSecret;
   final PreferredSizeWidget? appBar;
   final bool? destroySession;
   final List<String> projection;
@@ -62,7 +66,7 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
         clientSecretParam: widget.clientSecret,
         clientIdParam: widget.clientId,
         redirectUrlParam: widget.redirectUrl,
-        urlState: Uuid().v4(),
+        urlState: const Uuid().v4(),
       ),
     );
 
@@ -70,19 +74,19 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     return InjectorWidget(
       graph: graph,
       child: LinkedInWebViewHandler(
         appBar: widget.appBar,
         destroySession: widget.destroySession,
         useVirtualDisplay: widget.useVirtualDisplay,
-        onUrlMatch: (config) {
+        onUrlMatch: (final config) {
           ClientFetcher(
             graph: graph,
             url: config.url,
           ).fetchUser().then(
-            (action) {
+            (final action) {
               if (action is UserSucceededAction) {
                 widget.onGetUserProfile?.call(action);
               }

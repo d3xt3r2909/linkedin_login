@@ -25,5 +25,6 @@ class AuthCodeException implements Exception {
 
   @override
   String toString() =>
-      'AuthCodeException:: for authCode: $authCode with description: $description';
+      'AuthCodeException:: for authCode: $authCode '
+          'with description: $description';
 }

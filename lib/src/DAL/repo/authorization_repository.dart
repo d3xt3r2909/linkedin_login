@@ -10,13 +10,15 @@ class AuthorizationRepository {
   final LinkedInApi api;
 
   Future<AuthorizationCodeResponse> fetchAccessTokenCode({
-    required String redirectedUrl,
-    required String? clientSecret,
-    required String? clientId,
-    required String clientState,
-    required http.Client client,
+    required final String redirectedUrl,
+    required final String? clientSecret,
+    required final String? clientId,
+    required final String clientState,
+    required final http.Client client,
   }) async {
-    log('LinkedInAuth-steps:fetchAccessTokenCode: parsing authorization code... ');
+    log(
+      'LinkedInAuth-steps:fetchAccessTokenCode: parsing authorization code...',
+    );
     final authorizationCode = _getAuthorizationCode(
       redirectedUrl,
       clientState,
@@ -35,7 +37,9 @@ class AuthorizationRepository {
       client: client,
     );
 
-    log('LinkedInAuth-steps:fetchAccessTokenCode: fetching access token... DONE');
+    log(
+      'LinkedInAuth-steps:fetchAccessTokenCode: fetching access token... DONE',
+    );
 
     authorizationCode.accessToken = tokenObject;
 
@@ -43,8 +47,8 @@ class AuthorizationRepository {
   }
 
   AuthorizationCodeResponse fetchAuthorizationCode({
-    required String redirectedUrl,
-    required String clientState,
+    required final String redirectedUrl,
+    required final String clientState,
   }) {
     return _getAuthorizationCode(redirectedUrl, clientState);
   }
@@ -53,8 +57,8 @@ class AuthorizationRepository {
   /// query parameters. If there is an error property inside
   /// [AuthorizationCodeResponse] object will be populate
   AuthorizationCodeResponse _getAuthorizationCode(
-    String url,
-    String clientState,
+    final String url,
+    final String clientState,
   ) {
     final List<String> parseUrl = url.split('?');
 
@@ -100,7 +104,10 @@ class AuthorizationRepository {
     );
   }
 
-  bool _isAuthUrlEmpty(List<String> code, List<String> state) {
+  bool _isAuthUrlEmpty(
+    final List<String> code,
+    final List<String> state,
+  ) {
     return code.length < 2 ||
         state.length < 2 ||
         code[1].isEmpty ||

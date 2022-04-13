@@ -21,13 +21,14 @@ class LinkedInWebViewHandler extends StatefulWidget {
     this.onCookieClear,
     this.onWebViewCreated,
     this.useVirtualDisplay = false,
-  });
+    final Key? key,
+  }) : super(key: key);
 
   final bool? destroySession;
   final PreferredSizeWidget? appBar;
-  final Function(WebViewController)? onWebViewCreated;
-  final Function(DirectionUrlMatch) onUrlMatch;
-  final Function(bool)? onCookieClear;
+  final ValueChanged<WebViewController>? onWebViewCreated;
+  final ValueChanged<DirectionUrlMatch> onUrlMatch;
+  final ValueChanged<bool>? onCookieClear;
   final bool useVirtualDisplay;
 
   @override
@@ -47,7 +48,7 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
 
     if (widget.destroySession!) {
       log('LinkedInAuth-steps: cache clearing... ');
-      cookieManager.clearCookies().then((value) {
+      cookieManager.clearCookies().then((final value) {
         widget.onCookieClear?.call(true);
         log('LinkedInAuth-steps: cache clearing... DONE');
       });
@@ -55,23 +56,24 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     final viewModel = _ViewModel.from(context);
     return Scaffold(
       appBar: widget.appBar,
       body: Builder(
-        builder: (BuildContext context) {
+        builder: (final BuildContext context) {
           return WebView(
             initialUrl: viewModel.initialUrl(),
             javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated: (WebViewController webViewController) async {
+            onWebViewCreated:
+                (final WebViewController webViewController) async {
               log('LinkedInAuth-steps: onWebViewCreated ... ');
 
               widget.onWebViewCreated?.call(webViewController);
 
               log('LinkedInAuth-steps: onWebViewCreated ... DONE');
             },
-            navigationDelegate: (NavigationRequest request) async {
+            navigationDelegate: (final NavigationRequest request) async {
               log('LinkedInAuth-steps: navigationDelegate ... ');
               final isMatch = viewModel.isUrlMatchingToRedirection(
                 context,
@@ -90,7 +92,6 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
 
               return NavigationDecision.navigate;
             },
-            gestureNavigationEnabled: false,
           );
         },
       ),
@@ -104,13 +105,13 @@ class _ViewModel {
     required this.graph,
   });
 
-  factory _ViewModel.from(BuildContext context) => _ViewModel._(
+  factory _ViewModel.from(final BuildContext context) => _ViewModel._(
         graph: InjectorWidget.of(context),
       );
 
   final Graph? graph;
 
-  DirectionUrlMatch getUrlConfiguration(String url) {
+  DirectionUrlMatch getUrlConfiguration(final String url) {
     final type = graph!.linkedInConfiguration is AccessCodeConfiguration
         ? WidgetType.fullProfile
         : WidgetType.authCode;
@@ -119,7 +120,10 @@ class _ViewModel {
 
   String initialUrl() => graph!.linkedInConfiguration.initialUrl;
 
-  bool isUrlMatchingToRedirection(BuildContext context, String url) {
+  bool isUrlMatchingToRedirection(
+    final BuildContext context,
+    final String url,
+  ) {
     return graph!.linkedInConfiguration.isCurrentUrlMatchToRedirection(url);
   }
 }

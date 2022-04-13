@@ -12,9 +12,9 @@ class UserRepository {
   final LinkedInApi api;
 
   Future<LinkedInUserModel> fetchFullProfile({
-    required LinkedInTokenObject token,
-    required List<String> projection,
-    required http.Client client,
+    required final LinkedInTokenObject token,
+    required final List<String> projection,
+    required final http.Client client,
   }) async {
     log('Fetching user profile');
 
