@@ -19,7 +19,7 @@ environment:
 publish_to: none
 
 dependencies:
-  cupertino_icons: ^0.1.2
+  cupertino_icons: ^1.0.4
 
   flutter:
     sdk: flutter
