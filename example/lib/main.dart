@@ -57,8 +57,7 @@ class LinkedInProfileExamplePage extends StatefulWidget {
   State createState() => _LinkedInProfileExamplePageState();
 }
 
-class _LinkedInProfileExamplePageState
-    extends State<LinkedInProfileExamplePage> {
+class _LinkedInProfileExamplePageState extends State<LinkedInProfileExamplePage> {
   UserObject user;
   bool logoutUser = false;
 
@@ -81,6 +80,7 @@ class _LinkedInProfileExamplePageState
                     redirectUrl: redirectUrl,
                     clientId: clientId,
                     clientSecret: clientSecret,
+                    showLoading: true,
                     projection: const [
                       ProjectionParameters.id,
                       ProjectionParameters.localizedFirstName,
@@ -101,19 +101,10 @@ class _LinkedInProfileExamplePageState
                       print('User id: ${linkedInUser.user.userId}');
 
                       user = UserObject(
-                        firstName:
-                            linkedInUser?.user?.firstName?.localized?.label,
-                        lastName:
-                            linkedInUser?.user?.lastName?.localized?.label,
-                        email: linkedInUser?.user?.email?.elements[0]
-                            ?.handleDeep?.emailAddress,
-                        profileImageUrl: linkedInUser
-                            ?.user
-                            ?.profilePicture
-                            ?.displayImageContent
-                            ?.elements[0]
-                            ?.identifiers[0]
-                            ?.identifier,
+                        firstName: linkedInUser?.user?.firstName?.localized?.label,
+                        lastName: linkedInUser?.user?.lastName?.localized?.label,
+                        email: linkedInUser?.user?.email?.elements[0]?.handleDeep?.emailAddress,
+                        profileImageUrl: linkedInUser?.user?.profilePicture?.displayImageContent?.elements[0]?.identifiers[0]?.identifier,
                       );
 
                       setState(() {
@@ -159,8 +150,7 @@ class LinkedInAuthCodeExamplePage extends StatefulWidget {
   State createState() => _LinkedInAuthCodeExamplePageState();
 }
 
-class _LinkedInAuthCodeExamplePageState
-    extends State<LinkedInAuthCodeExamplePage> {
+class _LinkedInAuthCodeExamplePageState extends State<LinkedInAuthCodeExamplePage> {
   AuthCodeObject authorizationCode;
   bool logoutUser = false;
 

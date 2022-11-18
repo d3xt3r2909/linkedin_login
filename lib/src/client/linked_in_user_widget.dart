@@ -32,6 +32,7 @@ class LinkedInUserWidget extends StatefulWidget {
       ProjectionParameters.lastName,
     ],
     this.useVirtualDisplay = false,
+    this.showLoading = false,
     final Key? key,
   })  : assert(projection.isNotEmpty),
         super(key: key);
@@ -45,6 +46,7 @@ class LinkedInUserWidget extends StatefulWidget {
   final bool? destroySession;
   final List<String> projection;
   final bool useVirtualDisplay;
+  final bool showLoading;
 
   @override
   State createState() => _LinkedInUserWidgetState();
@@ -81,6 +83,7 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
         appBar: widget.appBar,
         destroySession: widget.destroySession,
         useVirtualDisplay: widget.useVirtualDisplay,
+        showLoading: widget.showLoading,
         onUrlMatch: (final config) {
           ClientFetcher(
             graph: graph,

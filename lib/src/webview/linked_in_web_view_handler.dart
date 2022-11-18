@@ -21,6 +21,7 @@ class LinkedInWebViewHandler extends StatefulWidget {
     this.onCookieClear,
     this.onWebViewCreated,
     this.useVirtualDisplay = false,
+    this.showLoading = false,
     final Key? key,
   }) : super(key: key);
 
@@ -30,6 +31,7 @@ class LinkedInWebViewHandler extends StatefulWidget {
   final ValueChanged<DirectionUrlMatch> onUrlMatch;
   final ValueChanged<bool>? onCookieClear;
   final bool useVirtualDisplay;
+  final bool showLoading;
 
   @override
   State createState() => _LinkedInWebViewHandlerState();
@@ -38,6 +40,7 @@ class LinkedInWebViewHandler extends StatefulWidget {
 class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
   WebViewController? webViewController;
   final CookieManager cookieManager = CookieManager();
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -60,40 +63,56 @@ class _LinkedInWebViewHandlerState extends State<LinkedInWebViewHandler> {
     final viewModel = _ViewModel.from(context);
     return Scaffold(
       appBar: widget.appBar,
-      body: Builder(
-        builder: (final BuildContext context) {
-          return WebView(
-            initialUrl: viewModel.initialUrl(),
-            javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated:
-                (final WebViewController webViewController) async {
-              log('LinkedInAuth-steps: onWebViewCreated ... ');
+      body: Stack(
+        children: [
+          Builder(
+            builder: (final BuildContext context) {
+              return WebView(
+                initialUrl: viewModel.initialUrl(),
+                javascriptMode: JavascriptMode.unrestricted,
+                onWebViewCreated: (final WebViewController webViewController) async {
+                  log('LinkedInAuth-steps: onWebViewCreated ... ');
 
-              widget.onWebViewCreated?.call(webViewController);
+                  widget.onWebViewCreated?.call(webViewController);
 
-              log('LinkedInAuth-steps: onWebViewCreated ... DONE');
-            },
-            navigationDelegate: (final NavigationRequest request) async {
-              log('LinkedInAuth-steps: navigationDelegate ... ');
-              final isMatch = viewModel.isUrlMatchingToRedirection(
-                context,
-                request.url,
+                  log('LinkedInAuth-steps: onWebViewCreated ... DONE');
+                },
+                navigationDelegate: (final NavigationRequest request) async {
+                  log('LinkedInAuth-steps: navigationDelegate ... ');
+                  final isMatch = viewModel.isUrlMatchingToRedirection(
+                    context,
+                    request.url,
+                  );
+                  log(
+                    'LinkedInAuth-steps: navigationDelegate '
+                    '[currentUrL: ${request.url}, isCurrentMatch: $isMatch]',
+                  );
+
+                  if (isMatch) {
+                    widget.onUrlMatch(viewModel.getUrlConfiguration(request.url));
+                    log('Navigation delegate prevent... done');
+                    return NavigationDecision.prevent;
+                  }
+
+                  return NavigationDecision.navigate;
+                },
+                onPageFinished: (final val) async {
+                  if (widget.showLoading == true && isLoading == true) {
+                    //show until ui build
+                    await Future.delayed(const Duration(seconds: 2));
+                    setState(() {
+                      isLoading = false;
+                    });
+                  }
+                },
               );
-              log(
-                'LinkedInAuth-steps: navigationDelegate '
-                '[currentUrL: ${request.url}, isCurrentMatch: $isMatch]',
-              );
-
-              if (isMatch) {
-                widget.onUrlMatch(viewModel.getUrlConfiguration(request.url));
-                log('Navigation delegate prevent... done');
-                return NavigationDecision.prevent;
-              }
-
-              return NavigationDecision.navigate;
             },
-          );
-        },
+          ),
+          if (widget.showLoading == true && isLoading == true)
+            const Center(
+              child: CircularProgressIndicator(),
+            )
+        ],
       ),
     );
   }
@@ -112,9 +131,7 @@ class _ViewModel {
   final Graph? graph;
 
   DirectionUrlMatch getUrlConfiguration(final String url) {
-    final type = graph!.linkedInConfiguration is AccessCodeConfiguration
-        ? WidgetType.fullProfile
-        : WidgetType.authCode;
+    final type = graph!.linkedInConfiguration is AccessCodeConfiguration ? WidgetType.fullProfile : WidgetType.authCode;
     return DirectionUrlMatch(url: url, type: type);
   }
 
