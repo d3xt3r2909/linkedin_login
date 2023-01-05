@@ -14,7 +14,7 @@ class LinkedInButtonStandardWidget extends StatelessWidget {
     this.iconAssetPath = 'assets/linked_in_logo.png',
     this.buttonText = 'Sign in with LinkedIn',
     this.buttonColor = Colors.white,
-    this.bgColor = Colors.blue,
+    this.backgroundColor = Colors.blue,
     this.textPadding = const EdgeInsets.all(4),
     final Key? key,
   }) : super(key: key);
@@ -25,7 +25,7 @@ class LinkedInButtonStandardWidget extends StatelessWidget {
   final String iconAssetPath;
   final String buttonText;
   final Color buttonColor;
-  final Color bgColor;
+  final Color backgroundColor;
   final EdgeInsets textPadding;
 
   @override
@@ -33,7 +33,7 @@ class LinkedInButtonStandardWidget extends StatelessWidget {
         child: InkWell(
           onTap: onTap as void Function()?,
           child: Container(
-            color: bgColor,
+            color: backgroundColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
@@ -46,7 +46,7 @@ class LinkedInButtonStandardWidget extends StatelessWidget {
                 ),
                 Container(
                   padding: textPadding,
-                  color: bgColor,
+                  color: backgroundColor,
                   child: Text(
                     buttonText,
                     style: TextStyle(
