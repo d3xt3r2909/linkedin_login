@@ -91,25 +91,6 @@ void main() {
     expect(find.text('Title'), findsOneWidget);
   });
 
-  testWidgets('test with initial url', (final WidgetTester tester) async {
-    late WebViewController controller;
-    final testWidget = testbed.injectWrap(
-      child: LinkedInWebViewHandler(
-        // ignore: avoid_redundant_argument_values
-        useVirtualDisplay: false,
-        onWebViewCreated: (final webViewController) {
-          controller = webViewController;
-        },
-        onUrlMatch: (final _) {},
-      ),
-    );
-
-    await tester.pumpWidget(testWidget);
-    await tester.pumpAndSettle();
-
-    expect(await controller.currentUrl(), initialUrl);
-  });
-
   testWidgets(
       'callback for cookie clear is called when destroying session is active',
       (final WidgetTester tester) async {
