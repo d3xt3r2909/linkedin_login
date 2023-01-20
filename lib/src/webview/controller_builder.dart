@@ -44,16 +44,16 @@ class WebViewControllerBuilder {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(
         NavigationDelegate(
-          onProgress: (int progress) {
+          onProgress: (final progress) {
             log('WebView is loading (progress : $progress%)');
           },
-          onPageStarted: (String url) {
+          onPageStarted: (final url) {
             log('Page started loading: $url');
           },
-          onPageFinished: (String url) {
+          onPageFinished: (final url) {
             log('Page finished loading: $url');
           },
-          onWebResourceError: (WebResourceError error) {
+          onWebResourceError: (final error) {
             log('''
                   Page resource error:
                   code: ${error.errorCode}
@@ -62,7 +62,7 @@ class WebViewControllerBuilder {
                   isForMainFrame: ${error.isForMainFrame}
           ''');
           },
-          onNavigationRequest: (NavigationRequest request) {
+          onNavigationRequest: (final request) {
             log('LinkedInAuth-steps: navigationDelegate ... ');
             final isMatch = _isUrlMatchingToRedirection(request.url);
             log(
