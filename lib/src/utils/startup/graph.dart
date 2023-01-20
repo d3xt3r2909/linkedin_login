@@ -4,6 +4,7 @@ import 'package:linkedin_login/src/DAL/api/linked_in_api.dart';
 import 'package:linkedin_login/src/DAL/repo/authorization_repository.dart';
 import 'package:linkedin_login/src/DAL/repo/user_repository.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
+import 'package:linkedin_login/src/webview/controller_builder.dart';
 
 @immutable
 class Graph {
@@ -13,6 +14,7 @@ class Graph {
     required this.api,
     required this.linkedInConfiguration,
     required this.httpClient,
+    required this.webViewControllerBuilder,
   });
 
   final AuthorizationRepository authorizationRepository;
@@ -20,4 +22,5 @@ class Graph {
   final LinkedInApi api;
   final Config linkedInConfiguration;
   final http.Client httpClient;
+  final WebViewControllerBuilder webViewControllerBuilder;
 }

@@ -6,6 +6,7 @@ import 'package:linkedin_login/src/DAL/repo/user_repository.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/logger.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
+import 'package:linkedin_login/src/webview/controller_builder.dart';
 
 class Initializer {
   Graph initialise(final Config configuration) {
@@ -24,6 +25,9 @@ class _GraphBuilder {
     final api = _networking();
     final authRepository = AuthorizationRepository(api: api);
     final userRepository = UserRepository(api: api);
+    final webViewController = WebViewControllerBuilder(
+      configuration: configuration,
+    );
 
     return Graph(
       authorizationRepository: authRepository,
@@ -31,6 +35,7 @@ class _GraphBuilder {
       api: api,
       linkedInConfiguration: configuration,
       httpClient: http.Client(),
+      webViewControllerBuilder: webViewController,
     );
   }
 

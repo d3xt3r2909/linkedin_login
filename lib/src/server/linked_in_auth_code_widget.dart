@@ -31,7 +31,7 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
   final String? redirectUrl;
   final String? clientId;
   final AppBar? appBar;
-  final bool? destroySession;
+  final bool destroySession;
   final bool useVirtualDisplay;
 
   // just in case that frontend in your team has changed redirect url
@@ -42,7 +42,7 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
 }
 
 class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
-  Graph? graph;
+  late Graph graph;
 
   @override
   void initState() {

@@ -42,7 +42,7 @@ class LinkedInUserWidget extends StatefulWidget {
   final String? clientId;
   final String? clientSecret;
   final PreferredSizeWidget? appBar;
-  final bool? destroySession;
+  final bool destroySession;
   final List<String> projection;
   final bool useVirtualDisplay;
 
