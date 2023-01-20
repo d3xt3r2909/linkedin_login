@@ -556,7 +556,7 @@ packages:
     source: hosted
     version: "4.0.1"
   webview_flutter_android:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: webview_flutter_android
       url: "https://pub.dartlang.org"
@@ -570,7 +570,7 @@ packages:
     source: hosted
     version: "2.0.1"
   webview_flutter_wkwebview:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: webview_flutter_wkwebview
       url: "https://pub.dartlang.org"
