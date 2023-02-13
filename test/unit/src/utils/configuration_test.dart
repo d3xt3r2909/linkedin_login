@@ -10,23 +10,44 @@ void main() {
         urlState: 'urlState',
         clientSecretParam: 'clientSecretParam',
         projectionParam: const ['projection'],
+        scopeParam: const ['scope1'],
       );
 
       expect(config.frontendRedirectUrl, isNull);
     });
 
-    test('initial URL should use parameters from config', () {
+    test(
+        'initial URL should use parameters from config when scope is '
+        'not existing', () {
       final config = AccessCodeConfiguration(
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
         clientSecretParam: 'clientSecretParam',
         projectionParam: const ['projection'],
+        scopeParam: null,
       );
 
       expect(
         config.initialUrl,
         'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress',
+      );
+    });
+
+    test('initial URL should use parameters from config when scope is existing',
+        () {
+      final config = AccessCodeConfiguration(
+        redirectUrlParam: 'https://www.app.dexter.com',
+        clientIdParam: 'clientIdParam',
+        urlState: 'urlState',
+        clientSecretParam: 'clientSecretParam',
+        projectionParam: const ['projection'],
+        scopeParam: const ['scope1', 'scope2'],
+      );
+
+      expect(
+        config.initialUrl,
+        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=scope1%20scope2',
       );
     });
 
@@ -37,6 +58,7 @@ void main() {
         urlState: 'urlState',
         clientSecretParam: 'clientSecretParam',
         projectionParam: const ['projection'],
+        scopeParam: const ['scope1'],
       );
 
       expect(
@@ -54,6 +76,7 @@ void main() {
         urlState: 'urlState',
         clientSecretParam: 'clientSecretParam',
         projectionParam: const ['projection'],
+        scopeParam: const ['scope1'],
       );
 
       expect(
@@ -71,6 +94,7 @@ void main() {
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
+        scopeParam: const ['scope1'],
       );
 
       expect(config.frontendRedirectUrl, isNull);
@@ -82,6 +106,7 @@ void main() {
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
         frontendRedirectUrlParam: 'frontendRedirectUrlParam',
+        scopeParam: const ['scope1'],
       );
 
       expect(config.frontendRedirectUrl, 'frontendRedirectUrlParam');
@@ -92,6 +117,7 @@ void main() {
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
+        scopeParam: const ['scope1'],
       );
 
       expect(config.frontendRedirectUrl, isNull);
@@ -102,21 +128,41 @@ void main() {
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
+        scopeParam: const ['scope1'],
       );
 
       expect(config.projection, isNull);
     });
 
-    test('initial URL should use parameters from config', () {
+    test(
+        'initial URL should use parameters from config when scope are not '
+        'existing', () {
       final config = AuthCodeConfiguration(
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
+        scopeParam: null,
       );
 
       expect(
         config.initialUrl,
         'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress',
+      );
+    });
+
+    test(
+        'initial URL should use parameters from config when scope are '
+        'existing', () {
+      final config = AuthCodeConfiguration(
+        redirectUrlParam: 'https://www.app.dexter.com',
+        clientIdParam: 'clientIdParam',
+        urlState: 'urlState',
+        scopeParam: const ['scope1', 'scope2'],
+      );
+
+      expect(
+        config.initialUrl,
+        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=scope1%20scope2',
       );
     });
 
@@ -127,6 +173,7 @@ void main() {
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
+        scopeParam: const ['scope1'],
       );
 
       expect(
@@ -145,6 +192,7 @@ void main() {
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
         frontendRedirectUrlParam: 'https://www.frontend.com',
+        scopeParam: const ['scope1'],
       );
 
       expect(
@@ -161,6 +209,7 @@ void main() {
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
         frontendRedirectUrlParam: 'https://www.frontend.com',
+        scopeParam: const ['scope1'],
       );
 
       expect(

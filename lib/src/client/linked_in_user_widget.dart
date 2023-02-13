@@ -32,6 +32,7 @@ class LinkedInUserWidget extends StatefulWidget {
       ProjectionParameters.lastName,
     ],
     this.useVirtualDisplay = false,
+    this.scope,
     final Key? key,
   })  : assert(projection.isNotEmpty),
         super(key: key);
@@ -45,6 +46,7 @@ class LinkedInUserWidget extends StatefulWidget {
   final bool destroySession;
   final List<String> projection;
   final bool useVirtualDisplay;
+  final List<String>? scope;
 
   @override
   State createState() => _LinkedInUserWidgetState();
@@ -67,6 +69,7 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
         clientIdParam: widget.clientId,
         redirectUrlParam: widget.redirectUrl,
         urlState: const Uuid().v4(),
+        scopeParam: widget.scope,
       ),
     );
 

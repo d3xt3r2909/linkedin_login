@@ -13,6 +13,7 @@ void main() {
         urlState: 'urlState',
         clientIdParam: 'clientIdParam',
         redirectUrlParam: 'redirectUrlParam',
+        scopeParam: ['scope1', 'scope2'],
       ),
     );
 
@@ -23,6 +24,7 @@ void main() {
     expect(graph.linkedInConfiguration.frontendRedirectUrl, isNull);
     expect(graph.linkedInConfiguration.state, 'urlState');
     expect(graph.linkedInConfiguration.projection!.length, 5);
+    expect(graph.linkedInConfiguration.scope!.length, 2);
   });
 
   test('is graph created with init for AuthCodeConfig', () async {
@@ -32,6 +34,7 @@ void main() {
         clientIdParam: 'clientIdParam',
         redirectUrlParam: 'redirectUrlParam',
         frontendRedirectUrlParam: 'frontendRedirectUrlParam',
+        scopeParam: ['scope1'],
       ),
     );
 
@@ -45,5 +48,6 @@ void main() {
     );
     expect(graph.linkedInConfiguration.projection, isNull);
     expect(graph.linkedInConfiguration.clientSecret, isNull);
+    expect(graph.linkedInConfiguration.scope!.length, 1);
   });
 }
