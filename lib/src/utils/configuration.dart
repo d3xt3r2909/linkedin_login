@@ -11,14 +11,14 @@ abstract class Config {
 
   String get state;
 
-  List<String>? get scope;
-
   String get initialUrl;
+
+  String scope(final List<String> list) => list.join('%20');
 
   bool isCurrentUrlMatchToRedirection(final String url);
 }
 
-class AccessCodeConfiguration implements Config {
+class AccessCodeConfiguration extends Config {
   AccessCodeConfiguration({
     required this.redirectUrlParam,
     required this.clientIdParam,
@@ -33,7 +33,7 @@ class AccessCodeConfiguration implements Config {
   final String? redirectUrlParam;
   final String? clientIdParam;
   final String urlState;
-  final List<String>? scopeParam;
+  final List<String> scopeParam;
 
   @override
   String? get clientId => clientIdParam;
@@ -54,15 +54,12 @@ class AccessCodeConfiguration implements Config {
   String get state => urlState;
 
   @override
-  List<String>? get scope => scopeParam;
-
-  @override
   String get initialUrl => 'https://www.linkedin.com/oauth/v2/authorization?'
       'response_type=code'
       '&client_id=$clientId'
       '&state=$urlState'
       '&redirect_uri=$redirectUrl'
-      '&scope=${scope?.join('%20') ?? 'r_liteprofile%20r_emailaddress'}';
+      '&scope=${scope(scopeParam)}';
 
   @override
   bool isCurrentUrlMatchToRedirection(final String url) =>
@@ -79,11 +76,11 @@ class AccessCodeConfiguration implements Config {
         'projectionParam: $projectionParam,'
         ' redirectUrlParam: $redirectUrlParam,'
         ' clientIdParam: $clientIdParam, urlState: $urlState}, '
-        'scope:$scopeParam';
+        'scope:${scope(scopeParam)}';
   }
 }
 
-class AuthCodeConfiguration implements Config {
+class AuthCodeConfiguration extends Config {
   AuthCodeConfiguration({
     required this.redirectUrlParam,
     required this.clientIdParam,
@@ -96,7 +93,7 @@ class AuthCodeConfiguration implements Config {
   final String? clientIdParam;
   final String? frontendRedirectUrlParam;
   final String urlState;
-  final List<String>? scopeParam;
+  final List<String> scopeParam;
 
   @override
   String? get clientId => clientIdParam;
@@ -117,15 +114,12 @@ class AuthCodeConfiguration implements Config {
   String get state => urlState;
 
   @override
-  List<String>? get scope => scopeParam;
-
-  @override
   String get initialUrl => 'https://www.linkedin.com/oauth/v2/authorization?'
       'response_type=code'
       '&client_id=$clientId'
       '&state=$state'
       '&redirect_uri=$redirectUrl'
-      '&scope=${scope?.join('%20') ?? 'r_liteprofile%20r_emailaddress'}';
+      '&scope=${scope(scopeParam)}';
 
   @override
   bool isCurrentUrlMatchToRedirection(final String url) =>

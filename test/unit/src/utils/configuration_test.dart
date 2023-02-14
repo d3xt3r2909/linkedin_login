@@ -16,26 +16,7 @@ void main() {
       expect(config.frontendRedirectUrl, isNull);
     });
 
-    test(
-        'initial URL should use parameters from config when scope is '
-        'not existing', () {
-      final config = AccessCodeConfiguration(
-        redirectUrlParam: 'https://www.app.dexter.com',
-        clientIdParam: 'clientIdParam',
-        urlState: 'urlState',
-        clientSecretParam: 'clientSecretParam',
-        projectionParam: const ['projection'],
-        scopeParam: null,
-      );
-
-      expect(
-        config.initialUrl,
-        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress',
-      );
-    });
-
-    test('initial URL should use parameters from config when scope is existing',
-        () {
+    test('initial URL should use parameters from config', () {
       final config = AccessCodeConfiguration(
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
@@ -134,25 +115,7 @@ void main() {
       expect(config.projection, isNull);
     });
 
-    test(
-        'initial URL should use parameters from config when scope are not '
-        'existing', () {
-      final config = AuthCodeConfiguration(
-        redirectUrlParam: 'https://www.app.dexter.com',
-        clientIdParam: 'clientIdParam',
-        urlState: 'urlState',
-        scopeParam: null,
-      );
-
-      expect(
-        config.initialUrl,
-        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress',
-      );
-    });
-
-    test(
-        'initial URL should use parameters from config when scope are '
-        'existing', () {
+    test('initial URL should use parameters from config', () {
       final config = AuthCodeConfiguration(
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',

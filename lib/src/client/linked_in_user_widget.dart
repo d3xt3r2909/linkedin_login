@@ -32,7 +32,10 @@ class LinkedInUserWidget extends StatefulWidget {
       ProjectionParameters.lastName,
     ],
     this.useVirtualDisplay = false,
-    this.scope,
+    this.scope = const [
+      'r_liteprofile',
+      'r_emailaddress',
+    ],
     final Key? key,
   })  : assert(projection.isNotEmpty),
         super(key: key);
@@ -46,7 +49,7 @@ class LinkedInUserWidget extends StatefulWidget {
   final bool destroySession;
   final List<String> projection;
   final bool useVirtualDisplay;
-  final List<String>? scope;
+  final List<String> scope;
 
   @override
   State createState() => _LinkedInUserWidgetState();

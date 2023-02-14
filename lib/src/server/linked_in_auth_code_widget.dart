@@ -23,7 +23,10 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
     this.frontendRedirectUrl,
     this.appBar,
     this.useVirtualDisplay = false,
-    this.scope,
+    this.scope = const [
+      'r_liteprofile',
+      'r_emailaddress',
+    ],
     final Key? key,
   }) : super(key: key);
 
@@ -34,7 +37,7 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
   final AppBar? appBar;
   final bool destroySession;
   final bool useVirtualDisplay;
-  final List<String>? scope;
+  final List<String> scope;
 
   // just in case that frontend in your team has changed redirect url
   final String? frontendRedirectUrl;
