@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:linkedin_login/src/actions.dart';
 import 'package:linkedin_login/src/server/fetcher.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
+import 'package:linkedin_login/src/utils/scope.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/initializer.dart';
 import 'package:linkedin_login/src/utils/startup/injector.dart';
@@ -24,8 +25,8 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
     this.appBar,
     this.useVirtualDisplay = false,
     this.scope = const [
-      'r_liteprofile',
-      'r_emailaddress',
+      LiteProfileScope(),
+      EmailAddressScope(),
     ],
     final Key? key,
   }) : super(key: key);
@@ -37,7 +38,7 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
   final AppBar? appBar;
   final bool destroySession;
   final bool useVirtualDisplay;
-  final List<String> scope;
+  final List<Scope> scope;
 
   // just in case that frontend in your team has changed redirect url
   final String? frontendRedirectUrl;

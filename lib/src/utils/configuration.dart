@@ -1,3 +1,5 @@
+import 'package:linkedin_login/src/utils/scope.dart';
+
 abstract class Config {
   String? get clientSecret;
 
@@ -13,7 +15,8 @@ abstract class Config {
 
   String get initialUrl;
 
-  String scope(final List<String> list) => list.join('%20');
+  String parseScopesToQueryParam(final List<Scope> scopes) =>
+      scopes.map((final e) => e.permission).join('%20');
 
   bool isCurrentUrlMatchToRedirection(final String url);
 }
@@ -33,7 +36,7 @@ class AccessCodeConfiguration extends Config {
   final String? redirectUrlParam;
   final String? clientIdParam;
   final String urlState;
-  final List<String> scopeParam;
+  final List<Scope> scopeParam;
 
   @override
   String? get clientId => clientIdParam;
@@ -59,7 +62,7 @@ class AccessCodeConfiguration extends Config {
       '&client_id=$clientId'
       '&state=$urlState'
       '&redirect_uri=$redirectUrl'
-      '&scope=${scope(scopeParam)}';
+      '&scope=${parseScopesToQueryParam(scopeParam)}';
 
   @override
   bool isCurrentUrlMatchToRedirection(final String url) =>
@@ -76,7 +79,7 @@ class AccessCodeConfiguration extends Config {
         'projectionParam: $projectionParam,'
         ' redirectUrlParam: $redirectUrlParam,'
         ' clientIdParam: $clientIdParam, urlState: $urlState}, '
-        'scope:${scope(scopeParam)}';
+        'scope:${parseScopesToQueryParam(scopeParam)}';
   }
 }
 
@@ -93,7 +96,7 @@ class AuthCodeConfiguration extends Config {
   final String? clientIdParam;
   final String? frontendRedirectUrlParam;
   final String urlState;
-  final List<String> scopeParam;
+  final List<Scope> scopeParam;
 
   @override
   String? get clientId => clientIdParam;
@@ -119,7 +122,7 @@ class AuthCodeConfiguration extends Config {
       '&client_id=$clientId'
       '&state=$state'
       '&redirect_uri=$redirectUrl'
-      '&scope=${scope(scopeParam)}';
+      '&scope=${parseScopesToQueryParam(scopeParam)}';
 
   @override
   bool isCurrentUrlMatchToRedirection(final String url) =>

@@ -1,5 +1,6 @@
 import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
+import 'package:linkedin_login/src/utils/scope.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/initializer.dart';
 import 'package:test/test.dart';
@@ -13,7 +14,7 @@ void main() {
         urlState: 'urlState',
         clientIdParam: 'clientIdParam',
         redirectUrlParam: 'redirectUrlParam',
-        scopeParam: ['scope1', 'scope2'],
+        scopeParam: const [EmailAddressScope(), LiteProfileScope()],
       ),
     );
 
@@ -25,8 +26,10 @@ void main() {
     expect(graph.linkedInConfiguration.state, 'urlState');
     expect(graph.linkedInConfiguration.projection!.length, 5);
     expect(
-      graph.linkedInConfiguration.scope(['scope1', 'scope2']),
-      'scope1%20scope2',
+      graph.linkedInConfiguration.parseScopesToQueryParam(
+        const [EmailAddressScope(), LiteProfileScope()],
+      ),
+      'r_emailaddress%20r_liteprofile',
     );
   });
 
@@ -37,7 +40,7 @@ void main() {
         clientIdParam: 'clientIdParam',
         redirectUrlParam: 'redirectUrlParam',
         frontendRedirectUrlParam: 'frontendRedirectUrlParam',
-        scopeParam: ['scope1'],
+        scopeParam: const [EmailAddressScope()],
       ),
     );
 
@@ -51,6 +54,10 @@ void main() {
     );
     expect(graph.linkedInConfiguration.projection, isNull);
     expect(graph.linkedInConfiguration.clientSecret, isNull);
-    expect(graph.linkedInConfiguration.scope(['scope1']), 'scope1');
+    expect(
+      graph.linkedInConfiguration
+          .parseScopesToQueryParam(const [EmailAddressScope()]),
+      'r_emailaddress',
+    );
   });
 }

@@ -3,6 +3,7 @@ import 'package:linkedin_login/src/actions.dart';
 import 'package:linkedin_login/src/client/fetcher.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
+import 'package:linkedin_login/src/utils/scope.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/initializer.dart';
 import 'package:linkedin_login/src/utils/startup/injector.dart';
@@ -33,8 +34,8 @@ class LinkedInUserWidget extends StatefulWidget {
     ],
     this.useVirtualDisplay = false,
     this.scope = const [
-      'r_liteprofile',
-      'r_emailaddress',
+      LiteProfileScope(),
+      EmailAddressScope(),
     ],
     final Key? key,
   })  : assert(projection.isNotEmpty),
@@ -49,7 +50,7 @@ class LinkedInUserWidget extends StatefulWidget {
   final bool destroySession;
   final List<String> projection;
   final bool useVirtualDisplay;
-  final List<String> scope;
+  final List<Scope> scope;
 
   @override
   State createState() => _LinkedInUserWidgetState();

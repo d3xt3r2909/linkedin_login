@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
+import 'package:linkedin_login/src/utils/scope.dart';
 
 void main() {
   group('AccessCodeConfiguration class', () {
@@ -10,7 +11,7 @@ void main() {
         urlState: 'urlState',
         clientSecretParam: 'clientSecretParam',
         projectionParam: const ['projection'],
-        scopeParam: const ['scope1'],
+        scopeParam: const [EmailAddressScope()],
       );
 
       expect(config.frontendRedirectUrl, isNull);
@@ -23,12 +24,12 @@ void main() {
         urlState: 'urlState',
         clientSecretParam: 'clientSecretParam',
         projectionParam: const ['projection'],
-        scopeParam: const ['scope1', 'scope2'],
+        scopeParam: const [EmailAddressScope(), LiteProfileScope()],
       );
 
       expect(
         config.initialUrl,
-        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=scope1%20scope2',
+        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=r_emailaddress%20r_liteprofile',
       );
     });
 
@@ -39,7 +40,7 @@ void main() {
         urlState: 'urlState',
         clientSecretParam: 'clientSecretParam',
         projectionParam: const ['projection'],
-        scopeParam: const ['scope1'],
+        scopeParam: const [LiteProfileScope()],
       );
 
       expect(
@@ -57,7 +58,7 @@ void main() {
         urlState: 'urlState',
         clientSecretParam: 'clientSecretParam',
         projectionParam: const ['projection'],
-        scopeParam: const ['scope1'],
+        scopeParam: const [EmailAddressScope()],
       );
 
       expect(
@@ -75,7 +76,7 @@ void main() {
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
-        scopeParam: const ['scope1'],
+        scopeParam: const [EmailAddressScope()],
       );
 
       expect(config.frontendRedirectUrl, isNull);
@@ -87,7 +88,7 @@ void main() {
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
         frontendRedirectUrlParam: 'frontendRedirectUrlParam',
-        scopeParam: const ['scope1'],
+        scopeParam: const [EmailAddressScope()],
       );
 
       expect(config.frontendRedirectUrl, 'frontendRedirectUrlParam');
@@ -98,7 +99,7 @@ void main() {
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
-        scopeParam: const ['scope1'],
+        scopeParam: const [EmailAddressScope()],
       );
 
       expect(config.frontendRedirectUrl, isNull);
@@ -109,7 +110,7 @@ void main() {
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
-        scopeParam: const ['scope1'],
+        scopeParam: const [EmailAddressScope()],
       );
 
       expect(config.projection, isNull);
@@ -120,12 +121,12 @@ void main() {
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
-        scopeParam: const ['scope1', 'scope2'],
+        scopeParam: const [EmailAddressScope(), LiteProfileScope()],
       );
 
       expect(
         config.initialUrl,
-        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=scope1%20scope2',
+        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=r_emailaddress%20r_liteprofile',
       );
     });
 
@@ -136,7 +137,7 @@ void main() {
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
-        scopeParam: const ['scope1'],
+        scopeParam: const [EmailAddressScope()],
       );
 
       expect(
@@ -155,7 +156,7 @@ void main() {
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
         frontendRedirectUrlParam: 'https://www.frontend.com',
-        scopeParam: const ['scope1'],
+        scopeParam: const [EmailAddressScope()],
       );
 
       expect(
@@ -172,7 +173,7 @@ void main() {
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
         frontendRedirectUrlParam: 'https://www.frontend.com',
-        scopeParam: const ['scope1'],
+        scopeParam: const [EmailAddressScope()],
       );
 
       expect(
