@@ -8,12 +8,12 @@ void main() => runApp(const MyApp());
 // You need to add your own data from LinkedIn application
 // From: https://www.linkedin.com/developers/
 // Please read step 1 from this link https://developer.linkedin.com/docs/oauth2
-const String redirectUrl = 'https://www.youtube.com/callback';
-const String clientId = '776rnw4e4izlvg';
-const String clientSecret = 'rQEgboUHMLcQi59v';
+const String redirectUrl = 'https://dev.hrdrone.am/auth/linkedin-redirect';
+const String clientId = '7844c32nockup4';
+const String clientSecret = 'ZPaesIY6WIMAj9Zh';
 
 class MyApp extends StatelessWidget {
-  const MyApp({final Key key}) : super(key: key);
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -51,7 +51,7 @@ class MyApp extends StatelessWidget {
 }
 
 class LinkedInProfileExamplePage extends StatefulWidget {
-  const LinkedInProfileExamplePage({final Key key}) : super(key: key);
+  const LinkedInProfileExamplePage({super.key});
 
   @override
   State createState() => _LinkedInProfileExamplePageState();
@@ -59,7 +59,7 @@ class LinkedInProfileExamplePage extends StatefulWidget {
 
 class _LinkedInProfileExamplePageState
     extends State<LinkedInProfileExamplePage> {
-  UserObject user;
+  UserObject? user;
   bool logoutUser = false;
 
   @override
@@ -102,18 +102,17 @@ class _LinkedInProfileExamplePageState
 
                       user = UserObject(
                         firstName:
-                            linkedInUser?.user?.firstName?.localized?.label,
-                        lastName:
-                            linkedInUser?.user?.lastName?.localized?.label,
-                        email: linkedInUser?.user?.email?.elements[0]
-                            ?.handleDeep?.emailAddress,
+                            linkedInUser.user.firstName?.localized?.label,
+                        lastName: linkedInUser.user.lastName?.localized?.label,
+                        email: linkedInUser
+                            .user.email?.elements?[0].handleDeep?.emailAddress,
                         profileImageUrl: linkedInUser
-                            ?.user
-                            ?.profilePicture
+                            .user
+                            .profilePicture
                             ?.displayImageContent
-                            ?.elements[0]
-                            ?.identifiers[0]
-                            ?.identifier,
+                            ?.elements?[0]
+                            .identifiers?[0]
+                            .identifier,
                       );
 
                       setState(() {
@@ -153,7 +152,7 @@ class _LinkedInProfileExamplePageState
 }
 
 class LinkedInAuthCodeExamplePage extends StatefulWidget {
-  const LinkedInAuthCodeExamplePage({final Key key}) : super(key: key);
+  const LinkedInAuthCodeExamplePage({super.key});
 
   @override
   State createState() => _LinkedInAuthCodeExamplePageState();
@@ -161,7 +160,7 @@ class LinkedInAuthCodeExamplePage extends StatefulWidget {
 
 class _LinkedInAuthCodeExamplePageState
     extends State<LinkedInAuthCodeExamplePage> {
-  AuthCodeObject authorizationCode;
+  AuthCodeObject? authorizationCode;
   bool logoutUser = false;
 
   @override
@@ -228,8 +227,8 @@ class _LinkedInAuthCodeExamplePageState
 class AuthCodeObject {
   AuthCodeObject({this.code, this.state});
 
-  final String code;
-  final String state;
+  final String? code;
+  final String? state;
 }
 
 class UserObject {
@@ -240,8 +239,8 @@ class UserObject {
     this.profileImageUrl,
   });
 
-  final String firstName;
-  final String lastName;
-  final String email;
-  final String profileImageUrl;
+  final String? firstName;
+  final String? lastName;
+  final String? email;
+  final String? profileImageUrl;
 }

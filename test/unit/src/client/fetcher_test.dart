@@ -240,6 +240,6 @@ class _ArrangeBuilder {
         .thenAnswer((final _) => 'https://frontendRedirectUrl.com');
     when(configuration.clientId).thenAnswer((final _) => 'clientId');
     when(configuration.state).thenAnswer((final _) => 'state');
-    when(configuration.initialUrl).thenAnswer((final _) => 'initialUrl');
+    when(configuration.initialUri.path).thenAnswer((final _) => 'initialUrl');
   }
 }

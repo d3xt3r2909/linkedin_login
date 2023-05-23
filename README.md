@@ -47,6 +47,10 @@ Call LinkedIn authorization and get user object:
                 print('First name: ${linkedInUser.user.firstName.localized.label}');
                 print('Last name: ${linkedInUser.user.lastName.localized.label}');
        },
+       scope: [
+                 Scopes.readEmailAddress,
+                 Scopes.readLiteProfile,
+              ],
        onError: (UserFailedAction e) {
                 print('Error: ${e.toString()}');
        },
@@ -63,6 +67,10 @@ Or you can just fetch authorization code (clientSecret is not required in this w
                 print('Auth code ${response.codeResponse.code}');
                 print('State: ${response.codeResponse.state}');
             },
+        scope: [
+                  Scopes.readEmailAddress,
+                  Scopes.readLiteProfile,
+                ],
         onError: (AuthorizationFailedAction e) {
                 print('Error: ${e.toString()}');
              },

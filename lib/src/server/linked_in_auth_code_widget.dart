@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:linkedin_login/src/actions.dart';
+import 'package:linkedin_login/linkedin_login.dart';
 import 'package:linkedin_login/src/server/fetcher.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
@@ -19,12 +19,16 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
     required this.redirectUrl,
     required this.clientId,
     required this.onError,
+    super.key,
     this.destroySession = false,
     this.frontendRedirectUrl,
     this.appBar,
     this.useVirtualDisplay = false,
-    final Key? key,
-  }) : super(key: key);
+    this.scopes = const [
+      Scopes.readEmailAddress,
+      Scopes.readLiteProfile,
+    ],
+  });
 
   final ValueChanged<AuthorizationSucceededAction>? onGetAuthCode;
   final ValueChanged<AuthorizationFailedAction> onError;
@@ -33,6 +37,7 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
   final AppBar? appBar;
   final bool destroySession;
   final bool useVirtualDisplay;
+  final List<Scopes> scopes;
 
   // just in case that frontend in your team has changed redirect url
   final String? frontendRedirectUrl;
@@ -54,6 +59,7 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
         redirectUrlParam: widget.redirectUrl,
         clientIdParam: widget.clientId,
         frontendRedirectUrlParam: widget.frontendRedirectUrl,
+        scopes: widget.scopes,
       ),
     );
   }

@@ -94,5 +94,5 @@ class WebViewControllerBuilder {
     return DirectionUrlMatch(url: url, type: type);
   }
 
-  Uri _initialUrl() => Uri.parse(configuration.initialUrl);
+  Uri _initialUrl() => configuration.initialUri;
 }

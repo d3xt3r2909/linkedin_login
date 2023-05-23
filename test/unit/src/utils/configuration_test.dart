@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:linkedin_login/linkedin_login.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
 
 void main() {
@@ -10,6 +11,10 @@ void main() {
         urlState: 'urlState',
         clientSecretParam: 'clientSecretParam',
         projectionParam: const ['projection'],
+        scopes: const [
+          Scopes.readLiteProfile,
+          Scopes.readEmailAddress,
+        ],
       );
 
       expect(config.frontendRedirectUrl, isNull);
@@ -22,12 +27,14 @@ void main() {
         urlState: 'urlState',
         clientSecretParam: 'clientSecretParam',
         projectionParam: const ['projection'],
+        scopes: const [
+          Scopes.readEmailAddress,
+          Scopes.readLiteProfile,
+        ],
       );
 
-      expect(
-        config.initialUrl,
-        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress',
-      );
+      expect(config.initialUri.toString(),
+          'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https%3A%2F%2Fwww.app.dexter.com&scope=r_emailaddress+r_liteprofile',);
     });
 
     test('redirection url starts with redirected parameter', () {
@@ -37,6 +44,10 @@ void main() {
         urlState: 'urlState',
         clientSecretParam: 'clientSecretParam',
         projectionParam: const ['projection'],
+        scopes: const [
+          Scopes.readLiteProfile,
+          Scopes.readEmailAddress,
+        ],
       );
 
       expect(
@@ -54,6 +65,10 @@ void main() {
         urlState: 'urlState',
         clientSecretParam: 'clientSecretParam',
         projectionParam: const ['projection'],
+        scopes: const [
+          Scopes.readEmailAddress,
+          Scopes.readLiteProfile,
+        ],
       );
 
       expect(
@@ -71,6 +86,10 @@ void main() {
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
+        scopes: const [
+          Scopes.readEmailAddress,
+          Scopes.readLiteProfile,
+        ],
       );
 
       expect(config.frontendRedirectUrl, isNull);
@@ -82,6 +101,10 @@ void main() {
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
         frontendRedirectUrlParam: 'frontendRedirectUrlParam',
+        scopes: const [
+          Scopes.readEmailAddress,
+          Scopes.readLiteProfile,
+        ],
       );
 
       expect(config.frontendRedirectUrl, 'frontendRedirectUrlParam');
@@ -92,6 +115,10 @@ void main() {
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
+        scopes: const [
+          Scopes.readEmailAddress,
+          Scopes.readLiteProfile,
+        ],
       );
 
       expect(config.frontendRedirectUrl, isNull);
@@ -102,6 +129,10 @@ void main() {
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
+        scopes: const [
+          Scopes.readEmailAddress,
+          Scopes.readLiteProfile,
+        ],
       );
 
       expect(config.projection, isNull);
@@ -112,11 +143,15 @@ void main() {
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
+        scopes: const [
+          Scopes.readEmailAddress,
+          Scopes.readLiteProfile,
+        ],
       );
 
       expect(
-        config.initialUrl,
-        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https://www.app.dexter.com&scope=r_liteprofile%20r_emailaddress',
+        config.initialUri.toString(),
+        'https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=clientIdParam&state=urlState&redirect_uri=https%3A%2F%2Fwww.app.dexter.com&scope=r_emailaddress+r_liteprofile',
       );
     });
 
@@ -127,6 +162,10 @@ void main() {
         redirectUrlParam: 'https://www.app.dexter.com',
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
+        scopes: const [
+          Scopes.readEmailAddress,
+          Scopes.readLiteProfile,
+        ],
       );
 
       expect(
@@ -145,6 +184,10 @@ void main() {
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
         frontendRedirectUrlParam: 'https://www.frontend.com',
+        scopes: const [
+          Scopes.readEmailAddress,
+          Scopes.readLiteProfile,
+        ],
       );
 
       expect(
@@ -161,6 +204,10 @@ void main() {
         clientIdParam: 'clientIdParam',
         urlState: 'urlState',
         frontendRedirectUrlParam: 'https://www.frontend.com',
+        scopes: const [
+          Scopes.readEmailAddress,
+          Scopes.readLiteProfile,
+        ],
       );
 
       expect(

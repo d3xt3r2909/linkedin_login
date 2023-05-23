@@ -1,5 +1,5 @@
+import 'package:linkedin_login/linkedin_login.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
-import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/initializer.dart';
 import 'package:test/test.dart';
@@ -13,6 +13,10 @@ void main() {
         urlState: 'urlState',
         clientIdParam: 'clientIdParam',
         redirectUrlParam: 'redirectUrlParam',
+        scopes: const [
+          Scopes.readEmailAddress,
+          Scopes.readLiteProfile,
+        ],
       ),
     );
 
@@ -32,6 +36,10 @@ void main() {
         clientIdParam: 'clientIdParam',
         redirectUrlParam: 'redirectUrlParam',
         frontendRedirectUrlParam: 'frontendRedirectUrlParam',
+        scopes: const [
+          Scopes.readEmailAddress,
+          Scopes.readLiteProfile,
+        ],
       ),
     );
 
