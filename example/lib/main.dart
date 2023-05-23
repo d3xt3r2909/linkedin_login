@@ -8,9 +8,9 @@ void main() => runApp(const MyApp());
 // You need to add your own data from LinkedIn application
 // From: https://www.linkedin.com/developers/
 // Please read step 1 from this link https://developer.linkedin.com/docs/oauth2
-const String redirectUrl = 'https://dev.hrdrone.am/auth/linkedin-redirect';
-const String clientId = '7844c32nockup4';
-const String clientSecret = 'ZPaesIY6WIMAj9Zh';
+const String redirectUrl = 'https://www.youtube.com/callback';
+const String clientId = '776rnw4e4izlvg';
+const String clientSecret = 'rQEgboUHMLcQi59v';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
