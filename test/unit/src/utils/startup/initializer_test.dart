@@ -1,5 +1,6 @@
 import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
+import 'package:linkedin_login/src/utils/scope.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/initializer.dart';
 import 'package:test/test.dart';
@@ -13,6 +14,7 @@ void main() {
         urlState: 'urlState',
         clientIdParam: 'clientIdParam',
         redirectUrlParam: 'redirectUrlParam',
+        scopeParam: const [EmailAddressScope(), LiteProfileScope()],
       ),
     );
 
@@ -23,6 +25,12 @@ void main() {
     expect(graph.linkedInConfiguration.frontendRedirectUrl, isNull);
     expect(graph.linkedInConfiguration.state, 'urlState');
     expect(graph.linkedInConfiguration.projection!.length, 5);
+    expect(
+      graph.linkedInConfiguration.parseScopesToQueryParam(
+        const [EmailAddressScope(), LiteProfileScope()],
+      ),
+      'r_emailaddress%20r_liteprofile',
+    );
   });
 
   test('is graph created with init for AuthCodeConfig', () async {
@@ -32,6 +40,7 @@ void main() {
         clientIdParam: 'clientIdParam',
         redirectUrlParam: 'redirectUrlParam',
         frontendRedirectUrlParam: 'frontendRedirectUrlParam',
+        scopeParam: const [EmailAddressScope()],
       ),
     );
 
@@ -45,5 +54,10 @@ void main() {
     );
     expect(graph.linkedInConfiguration.projection, isNull);
     expect(graph.linkedInConfiguration.clientSecret, isNull);
+    expect(
+      graph.linkedInConfiguration
+          .parseScopesToQueryParam(const [EmailAddressScope()]),
+      'r_emailaddress',
+    );
   });
 }

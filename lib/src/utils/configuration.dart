@@ -1,3 +1,5 @@
+import 'package:linkedin_login/src/utils/scope.dart';
+
 abstract class Config {
   String? get clientSecret;
 
@@ -13,16 +15,20 @@ abstract class Config {
 
   String get initialUrl;
 
+  String parseScopesToQueryParam(final List<Scope> scopes) =>
+      scopes.map((final e) => e.permission).join('%20');
+
   bool isCurrentUrlMatchToRedirection(final String url);
 }
 
-class AccessCodeConfiguration implements Config {
+class AccessCodeConfiguration extends Config {
   AccessCodeConfiguration({
     required this.redirectUrlParam,
     required this.clientIdParam,
     required this.clientSecretParam,
     required this.projectionParam,
     required this.urlState,
+    required this.scopeParam,
   });
 
   final String? clientSecretParam;
@@ -30,6 +36,7 @@ class AccessCodeConfiguration implements Config {
   final String? redirectUrlParam;
   final String? clientIdParam;
   final String urlState;
+  final List<Scope> scopeParam;
 
   @override
   String? get clientId => clientIdParam;
@@ -55,7 +62,7 @@ class AccessCodeConfiguration implements Config {
       '&client_id=$clientId'
       '&state=$urlState'
       '&redirect_uri=$redirectUrl'
-      '&scope=r_liteprofile%20r_emailaddress';
+      '&scope=${parseScopesToQueryParam(scopeParam)}';
 
   @override
   bool isCurrentUrlMatchToRedirection(final String url) =>
@@ -71,15 +78,17 @@ class AccessCodeConfiguration implements Config {
         '${clientSecretParam!.isNotEmpty ? 'XXX' : 'INVALID'}, '
         'projectionParam: $projectionParam,'
         ' redirectUrlParam: $redirectUrlParam,'
-        ' clientIdParam: $clientIdParam, urlState: $urlState}';
+        ' clientIdParam: $clientIdParam, urlState: $urlState}, '
+        'scope:${parseScopesToQueryParam(scopeParam)}';
   }
 }
 
-class AuthCodeConfiguration implements Config {
+class AuthCodeConfiguration extends Config {
   AuthCodeConfiguration({
     required this.redirectUrlParam,
     required this.clientIdParam,
     required this.urlState,
+    required this.scopeParam,
     this.frontendRedirectUrlParam,
   });
 
@@ -87,6 +96,7 @@ class AuthCodeConfiguration implements Config {
   final String? clientIdParam;
   final String? frontendRedirectUrlParam;
   final String urlState;
+  final List<Scope> scopeParam;
 
   @override
   String? get clientId => clientIdParam;
@@ -112,7 +122,7 @@ class AuthCodeConfiguration implements Config {
       '&client_id=$clientId'
       '&state=$state'
       '&redirect_uri=$redirectUrl'
-      '&scope=r_liteprofile%20r_emailaddress';
+      '&scope=${parseScopesToQueryParam(scopeParam)}';
 
   @override
   bool isCurrentUrlMatchToRedirection(final String url) =>
