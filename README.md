@@ -101,6 +101,31 @@ You can include also `profilePicture` to get URL of user profile image. If you c
 to some custom value you will override default values, and you need to add every of these manually
 to array. For more info see example project.
 
+## Scopes - Enables you to define whatever scope you are needed
+### Available from version 2.3.1
+
+You can control scope that you want to get from LinkedIn. By default you will have `r_emailaddress`
+and `r_liteprofile` but you can change it anytime if you use `scope` property inside `LinkedInUserWidget`
+or inside of `LinkedInAuthCodeWidget`.
+
+```dart
+  final scopes = const [
+    EmailAddressScope(),
+    LiteProfileScope(),
+  ],
+```
+
+You are also able to create custom scopes by extending `Scope` class
+
+```dart
+class CustomScope extends Scope {
+  const CustomScope() : super('r_emailaddress');
+}
+```
+
+However please take in consideration limitations of this library under section `known limitations`
+inside this file.
+
 ## Properties that are available after call for LinkedInAuthCodeWidget
 
 ```dart
