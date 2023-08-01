@@ -149,6 +149,7 @@ class _DisplayImage {
         elements: (json['elements'] != null && '${json['elements']}' != '[]')
             // ignore: avoid_as
             ? (json['elements'] as List)
+                // ignore: unnecessary_lambdas
                 .map((final i) => _ImageItem.fromJson(i))
                 .toList()
             : [],
@@ -170,6 +171,7 @@ class _ImageItem {
             (json['identifiers'] != null && '${json['identifiers']}' != '[]')
                 // ignore: avoid_as
                 ? (json['identifiers'] as List)
+                    // ignore: unnecessary_lambdas
                     .map((final i) => _ImageIdentifierItem.fromJson(i))
                     .toList()
                 : [],
@@ -235,6 +237,7 @@ class LinkedInProfileEmail {
         elements: (json['elements'] != null && '${json['elements']}' != '[]')
             // ignore: avoid_as
             ? (json['elements'] as List)
+                // ignore: unnecessary_lambdas
                 .map((final i) => LinkedInDeepEmail.fromJson(i))
                 .toList()
             : [],
