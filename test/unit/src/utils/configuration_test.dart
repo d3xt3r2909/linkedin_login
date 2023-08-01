@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
-import 'package:linkedin_login/src/utils/scope.dart';
+import 'package:linkedin_login/src/utils/scopes.dart';
 
 void main() {
   group('AccessCodeConfiguration class', () {

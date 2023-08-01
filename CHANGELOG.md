@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 2.3.1
+### Support change of scopes
+
+- Support changing scopes for authentication, thanks to [kgeorgek](https://github.com/kgeorgek)
+- Usage is mentioned inside README.md under `Scopes` section
+- Please have in mind that there are still limitations regarding this, more inside `Known Limitations` section
+
 ## 2.3.0
 ### Update dependencies
 

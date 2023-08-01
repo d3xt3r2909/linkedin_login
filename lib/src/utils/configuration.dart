@@ -1,4 +1,4 @@
-import 'package:linkedin_login/src/utils/scope.dart';
+import 'package:linkedin_login/src/utils/scopes.dart';
 
 abstract class Config {
   String? get clientSecret;

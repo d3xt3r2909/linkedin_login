@@ -3,7 +3,7 @@ import 'package:linkedin_login/src/actions.dart';
 import 'package:linkedin_login/src/client/fetcher.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
 import 'package:linkedin_login/src/utils/constants.dart';
-import 'package:linkedin_login/src/utils/scope.dart';
+import 'package:linkedin_login/src/utils/scopes.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/initializer.dart';
 import 'package:linkedin_login/src/utils/startup/injector.dart';

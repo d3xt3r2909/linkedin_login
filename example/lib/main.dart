@@ -89,7 +89,10 @@ class _LinkedInProfileExamplePageState
                       ProjectionParameters.lastName,
                       ProjectionParameters.profilePicture,
                     ],
-                    scope: const [EmailAddressScope(), LiteProfileScope()],
+                    scope: const [
+                      EmailAddressScope(),
+                      LiteProfileScope(),
+                    ],
                     onError: (final UserFailedAction e) {
                       print('Error: ${e.toString()}');
                       print('Error: ${e.stackTrace.toString()}');
