@@ -60,7 +60,9 @@ class LinkedInUserModel extends LinkedInUser {
     final sub = json['sub'] as String?;
     final email = json['email'] as String?;
     final picture = json['picture'] as String?;
-    final locale = LinkedInPreferredLocal.fromJson(json['locale']);
+    final locale = json['locale'] == null
+        ? null
+        : LinkedInPreferredLocal.fromJson(json['locale']);
 
     return LinkedInUserModel(
       email: email,

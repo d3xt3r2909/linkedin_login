@@ -121,13 +121,13 @@ to property ```destroySession```  in ```LinkedInUserWidget``` or ```LinkedInAuth
 ## Scopes - Enables you to define whatever scope you are needed
 ### Available from version 2.3.1
 
-`r_emailaddress` and `r_liteprofile` scopes will be removed from LinkedIn after 30 of November.
+`r_emailaddress` and `r_liteprofile` scopes will be removed from LinkedIn after 30 of November and they are removed from library after 3.x.x version.
 
-Now you should add under "Products" Sign In With LinkedIn using OpenID Connect
+Now you should add under "Products" -> "Sign In With LinkedIn using OpenID Connect"
 
 https://www.linkedin.com/developers/apps/{REPLACE_WITH_ID_OF_YOUR_APP}/products
 
-OpenId is requiring at least having openid scope, but by default this library is adding three scopes
+OpenId is requiring openid scope with in combination of at least Email or Profile scope, but by default this library is adding three scopes
 
 ```dart
   final scopes = const [
@@ -141,7 +141,7 @@ You are also able to create custom scopes by extending `Scope` class
 
 ```dart
 class CustomScope extends Scope {
-  const CustomScope() : super('r_emailaddress');
+  const CustomScope() : super('whatever_scope_of_name_to_map_with_linkedin_api');
 }
 ```
 
