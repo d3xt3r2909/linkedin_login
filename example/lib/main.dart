@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
                   icon: Icon(Icons.person),
                   text: 'Profile',
                 ),
-                Tab(icon: Icon(Icons.text_fields), text: 'Auth code')
+                Tab(icon: Icon(Icons.text_fields), text: 'Auth code'),
               ],
             ),
             title: const Text('LinkedIn Authorization'),
@@ -81,43 +81,22 @@ class _LinkedInProfileExamplePageState
                     redirectUrl: redirectUrl,
                     clientId: clientId,
                     clientSecret: clientSecret,
-                    projection: const [
-                      ProjectionParameters.id,
-                      ProjectionParameters.localizedFirstName,
-                      ProjectionParameters.localizedLastName,
-                      ProjectionParameters.firstName,
-                      ProjectionParameters.lastName,
-                      ProjectionParameters.profilePicture,
-                    ],
-                    scope: const [
-                      EmailAddressScope(),
-                      LiteProfileScope(),
-                    ],
                     onError: (final UserFailedAction e) {
                       print('Error: ${e.toString()}');
                       print('Error: ${e.stackTrace.toString()}');
                     },
                     onGetUserProfile: (final UserSucceededAction linkedInUser) {
                       print(
-                        'Access token ${linkedInUser.user.token.accessToken}',
+                        'Access token ${linkedInUser.user.token}',
                       );
 
-                      print('User id: ${linkedInUser.user.userId}');
+                      print('User sub: ${linkedInUser.user.sub}');
 
                       user = UserObject(
-                        firstName:
-                            linkedInUser.user.firstName?.localized?.label,
-                        lastName: linkedInUser.user.lastName?.localized?.label,
-                        email: linkedInUser.user.email?.elements
-                            ?.elementAt(0)
-                            .handleDeep
-                            ?.emailAddress,
-                        profileImageUrl: linkedInUser
-                            .user.profilePicture?.displayImageContent?.elements
-                            ?.elementAt(0)
-                            .identifiers
-                            ?.elementAt(0)
-                            .identifier,
+                        firstName: linkedInUser.user.givenName,
+                        lastName: linkedInUser.user.familyName,
+                        email: linkedInUser.user.email,
+                        profileImageUrl: linkedInUser.user.picture,
                       );
 
                       setState(() {

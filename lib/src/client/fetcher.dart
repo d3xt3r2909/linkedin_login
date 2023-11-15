@@ -16,7 +16,12 @@ class ClientFetcher {
       final token = await _fetchAccessTokenUser();
       final user = await _fetchLinkedInProfile(token.accessToken!);
 
-      return UserSucceededAction(user);
+      return UserSucceededAction(
+        EnrichedUser(
+          user: user,
+          token: token.accessToken!,
+        ),
+      );
       // ignore: avoid_catches_without_on_clauses
     } catch (e, s) {
       return UserFailedAction(exception: e, stackTrace: s);
@@ -48,15 +53,14 @@ class ClientFetcher {
     }
   }
 
-  Future<LinkedInUserModel> _fetchLinkedInProfile(
+  Future<LinkedInUser> _fetchLinkedInProfile(
     final LinkedInTokenObject tokenObject,
   ) async {
     try {
       log('LinkedInAuth-steps: Fetching full profile...');
 
-      final user = await graph.userRepository.fetchFullProfile(
+      final user = await graph.userRepository.fetchProfile(
         token: tokenObject,
-        projection: graph.linkedInConfiguration.projection!,
         client: graph.httpClient,
       );
 

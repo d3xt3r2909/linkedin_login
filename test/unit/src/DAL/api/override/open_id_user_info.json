@@ -1,0 +1,13 @@
+{
+  "sub": "clv_xxxxxx",
+  "email_verified": true,
+  "name": "John Doe",
+  "locale": {
+    "country": "US",
+    "language": "en"
+  },
+  "given_name": "John",
+  "family_name": "Doe",
+  "email": "my.email@gmail.com",
+  "picture": "https://media-exp1.licdn.com/dms/image/C4D03AQHirapDum_ZbC/profile-displayphoto-shrink_100_100/0?e=1611792000&v=beta&t=ijlJxIZEMFJDUhnJNrsoWX2vCBIUOXWv4eYCTlPOw-c"
+}

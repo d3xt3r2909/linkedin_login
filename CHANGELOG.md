@@ -4,6 +4,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 3.0.0-beta.1
+### Contains breaking change - migration to sign in with OpenId
+
+Since LinkedIn introduce new way of signing in with LinkedIn called "Sign In with LinkedIn using OpenID Connect"
+and they are deprecating and removing "Sign In with LinkedIn" from product list (see LinkedIn console where you have created your app)
+this library needs to have few breaking changes duo change of architecture. Sorry for that in advance.
+
+- Projection property no longer exists since `/me` API is removed and from now on library is using `/userinfo` [docs](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin-v2)
+- Previous scopes are removed (r_emailaddress, r_liteprofile) and introduces new ones: `openid`, `email`, `profile`
+- All fields on user response are flatten (see example project) and some are not existing anymore
+- Response that you can get from LinkedIn with new API looks like this
+
+```json
+{
+    "sub": "xxxx",
+    "email_verified": true,
+    "name": "xxxx",
+    "locale": {
+        "country": "US",
+        "language": "en"
+    },
+    "given_name": "xxxx",
+    "family_name": "xxxx",
+    "email": "xxxx",
+    "picture": "xxxx"
+}
+```
+
+For more details about this change you can navigate to this [issue](https://github.com/d3xt3r2909/linkedin_login/issues/91)
+
+More references:
+
+- [O-Auth]https://learn.microsoft.com/en-gb/linkedin/shared/authentication/authorization-code-flow?tabs=HTTPS1
+- [Sign In With OpenID](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin-v2)
+- [Deprecation note - Since Aug. 1. 2023](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin)
+
 ## 2.3.1
 ### Support change of scopes
 

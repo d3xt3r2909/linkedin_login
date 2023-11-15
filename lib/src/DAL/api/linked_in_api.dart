@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:linkedin_login/src/DAL/api/endpoint.dart';
 import 'package:linkedin_login/src/DAL/api/exceptions.dart';
@@ -73,48 +72,26 @@ class LinkedInApi {
     return value.split('?').first;
   }
 
-  Future<LinkedInUserModel> fetchProfile({
+  /// This method is using new api from Linkedin
+  /// and requires OpenId scope at least, as success response
+  /// will return users available data
+  Future<LinkedInUserModel> fetchUserInfo({
     required final String? token,
-    required final List<String> projection,
     required final http.Client client,
   }) async {
-    assert(token != null);
-    log('LinkedInAuth-steps: trying to fetchProfile...');
+    log('LinkedInAuth-steps: trying to fetch user info...');
 
-    final projectionParameter = 'projection=(${projection.join(",")})';
     final endpoint = _generateEndpoint(
       EnvironmentAccess.profile,
-      'me?$projectionParameter',
+      'userinfo',
     );
 
-    log('LinkedInAuth-steps: trying to fetchProfile on ${endpoint.toString()}');
-
+    log('LinkedInAuth-steps: trying to fetch from ${endpoint.toString()}');
     final response = await _get(endpoint, token!, client);
 
-    log('LinkedInAuth-steps: trying to fetchProfile DONE');
+    log('LinkedInAuth-steps: trying to login DONE');
 
     return LinkedInUserModel.fromJson(response);
-  }
-
-  Future<LinkedInProfileEmail> fetchEmail({
-    required final String? token,
-    required final http.Client client,
-  }) async {
-    assert(token != null);
-    log('LinkedInAuth-steps: trying to fetchEmail...');
-
-    final endpoint = _generateEndpoint(
-      EnvironmentAccess.profile,
-      'emailAddress?q=members&projection=(elements*(handle~))',
-    );
-
-    log('LinkedInAuth-steps: trying to fetchEmail on ${endpoint.toString()}');
-
-    final response = await _get(endpoint, token!, client);
-
-    log('LinkedInAuth-steps: trying to fetchEmail DONE');
-
-    return LinkedInProfileEmail.fromJson(response);
   }
 
   Future<dynamic> _get(
@@ -146,11 +123,7 @@ class LinkedInApi {
     final http.Client client,
     final dynamic body,
   ) async {
-    final response = await _fetchPostResponse(
-      url,
-      client,
-      body,
-    );
+    final response = await _fetchPostResponse(url, client, body);
 
     if (response.statusCode < 200 || response.statusCode >= 300) {
       return Future.error(
@@ -170,7 +143,7 @@ class LinkedInApi {
     final http.Client client,
     final dynamic body,
   ) async {
-    final headers = {
+    final headers = <String, String>{
       HttpHeaders.contentTypeHeader: 'application/x-www-form-urlencoded',
       HttpHeaders.acceptHeader: 'application/json',
     };

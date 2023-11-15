@@ -25,8 +25,9 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
     this.appBar,
     this.useVirtualDisplay = false,
     this.scope = const [
-      LiteProfileScope(),
-      EmailAddressScope(),
+      OpenIdScope(),
+      EmailScope(),
+      ProfileScope(),
     ],
     final Key? key,
   }) : super(key: key);

@@ -1,8 +1,9 @@
 /// Gives you ability to introduce scope whatever you think its needed.
 ///
 /// Please have in mind that any other scope that is not inside this file is not
-/// supported by json parser and most probably will not work. If you want to have
-/// a new scope you should contribute to this library inside lib/src/model/linked_in_user_model.dart
+/// supported by json parser and most probably will not work.
+/// If you want to have a new scope you should contribute to this library inside
+/// lib/src/model/linked_in_user_model.dart
 ///
 /// Reason behind this is that LinkedIn is not giving to everyone all the access
 /// (scopes) and I am unable to find out what response could be for some other
@@ -24,10 +25,26 @@ abstract class Scope {
   String toString() => permission;
 }
 
+@Deprecated('Use EmailScope instead')
 class EmailAddressScope extends Scope {
+  @Deprecated('Use EmailScope instead')
   const EmailAddressScope() : super('r_emailaddress');
 }
 
+@Deprecated('Use ProfileScope instead')
 class LiteProfileScope extends Scope {
+  @Deprecated('Use ProfileScope instead')
   const LiteProfileScope() : super('r_liteprofile');
+}
+
+class OpenIdScope extends Scope {
+  const OpenIdScope() : super('openid');
+}
+
+class EmailScope extends Scope {
+  const EmailScope() : super('email');
+}
+
+class ProfileScope extends Scope {
+  const ProfileScope() : super('profile');
 }
