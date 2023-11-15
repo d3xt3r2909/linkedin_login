@@ -1,5 +1,4 @@
 import 'package:linkedin_login/src/utils/configuration.dart';
-import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/utils/scopes.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/initializer.dart';
@@ -9,12 +8,11 @@ void main() {
   test('is graph created with init', () async {
     final graph = Initializer().initialise(
       AccessCodeConfiguration(
-        projectionParam: ProjectionParameters.projectionWithoutPicture,
         clientSecretParam: 'clientSecretParam',
         urlState: 'urlState',
         clientIdParam: 'clientIdParam',
         redirectUrlParam: 'redirectUrlParam',
-        scopeParam: const [EmailAddressScope(), LiteProfileScope()],
+        scopeParam: const [OpenIdScope(), EmailScope(), ProfileScope()],
       ),
     );
 
@@ -24,12 +22,11 @@ void main() {
     expect(graph.linkedInConfiguration.redirectUrl, 'redirectUrlParam');
     expect(graph.linkedInConfiguration.frontendRedirectUrl, isNull);
     expect(graph.linkedInConfiguration.state, 'urlState');
-    expect(graph.linkedInConfiguration.projection!.length, 5);
     expect(
       graph.linkedInConfiguration.parseScopesToQueryParam(
-        const [EmailAddressScope(), LiteProfileScope()],
+        const [OpenIdScope(), EmailScope(), ProfileScope()],
       ),
-      'r_emailaddress%20r_liteprofile',
+      'openid%20email%20profile',
     );
   });
 
@@ -40,7 +37,7 @@ void main() {
         clientIdParam: 'clientIdParam',
         redirectUrlParam: 'redirectUrlParam',
         frontendRedirectUrlParam: 'frontendRedirectUrlParam',
-        scopeParam: const [EmailAddressScope()],
+        scopeParam: const [EmailScope()],
       ),
     );
 
@@ -52,12 +49,11 @@ void main() {
       graph.linkedInConfiguration.frontendRedirectUrl,
       'frontendRedirectUrlParam',
     );
-    expect(graph.linkedInConfiguration.projection, isNull);
     expect(graph.linkedInConfiguration.clientSecret, isNull);
     expect(
       graph.linkedInConfiguration
-          .parseScopesToQueryParam(const [EmailAddressScope()]),
-      'r_emailaddress',
+          .parseScopesToQueryParam(const [EmailScope()]),
+      'email',
     );
   });
 }

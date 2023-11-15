@@ -3,8 +3,6 @@ import 'package:linkedin_login/src/utils/scopes.dart';
 abstract class Config {
   String? get clientSecret;
 
-  List<String>? get projection;
-
   String? get redirectUrl;
 
   String? get frontendRedirectUrl;
@@ -26,13 +24,11 @@ class AccessCodeConfiguration extends Config {
     required this.redirectUrlParam,
     required this.clientIdParam,
     required this.clientSecretParam,
-    required this.projectionParam,
     required this.urlState,
     required this.scopeParam,
   });
 
   final String? clientSecretParam;
-  final List<String> projectionParam;
   final String? redirectUrlParam;
   final String? clientIdParam;
   final String urlState;
@@ -46,9 +42,6 @@ class AccessCodeConfiguration extends Config {
 
   @override
   String? get frontendRedirectUrl => null;
-
-  @override
-  List<String> get projection => projectionParam;
 
   @override
   String? get redirectUrl => redirectUrlParam;
@@ -76,7 +69,6 @@ class AccessCodeConfiguration extends Config {
   String toString() {
     return 'AccessCodeConfiguration{clientSecretParam: '
         '${clientSecretParam!.isNotEmpty ? 'XXX' : 'INVALID'}, '
-        'projectionParam: $projectionParam,'
         ' redirectUrlParam: $redirectUrlParam,'
         ' clientIdParam: $clientIdParam, urlState: $urlState}, '
         'scope:${parseScopesToQueryParam(scopeParam)}';
@@ -106,9 +98,6 @@ class AuthCodeConfiguration extends Config {
 
   @override
   String? get frontendRedirectUrl => frontendRedirectUrlParam;
-
-  @override
-  List<String>? get projection => null;
 
   @override
   String? get redirectUrl => redirectUrlParam;

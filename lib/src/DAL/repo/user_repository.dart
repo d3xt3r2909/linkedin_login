@@ -11,27 +11,20 @@ class UserRepository {
 
   final LinkedInApi api;
 
-  Future<LinkedInUserModel> fetchFullProfile({
+  /// This method is using new api from Linkedin
+  /// and requires OpenId scope at least, as success response
+  /// will return users available data
+  Future<LinkedInUserModel> fetchProfile({
     required final LinkedInTokenObject token,
-    required final List<String> projection,
     required final http.Client client,
   }) async {
     log('Fetching user profile');
 
-    final basicUserProfile = await api.fetchProfile(
-      token: token.accessToken,
-      projection: projection,
-      client: client,
-    );
-    final userEmail = await api.fetchEmail(
+    final profile = await api.fetchUserInfo(
       client: client,
       token: token.accessToken,
     );
 
-    basicUserProfile
-      ..email = userEmail
-      ..token = token;
-
-    return basicUserProfile;
+    return profile;
   }
 }

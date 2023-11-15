@@ -127,7 +127,6 @@ class _ArrangeBuilder {
 
   void withConfiguration() {
     when(configuration.clientSecret).thenAnswer((final _) => 'clientSecret');
-    when(configuration.projection).thenAnswer((final _) => ['projection1']);
     when(configuration.redirectUrl)
         .thenAnswer((final _) => 'https://redirectUrl.com');
     when(configuration.frontendRedirectUrl)

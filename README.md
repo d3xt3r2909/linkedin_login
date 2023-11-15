@@ -2,7 +2,8 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/76c714e1e1194d0e9d8652f332d3fd5d)](https://app.codacy.com/manual/d3xt3r2909/linkedin_login?utm_source=github.com&utm_medium=referral&utm_content=d3xt3r2909/linkedin_login&utm_campaign=Badge_Grade_Dashboard) [![codecov](https://codecov.io/gh/d3xt3r2909/linkedin_login/branch/master/graph/badge.svg?token=AX9dWsdz1H)](https://codecov.io/gh/d3xt3r2909/linkedin_login)
 
--   A Flutter library for  [LinkedIn](https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin?context=linkedin/consumer/context) OAuth 2.0 APIs .
+-   (Implemented in version of 3.0.0 of this library) A Flutter library for  [LinkedIn](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin-v2) OAuth 2.0 APIs .
+-   (Deprecated from LinkedIn and removed from this library after v3.0.0) A Flutter library for  [LinkedIn](https://docs.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin?context=linkedin/consumer/context) OAuth 2.0 APIs .
 -   This library is using authorization from [LinkedIn API](https://engineering.linkedin.com/blog/2018/12/developer-program-updates)
 
 #### ⭐⭐⭐⭐ Star ⭐⭐⭐⭐ a repo if you like project. Your support matters to us.⭐⭐⭐⭐
@@ -30,6 +31,34 @@ To get these values you need to create App on the [LinkedIn](https://www.linkedi
   
 To read more why this lib needs to use one of these two modes please visit docs of [webview_flutter](https://pub.dev/packages/webview_flutter)
 
+## Migration from 2.x.x library to 3.x.x
+
+Since LinkedIn introduce new way of signing in with LinkedIn called "Sign In with LinkedIn using OpenID Connect"
+and they are deprecating and removing "Sign In with LinkedIn" from product list (see LinkedIn console where you have created your app)
+this library needs to have few breaking changes duo change of architecture. Sorry for that in advance.
+
+- Projection property no longer exists since `/me` API is removed and from now on library is using `/userinfo` [docs](https://learn.microsoft.com/en-us/linkedin/consumer/integrations/self-serve/sign-in-with-linkedin-v2)
+- Previous scopes are removed (r_emailaddress, r_liteprofile) and introduces new ones: `openid`, `email`, `profile`
+- All fields on user response are flatten (see example project) and some are not existing anymore
+- Response that you can get from LinkedIn with new API looks like this
+
+```json
+{
+    "sub": "xxxx",
+    "email_verified": true,
+    "name": "xxxx",
+    "locale": {
+        "country": "US",
+        "language": "en"
+    },
+    "given_name": "xxxx",
+    "family_name": "xxxx",
+    "email": "xxxx",
+    "picture": "xxxx"
+}
+```
+
+For more details about this change you can navigate to this [issue](https://github.com/d3xt3r2909/linkedin_login/issues/91)
 
 ## Samples
 
@@ -43,9 +72,9 @@ Call LinkedIn authorization and get user object:
        clientSecret: clientSecret,
        onGetUserProfile:
            (UserSucceededAction linkedInUser) {
-                print('Access token ${linkedInUser.user.token.accessToken}');
-                print('First name: ${linkedInUser.user.firstName.localized.label}');
-                print('Last name: ${linkedInUser.user.lastName.localized.label}');
+                print('Access token ${linkedInUser.user.token}');
+                print('First name: ${linkedInUser.user.givenName}');
+                print('Last name: ${linkedInUser.user.familyName}');
        },
        onError: (UserFailedAction e) {
                 print('Error: ${e.toString()}');
@@ -75,43 +104,36 @@ to property ```destroySession```  in ```LinkedInUserWidget``` or ```LinkedInAuth
 ## Properties that are available after call for LinkedInUserWidget
 
 ```dart
-  String firstName;
-  String lastName;
+  String name;
+  String familyName;
+  String givenName;
+  bool isEmailVerified;
+  String sub;
   String accessToken;
   int expiresIn;
-  String profilePicture;
+  String picture;
   String email;
-  String userId; (from version 0.1.)
+  LinkedInPreferredLocal locale; (from version 0.1.)
 ```
-## Projection - which properties of user account will be accessible via LinkedIn API
+## Projection - No longer used duo deprecation and migration to OpenId
 ### Available from version 1.2.x
-
-You can control projection, by providing array of strings to projection property of widget 
-`LinkedInUserWidget`. By default these properties are included: 
-
-```dart
-  static const String id = "id";
-  static const String localizedLastName = "localizedLastName";
-  static const String firstName = "firstName";
-  static const String lastName = "lastName";
-  static const String localizedFirstName = "localizedFirstName";
-```
-
-You can include also `profilePicture` to get URL of user profile image. If you change this property
-to some custom value you will override default values, and you need to add every of these manually
-to array. For more info see example project.
 
 ## Scopes - Enables you to define whatever scope you are needed
 ### Available from version 2.3.1
 
-You can control scope that you want to get from LinkedIn. By default you will have `r_emailaddress`
-and `r_liteprofile` but you can change it anytime if you use `scope` property inside `LinkedInUserWidget`
-or inside of `LinkedInAuthCodeWidget`.
+`r_emailaddress` and `r_liteprofile` scopes will be removed from LinkedIn after 30 of November and they are removed from library after 3.x.x version.
+
+Now you should add under "Products" -> "Sign In With LinkedIn using OpenID Connect"
+
+https://www.linkedin.com/developers/apps/{REPLACE_WITH_ID_OF_YOUR_APP}/products
+
+OpenId is requiring openid scope with in combination of at least Email or Profile scope, but by default this library is adding three scopes
 
 ```dart
   final scopes = const [
-    EmailAddressScope(),
-    LiteProfileScope(),
+    OpenIdScope(),
+    EmailScope(),
+    ProfileScope(),
   ],
 ```
 
@@ -119,7 +141,7 @@ You are also able to create custom scopes by extending `Scope` class
 
 ```dart
 class CustomScope extends Scope {
-  const CustomScope() : super('r_emailaddress');
+  const CustomScope() : super('whatever_scope_of_name_to_map_with_linkedin_api');
 }
 ```
 

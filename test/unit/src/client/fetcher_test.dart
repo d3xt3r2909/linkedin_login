@@ -70,8 +70,7 @@ void main() {
         secret: 'clientSecret',
         token: token,
       )
-      ..withFullProfile(
-        projection: ['projection1'],
+      ..withFetchProfile(
         token: token,
         client: graph.httpClient,
       );
@@ -84,9 +83,9 @@ void main() {
     expect(
       user,
       isA<UserSucceededAction>().having(
-        (final u) => u.user.userId,
-        'userId',
-        'id_d3xt3r',
+        (final u) => u.user.sub,
+        'sub',
+        'its_sub',
       ),
     );
   });
@@ -108,8 +107,7 @@ void main() {
         secret: 'clientSecret',
         token: token,
       )
-      ..withFullProfileError(
-        projection: ['projection1'],
+      ..withFetchProfileError(
         token: token,
         client: graph.httpClient,
         exception: exception,
@@ -198,42 +196,35 @@ class _ArrangeBuilder {
     ).thenThrow(exception);
   }
 
-  void withFullProfileError({
+  void withFetchProfileError({
     required final LinkedInTokenObject token,
-    required final List<String> projection,
     required final http.Client client,
     required final Exception exception,
   }) {
     when(
-      userRepository.fetchFullProfile(
+      userRepository.fetchProfile(
         token: token,
-        projection: projection,
         client: client,
       ),
     ).thenThrow(exception);
   }
 
-  void withFullProfile({
+  void withFetchProfile({
     required final LinkedInTokenObject token,
-    required final List<String> projection,
     required final http.Client client,
   }) {
     when(
-      userRepository.fetchFullProfile(
+      userRepository.fetchProfile(
         token: token,
-        projection: projection,
         client: client,
       ),
     ).thenAnswer(
-      (final _) async => LinkedInUserModel(
-        userId: 'id_d3xt3r',
-      ),
+      (final _) async => _TestModels.user(),
     );
   }
 
   void withConfiguration() {
     when(configuration.clientSecret).thenAnswer((final _) => 'clientSecret');
-    when(configuration.projection).thenAnswer((final _) => ['projection1']);
     when(configuration.redirectUrl)
         .thenAnswer((final _) => 'https://redirectUrl.com');
     when(configuration.frontendRedirectUrl)
@@ -242,4 +233,19 @@ class _ArrangeBuilder {
     when(configuration.state).thenAnswer((final _) => 'state');
     when(configuration.initialUrl).thenAnswer((final _) => 'initialUrl');
   }
+}
+
+abstract class _TestModels {
+  const _TestModels._();
+
+  static LinkedInUserModel user() => const LinkedInUserModel(
+        sub: 'its_sub',
+        name: 'John Doe',
+        familyName: 'Doe',
+        givenName: 'John',
+        locale: null,
+        email: 'john.doe@gmail.com',
+        isEmailVerified: true,
+        picture: 'picture.png',
+      );
 }

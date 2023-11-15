@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:linkedin_login/src/actions.dart';
 import 'package:linkedin_login/src/client/fetcher.dart';
 import 'package:linkedin_login/src/utils/configuration.dart';
-import 'package:linkedin_login/src/utils/constants.dart';
 import 'package:linkedin_login/src/utils/scopes.dart';
 import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/initializer.dart';
@@ -17,7 +16,7 @@ import 'package:uuid/uuid.dart';
 /// requires minSdkVersion to be 19
 class LinkedInUserWidget extends StatefulWidget {
   /// Client state parameter needs to be unique range of characters - random one
-  LinkedInUserWidget({
+  const LinkedInUserWidget({
     required this.onGetUserProfile,
     required this.redirectUrl,
     required this.clientId,
@@ -25,21 +24,14 @@ class LinkedInUserWidget extends StatefulWidget {
     this.onError,
     this.destroySession = false,
     this.appBar,
-    this.projection = const [
-      ProjectionParameters.id,
-      ProjectionParameters.localizedFirstName,
-      ProjectionParameters.localizedLastName,
-      ProjectionParameters.firstName,
-      ProjectionParameters.lastName,
-    ],
     this.useVirtualDisplay = false,
     this.scope = const [
-      LiteProfileScope(),
-      EmailAddressScope(),
+      OpenIdScope(),
+      EmailScope(),
+      ProfileScope(),
     ],
     final Key? key,
-  })  : assert(projection.isNotEmpty),
-        super(key: key);
+  }) : super(key: key);
 
   final ValueChanged<UserSucceededAction>? onGetUserProfile;
   final ValueChanged<UserFailedAction>? onError;
@@ -48,7 +40,6 @@ class LinkedInUserWidget extends StatefulWidget {
   final String? clientSecret;
   final PreferredSizeWidget? appBar;
   final bool destroySession;
-  final List<String> projection;
   final bool useVirtualDisplay;
   final List<Scope> scope;
 
@@ -59,7 +50,6 @@ class LinkedInUserWidget extends StatefulWidget {
 /// Class [_LinkedInUserWidgetState] is handling changes after user is singed in
 /// which will have as result user profile on the end
 class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
-  String profileProjection = '';
   late Graph graph;
 
   @override
@@ -68,7 +58,6 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
 
     graph = Initializer().initialise(
       AccessCodeConfiguration(
-        projectionParam: widget.projection,
         clientSecretParam: widget.clientSecret,
         clientIdParam: widget.clientId,
         redirectUrlParam: widget.redirectUrl,
@@ -76,8 +65,6 @@ class _LinkedInUserWidgetState extends State<LinkedInUserWidget> {
         scopeParam: widget.scope,
       ),
     );
-
-    profileProjection = 'projection=(${widget.projection.join(",")})';
   }
 
   @override

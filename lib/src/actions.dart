@@ -5,7 +5,7 @@ import 'package:linkedin_login/linkedin_login.dart';
 class UserSucceededAction extends LinkedAction {
   const UserSucceededAction(this.user);
 
-  final LinkedInUserModel user;
+  final EnrichedUser user;
 
   @override
   String toString() {
