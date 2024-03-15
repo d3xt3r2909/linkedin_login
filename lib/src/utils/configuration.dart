@@ -79,6 +79,7 @@ class AuthCodeConfiguration extends Config {
   AuthCodeConfiguration({
     required this.redirectUrlParam,
     required this.clientIdParam,
+    required this.clientSecretParam,
     required this.urlState,
     required this.scopeParam,
     this.frontendRedirectUrlParam,
@@ -86,6 +87,7 @@ class AuthCodeConfiguration extends Config {
 
   final String? redirectUrlParam;
   final String? clientIdParam;
+  final String? clientSecretParam;
   final String? frontendRedirectUrlParam;
   final String urlState;
   final List<Scope> scopeParam;
@@ -94,7 +96,7 @@ class AuthCodeConfiguration extends Config {
   String? get clientId => clientIdParam;
 
   @override
-  String? get clientSecret => null;
+  String? get clientSecret => clientSecretParam;
 
   @override
   String? get frontendRedirectUrl => frontendRedirectUrlParam;

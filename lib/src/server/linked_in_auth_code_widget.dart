@@ -19,6 +19,7 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
     required this.onGetAuthCode,
     required this.redirectUrl,
     required this.clientId,
+    required this.clientSecret,
     required this.onError,
     this.destroySession = false,
     this.frontendRedirectUrl,
@@ -36,6 +37,7 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
   final ValueChanged<AuthorizationFailedAction> onError;
   final String? redirectUrl;
   final String? clientId;
+  final String? clientSecret;
   final AppBar? appBar;
   final bool destroySession;
   final bool useVirtualDisplay;
@@ -60,6 +62,7 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
         urlState: const Uuid().v4(),
         redirectUrlParam: widget.redirectUrl,
         clientIdParam: widget.clientId,
+        clientSecretParam: widget.clientSecret,
         frontendRedirectUrlParam: widget.frontendRedirectUrl,
         scopeParam: widget.scope,
       ),
