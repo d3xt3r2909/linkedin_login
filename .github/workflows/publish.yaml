@@ -8,6 +8,7 @@ jobs:
   publish:
     permissions:
       id-token: write
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+    uses: ./.github/actions/setup-flutter
+    run: dart pub publish --force
     with:
       environment: pub.dev
