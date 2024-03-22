@@ -51,8 +51,7 @@ void main() {
     );
     expect(graph.linkedInConfiguration.clientSecret, isNull);
     expect(
-      graph.linkedInConfiguration
-          .parseScopesToQueryParam(const [EmailScope()]),
+      graph.linkedInConfiguration.parseScopesToQueryParam(const [EmailScope()]),
       'email',
     );
   });
