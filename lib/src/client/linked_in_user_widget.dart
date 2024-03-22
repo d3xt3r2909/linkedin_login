@@ -30,8 +30,8 @@ class LinkedInUserWidget extends StatefulWidget {
       EmailScope(),
       ProfileScope(),
     ],
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ValueChanged<UserSucceededAction>? onGetUserProfile;
   final ValueChanged<UserFailedAction>? onError;

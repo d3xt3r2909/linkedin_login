@@ -4,10 +4,10 @@ import 'package:linkedin_login/src/utils/startup/graph.dart';
 @immutable
 class InjectorWidget extends InheritedWidget {
   const InjectorWidget({
-    required final Widget child,
+    required super.child,
     required this.graph,
-    final Key? key,
-  }) : super(key: key, child: child);
+    super.key,
+  });
 
   static Graph of(final BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<InjectorWidget>()!.graph;
