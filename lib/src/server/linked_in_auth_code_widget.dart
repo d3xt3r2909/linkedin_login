@@ -29,8 +29,8 @@ class LinkedInAuthCodeWidget extends StatefulWidget {
       EmailScope(),
       ProfileScope(),
     ],
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final ValueChanged<AuthorizationSucceededAction>? onGetAuthCode;
   final ValueChanged<AuthorizationFailedAction> onError;

@@ -16,8 +16,8 @@ class LinkedInWebViewHandler extends StatelessWidget {
     this.destroySession = false,
     this.onCookieClear,
     this.useVirtualDisplay = false,
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final bool destroySession;
   final PreferredSizeWidget? appBar;

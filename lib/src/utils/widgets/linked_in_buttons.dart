@@ -16,8 +16,8 @@ class LinkedInButtonStandardWidget extends StatelessWidget {
     this.buttonColor = Colors.white,
     this.backgroundColor = Colors.blue,
     this.textPadding = const EdgeInsets.all(4),
-    final Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final Function onTap;
   final double iconHeight;
