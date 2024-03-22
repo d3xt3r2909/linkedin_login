@@ -8,9 +8,12 @@ jobs:
   publish:
     permissions:
       id-token: write
-    runs-on: ubuntu-latest
-    environment: pub.dev
-    steps:
-     - uses: actions/checkout@v4
-     - uses: ./.github/actions/setup-flutter
-     - uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
+      environment: pub.dev
+      steps:
+        - uses: actions/checkout@v4
+        - uses: ./.github/actions/setup-flutter
+        - uses: dart-lang/setup-dart@v1
+        - name: Install dependencies
+          run: dart pub get
+        - name: Publish
+          run: dart pub publish --force
