@@ -8,6 +8,7 @@ jobs:
   publish:
     permissions:
       id-token: write
+      runs-on: ubuntu-latest
       environment: pub.dev
       steps:
         - uses: actions/checkout@v4
