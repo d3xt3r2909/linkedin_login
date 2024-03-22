@@ -4,17 +4,20 @@ on:
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+*'
+
 jobs:
   publish:
     permissions:
       id-token: write
-      runs-on: ubuntu-latest
-      environment: pub.dev
-      steps:
-        - uses: actions/checkout@v4
-        - uses: ./.github/actions/setup-flutter
-        - uses: dart-lang/setup-dart@v1
-        - name: Install dependencies
-          run: dart pub get
-        - name: Publish
-          run: dart pub publish --force
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@v1
+      - uses: ./.github/actions/setup-flutter
+      - name: Install dependencies
+        run: flutter pub get
+      - name: Publish
+        run: dart pub publish --force
+
+
+
