@@ -13,4 +13,4 @@ jobs:
     steps:
      - uses: actions/checkout@v4
      - uses: ./.github/actions/setup-flutter
-     - run: dart pub publish --force
+     - uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
