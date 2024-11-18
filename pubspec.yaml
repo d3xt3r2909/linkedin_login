@@ -16,7 +16,7 @@ dependencies:
   rxdart: ">=0.27.7 <0.29.0"
   uuid: ^4.3.3
   webview_flutter: ^4.7.0
-  webview_flutter_android: ^3.16.1
+  webview_flutter_android: ">=3.16.1 <5.0.0"
   webview_flutter_wkwebview: ^3.13.1
 
 dev_dependencies:
