@@ -140,9 +140,10 @@ packages:
   linkedin_login_platform_interface:
     dependency: transitive
     description:
-      path: "../../linkedin_login_platform_interface"
-      relative: true
-    source: path
+      name: linkedin_login_platform_interface
+      sha256: c34678d6bd5656371eed2df6b4f51685d832e8ff48d7c99e991f0a373d473200
+      url: "https://pub.dev"
+    source: hosted
     version: "0.0.1"
   lints:
     dependency: transitive
