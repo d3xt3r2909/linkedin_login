@@ -1,0 +1,19 @@
+name: linkedin_login_platform_interface
+description: "Contains shared logic between platforms and interfaces for them"
+version: 0.0.1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.1.0
+  equatable: ^2.0.3
+  webview_flutter: ^4.7.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  mocktail: ^0.2.0

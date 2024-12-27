@@ -7,6 +7,7 @@ import 'package:linkedin_login/src/utils/startup/graph.dart';
 import 'package:linkedin_login/src/utils/startup/initializer.dart';
 import 'package:linkedin_login/src/utils/startup/injector.dart';
 import 'package:linkedin_login/src/webview/linked_in_web_view_handler.dart';
+import 'package:linkedin_login_platform_interface/linkedin_login_platform_interface.dart';
 import 'package:uuid/uuid.dart';
 
 /// This class is responsible to fetch all information for user after we get
@@ -57,6 +58,7 @@ class _LinkedInAuthCodeWidgetState extends State<LinkedInAuthCodeWidget> {
 
     graph = Initializer().initialise(
       AuthCodeConfiguration(
+        platformSpecificParam: LinkedinLoginPlatform.instance,
         urlState: const Uuid().v4(),
         redirectUrlParam: widget.redirectUrl,
         clientIdParam: widget.clientId,

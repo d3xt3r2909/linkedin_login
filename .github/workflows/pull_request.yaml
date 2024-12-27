@@ -7,24 +7,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  analyze:
+  flutter_check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-flutter
-      - run: flutter analyze
-      - run: dart format -o none --set-exit-if-changed .
-
-  test:
-    needs: analyze
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-flutter
-      - run: dart run build_runner build --delete-conflicting-outputs
-      - run: flutter test --coverage
-      - uses: codecov/codecov-action@v4
+      - uses: webfactory/ssh-agent@v0.5.4
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: coverage/lcov.info
+          ssh-private-key: ${{ secrets.ORG_SSH_KEY }}
+
+      - uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup-flutter
+
+      - name: Activate melos
+        run: dart pub global activate melos 2.7.1
+
+      - name: Get dependencies
+        run: melos run pub_get:all
+
+      - name: Verify formatting
+        run: melos run verify_format:all --no-select
+
+      - name: Analyze
+        run: melos run analyze:all --no-select
+
+      - name: Run Flutter tests
+        run: melos run test_flutter:all --no-select
 

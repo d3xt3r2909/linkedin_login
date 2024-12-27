@@ -1,6 +1,9 @@
 import 'package:linkedin_login/src/utils/scopes.dart';
+import 'package:linkedin_login_platform_interface/linkedin_login_platform_interface.dart';
 
 abstract class Config {
+  LinkedinLoginPlatform get platformSpecific;
+
   String? get clientSecret;
 
   String? get redirectUrl;
@@ -26,6 +29,7 @@ class AccessCodeConfiguration extends Config {
     required this.clientSecretParam,
     required this.urlState,
     required this.scopeParam,
+    required this.platformSpecificParam,
   });
 
   final String? clientSecretParam;
@@ -33,6 +37,10 @@ class AccessCodeConfiguration extends Config {
   final String? clientIdParam;
   final String urlState;
   final List<Scope> scopeParam;
+  final LinkedinLoginPlatform platformSpecificParam;
+
+  @override
+  LinkedinLoginPlatform get platformSpecific => platformSpecificParam;
 
   @override
   String? get clientId => clientIdParam;
@@ -81,6 +89,7 @@ class AuthCodeConfiguration extends Config {
     required this.clientIdParam,
     required this.urlState,
     required this.scopeParam,
+    required this.platformSpecificParam,
     this.frontendRedirectUrlParam,
   });
 
@@ -89,6 +98,10 @@ class AuthCodeConfiguration extends Config {
   final String? frontendRedirectUrlParam;
   final String urlState;
   final List<Scope> scopeParam;
+  final LinkedinLoginPlatform platformSpecificParam;
+
+  @override
+  LinkedinLoginPlatform get platformSpecific => platformSpecificParam;
 
   @override
   String? get clientId => clientIdParam;

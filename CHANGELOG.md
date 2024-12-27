@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 3.1.0 
+### Move architecture to the federated plugin approach 
+- https://docs.flutter.dev/packages-and-plugins/developing-packages#federated-plugins
+- This will enable us in future to plan and introduce new platforms like web, desktop, etc.
+
 ## 3.0.5
 ### Reintroduce webview_flutter_android and webview_flutter_wkwebview dependencies
 

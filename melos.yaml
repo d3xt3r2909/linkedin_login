@@ -1,0 +1,51 @@
+name: klar-mobile-3ds
+
+command:
+  bootstrap:
+    usePubspecOverrides: true
+
+packages:
+  - "linkedin_login*/*"
+  - "."
+
+scripts:
+  bootstrap: echo !!! Do not use melos boostrap as it ruins the pubspec.lock files !!! && exit 1
+  postclean: |
+    melos exec --dir-exists coverage -- "rm -fr coverage" && \
+    melos exec --dir-exists screenshots -- "rm -fr screenshots" && \
+    melos exec -c 1 --flutter -- "flutter clean"
+
+  reinit:
+    description: Reinitialises the project
+    run: |
+      melos clean && \
+      melos run pub_get:all
+
+  analyze:all:
+    description: Run `dart analyze . --fatal-infos` in all packages and in the main app
+    exec: dart analyze . --fatal-infos
+    select-package:
+      scope: "*"
+
+  pub_get:all:
+    description: Run `flutter pub get` in all packages
+    run: melos exec -c 5 -- "flutter pub get --offline || flutter pub get" || melos exec -c 1 -- "flutter pub get"
+
+  verify_format:all:
+    description: Run `dart format --set-exit-if-changed .` in packages that have changes compared to main
+    exec: dart format --set-exit-if-changed .
+
+  test_flutter:all:
+    description: Test all packages that have flutter dependency
+    exec:
+      flutter test
+    select-package:
+      dir-exists:
+        - test
+      flutter: true
+      failFast: true
+
+  format:all:
+    description: Run `dart format .` in all packages
+    exec: dart format .
+

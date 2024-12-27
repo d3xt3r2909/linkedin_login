@@ -1,6 +1,8 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
-/// The interface that implementations of klar_mobile_3ds must implement.
+/// The interface that implementations
+/// of linkedin_login platforms must implement.
 abstract class LinkedinLoginPlatform extends PlatformInterface {
   LinkedinLoginPlatform() : super(token: _token);
 
@@ -18,14 +20,14 @@ abstract class LinkedinLoginPlatform extends PlatformInterface {
     return instance;
   }
 
-  static set instance(LinkedinLoginPlatform instance) {
+  static set instance(final LinkedinLoginPlatform instance) {
     PlatformInterface.verify(instance, _token);
     _instance = instance;
   }
 
-  String displayName() {
+  PlatformWebViewControllerCreationParams get platformWebControllerParam {
     throw UnimplementedError(
-      'initialize() has not been implemented',
+      'platformWebControllerParam() has not been implemented',
     );
   }
 }
