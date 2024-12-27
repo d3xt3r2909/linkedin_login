@@ -25,7 +25,7 @@ dependencies:
   flutter:
     sdk: flutter
   linkedin_login:
-    path: ../
+    path: ../linkedin_login
 
 dev_dependencies:
   flutter_test:
