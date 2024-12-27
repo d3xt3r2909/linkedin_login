@@ -172,16 +172,18 @@ packages:
   linkedin_login_android:
     dependency: transitive
     description:
-      path: "../../linkedin_login_android"
-      relative: true
-    source: path
+      name: linkedin_login_android
+      sha256: "459d6ea57e257b673f9cb2f6528b369f2922cde4ba10ea0f417d3bad91571641"
+      url: "https://pub.dev"
+    source: hosted
     version: "0.0.1"
   linkedin_login_platform_interface:
     dependency: transitive
     description:
-      path: "../../linkedin_login_platform_interface"
-      relative: true
-    source: path
+      name: linkedin_login_platform_interface
+      sha256: c34678d6bd5656371eed2df6b4f51685d832e8ff48d7c99e991f0a373d473200
+      url: "https://pub.dev"
+    source: hosted
     version: "0.0.1"
   lints:
     dependency: transitive
@@ -406,4 +408,4 @@ packages:
     version: "3.16.3"
 sdks:
   dart: ">=3.5.4 <4.0.0"
-  flutter: ">=3.24.3"
+  flutter: ">=3.24.0"

@@ -1,19 +1,20 @@
 name: linkedin_login_ios
 description: "Contains iOS specific code"
 version: 0.0.1
-publish_to: none
+homepage: https://github.com/d3xt3r2909/linkedin_login/tree/master/linkedin_login_ios
+repository: https://github.com/d3xt3r2909/linkedin_login
+documentation:
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
+  flutter: ">=2.8.0"
 
 dependencies:
   flutter:
     sdk: flutter
   webview_flutter: ^4.7.0
   webview_flutter_wkwebview: ^3.13.1
-
-  linkedin_login_platform_interface:
-    path: ../linkedin_login_platform_interface
+  linkedin_login_platform_interface: ^0.0.1
 
 dev_dependencies:
   flutter_test:
