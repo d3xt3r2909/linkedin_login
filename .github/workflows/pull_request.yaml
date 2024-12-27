@@ -10,10 +10,6 @@ jobs:
   flutter_check:
     runs-on: ubuntu-latest
     steps:
-      - uses: webfactory/ssh-agent@v0.5.4
-        with:
-          ssh-private-key: ${{ secrets.ORG_SSH_KEY }}
-
       - uses: actions/checkout@v4
 
       - uses: ./.github/actions/setup-flutter
