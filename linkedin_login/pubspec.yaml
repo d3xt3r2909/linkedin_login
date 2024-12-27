@@ -1,6 +1,6 @@
 name: linkedin_login
 description: Library for login with LinkedIn OAuth V2 service with OpedID. This library helps you to implement authorization with LinkedIn OAuth API's.
-version: 3.1.0
+version: 3.1.2
 homepage: https://github.com/d3xt3r2909/linkedin_login
 repository: https://github.com/d3xt3r2909/linkedin_login
 documentation:
@@ -18,7 +18,6 @@ dependencies:
   uuid: ^4.3.3
   webview_flutter: ^4.7.0
   linkedin_login_platform_interface: ^0.0.1
-  linkedin_login_android: ^0.0.1
 
 dev_dependencies:
   flutter_test:
@@ -35,5 +34,7 @@ flutter:
     platforms:
       android:
         default_package: linkedin_login_android
+      ios:
+        default_package: linkedin_login_ios
   assets:
     - assets/linked_in_logo.png
