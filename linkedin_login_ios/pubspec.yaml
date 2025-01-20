@@ -1,6 +1,6 @@
 name: linkedin_login_ios
 description: "Contains iOS specific code"
-version: 0.0.1
+version: 0.1.0
 homepage: https://github.com/d3xt3r2909/linkedin_login/tree/master/linkedin_login_ios
 repository: https://github.com/d3xt3r2909/linkedin_login
 documentation:
@@ -29,5 +29,5 @@ flutter:
   plugin:
     implements: linkedin_login
     platforms:
-      android:
+      ios:
         dartPluginClass: LinkedinLoginIos
