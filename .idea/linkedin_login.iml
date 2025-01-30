@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login/build" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login_android/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login_android/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login_android/build" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login_android/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login_android/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login_android/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login_ios/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login_ios/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login_ios/build" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login_ios/example/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login_ios/example/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login_ios/example/build" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login_platform_interface/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login_platform_interface/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/linkedin_login_platform_interface/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

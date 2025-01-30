@@ -2,7 +2,7 @@ import 'package:linkedin_login_platform_interface/linkedin_login_platform_interf
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
-/// An implementation of [LinkedinLoginPlatform] for Android.
+/// An implementation of [LinkedinLoginPlatform] for iOS.
 class LinkedinLoginIos extends LinkedinLoginPlatform {
   LinkedinLoginIos();
 

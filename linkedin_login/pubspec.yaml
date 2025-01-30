@@ -18,6 +18,8 @@ dependencies:
   uuid: ^4.3.3
   webview_flutter: ^4.7.0
   linkedin_login_platform_interface: ^0.0.1
+  linkedin_login_ios: ^0.0.2
+  linkedin_login_android: ^0.0.1
 
 dev_dependencies:
   flutter_test:
