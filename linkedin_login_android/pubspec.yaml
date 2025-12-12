@@ -1,12 +1,13 @@
 name: linkedin_login_android
 description: "Contains Android specific code for linkedin login package"
-version: 0.0.1
+version: 3.2.0
+resolution: workspace
 homepage: https://github.com/d3xt3r2909/linkedin_login/tree/master/linkedin_login_android
 repository: https://github.com/d3xt3r2909/linkedin_login
 documentation:
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: '>=3.6.0 <4.0.0'
   flutter: ">=2.8.0"
 
 dependencies:
@@ -14,14 +15,15 @@ dependencies:
     sdk: flutter
   webview_flutter: ^4.13.0
   webview_flutter_android: ^4.10.0
-  linkedin_login_platform_interface: ^0.0.1
+  linkedin_login_platform_interface:
+    path: ../linkedin_login_platform_interface
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  plugin_platform_interface: ^2.0.2
-  pigeon: ^22.3.0
+  plugin_platform_interface: ^2.1.0
+  flutter_lints: ^5.0.0
   mocktail: ^1.0.4
   args: ^2.3.0
 

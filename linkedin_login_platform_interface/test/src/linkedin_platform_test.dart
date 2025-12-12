@@ -23,8 +23,8 @@ void main() {
   test(
       'getting platform parameter for controller via '
       'platformWebControllerParam is called', () async {
-    await tested.platformWebControllerParam;
-
+    // Access the getter to increment the count
+    final _ = tested.platformWebControllerParam;
     expect(tested.platformWebControllerParamCount, equals(1));
   });
 }
@@ -32,6 +32,7 @@ void main() {
 class TestLinkedInLoginPlatform extends LinkedinLoginPlatform {
   var platformWebControllerParamCount = 0;
 
+  @override
   PlatformWebViewControllerCreationParams get platformWebControllerParam {
     platformWebControllerParamCount++;
     return PlatformWebViewControllerCreationParams();

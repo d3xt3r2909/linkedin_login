@@ -1,0 +1,28 @@
+# IntelliJ IDEA / Android Studio
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Flutter/Dart
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+build/
+**/build/
+
+# Generated files (but keep pubspec.lock and Podfile.lock for reproducible builds)
+# *.lock - commented out to allow pubspec.lock and Podfile.lock
+# Note: Root workspace pubspec.lock should be committed for reproducible builds
+
+# Local configuration
+local.properties
+*.local
+
