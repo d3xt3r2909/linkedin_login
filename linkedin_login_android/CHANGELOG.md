@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Updated to version 3.2.0 to synchronize with main package
 - Migrated to Dart Pub Workspaces
-- Updated dependencies to latest compatible versions
-- Updated webview_flutter_android to ^4.10.0
+- Updated dependencies to latest compatible versions:
+  - `webview_flutter_android`: ^3.16.1 → ^4.10.0
+  - `plugin_platform_interface`: ^2.0.2 → ^2.1.0
+- Added `flutter_lints`: ^5.0.0 (dev dependency)
 
 ### Fixed
 - Fixed Android test to work in unit test environment

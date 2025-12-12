@@ -10,7 +10,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added workspace configuration for improved monorepo management
 
 ### Changed
-- Updated all dependencies to latest compatible versions
+- Updated all dependencies to latest compatible versions:
+  - `http`: ^1.2.1 → ^1.2.2
+  - `meta`: ^1.11.0 → ^1.12.0
+  - `rxdart`: ">=0.27.7 <0.29.0" → ^0.28.0
+  - `uuid`: ^4.3.3 → ^4.5.0
+  - `plugin_platform_interface`: ^2.0.2 → ^2.1.0
+  - `build_runner`: ^2.4.8 → ^2.4.10
+  - `mockito`: ^5.4.4 → ^5.6.0
+  - `test`: ^1.24.9 → ^1.26.3
+  - `flutter_lints`: ">=3.0.1 <5.0.0" → ^5.0.0
+  - `equatable`: ^2.0.3 → ^2.0.7 (platform_interface)
+  - `mocktail`: ^0.2.0 → ^1.0.4 (platform_interface)
+  - `webview_flutter_android`: ^3.16.1 → ^4.10.0 (android)
 - Updated Flutter SDK constraints to >=3.6.0 <4.0.0
 - Updated Gradle to 8.7 and Android Gradle Plugin to 8.1.1
 - Updated CI Flutter version to 3.38.4
