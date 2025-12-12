@@ -136,14 +136,14 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.1"
+    version: "3.2.0"
   linkedin_login_platform_interface:
     dependency: transitive
     description:
       path: "../../linkedin_login_platform_interface"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "3.2.0"
   lints:
     dependency: transitive
     description:
