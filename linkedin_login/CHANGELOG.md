@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 3.2.0
+### Added
+- Migrated to Dart Pub Workspaces for centralized dependency management
+- Added workspace configuration for improved monorepo management
+
+### Changed
+- Updated all dependencies to latest compatible versions
+- Updated Flutter SDK constraints to >=3.6.0 <4.0.0
+- Updated Gradle to 8.7 and Android Gradle Plugin to 8.1.1
+- Updated CI Flutter version to 3.38.4
+- Synchronized all package versions to 3.2.0
+
+### Fixed
+- Fixed Android test to work in unit test environment
+- Fixed linter issues and analysis warnings
+- Removed unused pigeon dependency
+- Fixed Codacy configuration to exclude generated files
+
 ## 3.1.3
 ### Fix iOS and Android issues
 
