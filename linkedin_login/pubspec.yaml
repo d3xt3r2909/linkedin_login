@@ -18,7 +18,8 @@ dependencies:
   rxdart: ^0.28.0
   uuid: ^4.5.0
   webview_flutter: ^4.13.0
-  linkedin_login_platform_interface: ^3.2.0
+  linkedin_login_platform_interface:
+    path: ../linkedin_login_platform_interface
   linkedin_login_ios: ^3.2.0
   linkedin_login_android: ^3.2.0
 
