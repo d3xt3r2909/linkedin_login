@@ -1,0 +1,10 @@
+exclude_paths:
+  - "**/Podfile.lock"
+  - "**/Podfile.lock"
+  - "**/*.lock"
+  - "**/build/**"
+  - "**/.dart_tool/**"
+  - "**/ios/Pods/**"
+  - "**/android/.gradle/**"
+  - "**/pubspec.lock"
+
