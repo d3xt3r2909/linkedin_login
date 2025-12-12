@@ -16,7 +16,7 @@ dependencies:
   meta: ^1.11.0
   rxdart: ">=0.27.7 <0.29.0"
   uuid: ^4.3.3
-  webview_flutter: ^4.7.0
+  webview_flutter: ^4.13.0
   linkedin_login_platform_interface: ^0.0.1
   linkedin_login_ios: ^0.0.2
   linkedin_login_android: ^0.0.1

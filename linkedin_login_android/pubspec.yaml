@@ -12,8 +12,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  webview_flutter: ^4.7.0
-  webview_flutter_android: ^3.16.1
+  webview_flutter: ^4.13.0
+  webview_flutter_android: ^4.10.0
   linkedin_login_platform_interface: ^0.0.1
 
 dev_dependencies:
