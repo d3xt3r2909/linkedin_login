@@ -1,0 +1,12 @@
+name: linkedin_login_workspace
+publish_to: none
+
+environment:
+  sdk: '>=3.6.0 <4.0.0'
+
+workspace:
+  - linkedin_login
+  - linkedin_login_platform_interface
+  - linkedin_login_android
+  - linkedin_login_ios
+

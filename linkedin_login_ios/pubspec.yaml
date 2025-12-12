@@ -2,6 +2,7 @@ name: linkedin_login_ios
 description: "Contains iOS specific code"
 version: 0.0.2
 publish_to: none
+resolution: workspace
 homepage: https://github.com/d3xt3r2909/linkedin_login/tree/master/linkedin_login_ios
 repository: https://github.com/d3xt3r2909/linkedin_login
 documentation:

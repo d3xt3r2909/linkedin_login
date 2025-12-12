@@ -20,6 +20,7 @@ build/
 
 # Generated files (but keep pubspec.lock and Podfile.lock for reproducible builds)
 # *.lock - commented out to allow pubspec.lock and Podfile.lock
+# Note: Root workspace pubspec.lock should be committed for reproducible builds
 
 # Local configuration
 local.properties
