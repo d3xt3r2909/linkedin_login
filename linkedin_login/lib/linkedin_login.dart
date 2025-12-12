@@ -14,7 +14,6 @@
 ///   },
 /// )
 /// ```
-library linkedin_login;
 
 export 'package:linkedin_login/src/actions.dart';
 export 'package:linkedin_login/src/client/linked_in_user_widget.dart';
