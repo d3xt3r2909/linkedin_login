@@ -31,7 +31,7 @@ jobs:
       - name: Publish linkedin_login (main package)
         working-directory: linkedin_login
         run: |
-          dart pub get
+          # Skip pub get - dependencies may not be available yet, but pub publish only validates pubspec.yaml
           dart pub publish --force
 
 
