@@ -16,9 +16,12 @@ import 'package:linkedin_login/src/wrappers/linked_in_token_object.dart';
 class AuthorizationCodeResponse {
   /// Creates an [AuthorizationCodeResponse] with the provided values.
   ///
-  /// [code] is the authorization code that can be exchanged for an access token.
-  /// [state] is a unique string used for security purposes to prevent CSRF attacks.
-  /// [accessToken] is the access token if it was provided directly in the response.
+  /// [code] is the authorization code that can be exchanged for an access
+  /// token.
+  /// [state] is a unique string used for security purposes to prevent CSRF
+  /// attacks.
+  /// [accessToken] is the access token if it was provided directly in the
+  /// response.
   AuthorizationCodeResponse({
     this.code,
     this.state,

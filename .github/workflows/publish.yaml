@@ -15,21 +15,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: dart-lang/setup-dart@v1
       - uses: ./.github/actions/setup-flutter
-      
       - name: Install dependencies
-        run: dart pub get
-        
-      - name: Publish linkedin_login_android
-        working-directory: linkedin_login_android
+        run: flutter pub get
+      - name: Publish
         run: dart pub publish --force
-        
-      - name: Publish linkedin_login_ios
-        working-directory: linkedin_login_ios
-        run: dart pub publish --force
-        
-      - name: Publish linkedin_login (main package)
-        working-directory: linkedin_login
-        run: dart pub publish --force
-
-
-
