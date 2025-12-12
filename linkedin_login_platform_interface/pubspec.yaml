@@ -1,7 +1,6 @@
 name: linkedin_login_platform_interface
 description: "Contains shared logic between platforms and interfaces for them"
 version: 3.2.2
-publish_to: none
 resolution: workspace
 homepage: https://github.com/d3xt3r2909/linkedin_login/tree/master/linkedin_login_platform_interface
 repository: https://github.com/d3xt3r2909/linkedin_login
