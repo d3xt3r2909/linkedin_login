@@ -14,7 +14,7 @@ dependencies:
   flutter:
     sdk: flutter
   webview_flutter: ^4.13.0
-  webview_flutter_wkwebview: ^3.23.0
+  webview_flutter_wkwebview: ^3.25.1
   linkedin_login_platform_interface: ^3.2.3
 
 dev_dependencies:
