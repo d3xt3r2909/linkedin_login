@@ -23,7 +23,7 @@ dev_dependencies:
 
   plugin_platform_interface: ^2.1.0
   flutter_lints: ^5.0.0
-  mocktail: ^1.0.4
+  mocktail: ^1.0.5
   args: ^2.3.0
 
 flutter:
